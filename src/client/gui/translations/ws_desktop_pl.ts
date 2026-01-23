@@ -1342,6 +1342,22 @@ Jeśli problem nadal występuje po ponownym uruchomieniu, wyślij dziennik debug
         <source>In this firewall mode, the Windscribe API will not be available while disconnected, this could have unintended consequences. Use at own risk.</source>
         <translation>W tym trybie zapory interfejs API Windscribe nie będzie dostępny po rozłączeniu, co może mieć niezamierzone konsekwencje. Używaj na własne ryzyko.</translation>
     </message>
+    <message>
+        <source>Clear Wi-Fi History</source>
+        <translation>Jasna historia Wi-Fi</translation>
+    </message>
+    <message>
+        <source>Remove Wi-Fi SSID and MAC information from your operating system to prevent location history tracking. Warning: this will also delete all Wi-Fi passwords except for the currently connected network. On some systems, this may temporarily disable Wi-Fi.</source>
+        <translation>Usuń SSID i MAC Wi-Fi z systemu operacyjnego, aby zapobiec śledzeniu historii lokalizacji. Ostrzeżenie: to również usunie wszystkie hasła do Wi-Fi oprócz sieci obecnie połączonej. W niektórych systemach może to tymczasowo wyłączyć Wi-Fi.</translation>
+    </message>
+    <message>
+        <source>Are you sure?</source>
+        <translation>Czy na pewno?</translation>
+    </message>
+    <message>
+        <source>Are you sure you want to clear all your Wi-Fi history? This will also clear all Wi-Fi passwords except for the one you&apos;re currently connected to. This may also temporarily disable your Wi-Fi.</source>
+        <translation>Jesteś pewien, że chcesz wyczyścić całą historię Wi-Fi? To również usunie wszystkie hasła do Wi-Fi oprócz tego, do którego jesteś obecnie podłączony. Może to również tymczasowo wyłączyć Wi-Fi.</translation>
+    </message>
 </context>
 <context>
     <name>PreferencesWindow::DecoyTrafficGroup</name>
@@ -1864,6 +1880,25 @@ Najpierw połącz się z siecią</translation>
     <message>
         <source>Look &amp; Feel</source>
         <translation>Wygląd i działanie</translation>
+    </message>
+</context>
+<context>
+    <name>PreferencesWindow::PreferencesWindowItem</name>
+    <message>
+        <source>Unsaved Changes</source>
+        <translation>Niezapisane zmiany</translation>
+    </message>
+    <message>
+        <source>Discard</source>
+        <translation>Porzucenie</translation>
+    </message>
+    <message>
+        <source>You have unsaved changes in edit fields. Do you want to save them?</source>
+        <translation>Masz niezapisane zmiany w polach edycji. Chcesz ich uratować?</translation>
+    </message>
+    <message>
+        <source>Save</source>
+        <translation>Zapisz</translation>
     </message>
 </context>
 <context>
@@ -2553,10 +2588,6 @@ Jeśli ponowna instalacja nie pomoże, skontaktuj się z pomocą techniczną Win
         <translation>Konfiguracje niestandardowe</translation>
     </message>
     <message>
-        <source>Show/Hide</source>
-        <translation>Pokaż/Ukryj</translation>
-    </message>
-    <message>
         <source>Preferences</source>
         <translation>Preferencje</translation>
     </message>
@@ -2571,6 +2602,10 @@ Jeśli ponowna instalacja nie pomoże, skontaktuj się z pomocą techniczną Win
     <message>
         <source>Favourites</source>
         <translation>Ulubione</translation>
+    </message>
+    <message>
+        <source>Show app</source>
+        <translation>Aplikacja Show</translation>
     </message>
 </context>
 <context>

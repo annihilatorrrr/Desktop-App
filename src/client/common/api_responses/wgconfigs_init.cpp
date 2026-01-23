@@ -1,6 +1,7 @@
 #include "wgconfigs_init.h"
 #include <QJsonDocument>
 #include <QJsonObject>
+#include <QJsonArray>
 
 namespace api_responses {
 
@@ -20,6 +21,13 @@ WgConfigsInit::WgConfigsInit(const std::string &json)
     auto jsonConfig = jsonData["config"].toObject();
     presharedKey_ = jsonConfig["PresharedKey"].toString();
     allowedIps_   = jsonConfig["AllowedIPs"].toString();
+
+    if (jsonConfig.contains("HashedCIDR")) {
+        auto hashedCIDRArray = jsonConfig["HashedCIDR"].toArray();
+        for (const auto &cidr : hashedCIDRArray) {
+            hashedCIDR_.append(cidr.toString());
+        }
+    }
 }
 
 

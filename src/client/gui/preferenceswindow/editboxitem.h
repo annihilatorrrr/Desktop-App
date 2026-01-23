@@ -5,10 +5,11 @@
 #include <QRegularExpressionValidator>
 #include "commongraphics/iconbutton.h"
 #include "commonwidgets/custommenulineedit.h"
+#include "ieditableitem.h"
 
 namespace PreferencesWindow {
 
-class EditBoxItem : public CommonGraphics::BaseItem
+class EditBoxItem : public CommonGraphics::BaseItem, public IEditableItem
 {
     Q_OBJECT
 
@@ -28,6 +29,9 @@ public:
     void setMasked(bool masked);
 
     bool lineEditHasFocus();
+    bool isInEditMode() const override;
+    void save() override;
+    void discard() override;
 
 signals:
     void textChanged(const QString &text);

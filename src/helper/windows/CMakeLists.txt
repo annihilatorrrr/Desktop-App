@@ -25,6 +25,7 @@ set(SOURCES
     active_processes.cpp
     adapters_info.cpp
     apps_ids.cpp
+    clear_wifi_history/clear_wifi_history.cpp
     changeics/icsmanager.cpp
     close_tcp_connections.cpp
     dns_firewall.cpp
@@ -91,6 +92,8 @@ target_link_libraries(WindscribeService
                       ntdll
                       Newdev
                       Shlwapi
+                      wevtapi
+                      wlanapi
                       wsnet::wsnet
                       Boost::serialization
                       spdlog::spdlog

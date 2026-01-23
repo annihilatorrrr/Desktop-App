@@ -1342,6 +1342,22 @@ If the problem persists after a restart, please send a debug log and open a supp
         <source>In this firewall mode, the Windscribe API will not be available while disconnected, this could have unintended consequences. Use at own risk.</source>
         <translation>在这种防火墙模式下，Windscribe API 在断开连接时将不可用，这可能会产生意想不到的后果。使用风险自负。</translation>
     </message>
+    <message>
+        <source>Clear Wi-Fi History</source>
+        <translation>清晰的Wi-Fi历史</translation>
+    </message>
+    <message>
+        <source>Remove Wi-Fi SSID and MAC information from your operating system to prevent location history tracking. Warning: this will also delete all Wi-Fi passwords except for the currently connected network. On some systems, this may temporarily disable Wi-Fi.</source>
+        <translation>从作系统中移除Wi-Fi SSID和MAC信息，以防止位置历史追踪。警告：这也会删除除当前连接网络外的所有 Wi-Fi 密码。在某些系统上，这可能会暂时禁用Wi-Fi。</translation>
+    </message>
+    <message>
+        <source>Are you sure?</source>
+        <translation>是否确定？</translation>
+    </message>
+    <message>
+        <source>Are you sure you want to clear all your Wi-Fi history? This will also clear all Wi-Fi passwords except for the one you&apos;re currently connected to. This may also temporarily disable your Wi-Fi.</source>
+        <translation>你确定要清除所有Wi-Fi历史吗？这也会清除除你当前连接的那个外的所有 Wi-Fi 密码。这也可能暂时禁用你的Wi-Fi。</translation>
+    </message>
 </context>
 <context>
     <name>PreferencesWindow::DecoyTrafficGroup</name>
@@ -1864,6 +1880,25 @@ Connect to a network first</source>
     <message>
         <source>Look &amp; Feel</source>
         <translation>外观与感觉</translation>
+    </message>
+</context>
+<context>
+    <name>PreferencesWindow::PreferencesWindowItem</name>
+    <message>
+        <source>Unsaved Changes</source>
+        <translation>未保存的更改</translation>
+    </message>
+    <message>
+        <source>Discard</source>
+        <translation>弃牌</translation>
+    </message>
+    <message>
+        <source>You have unsaved changes in edit fields. Do you want to save them?</source>
+        <translation>编辑字段里有未保存的更改。你想救他们吗？</translation>
+    </message>
+    <message>
+        <source>Save</source>
+        <translation>保存</translation>
     </message>
 </context>
 <context>
@@ -2553,10 +2588,6 @@ If the reinstall does not help, please contact Windscribe support for assistance
         <translation>自定义配置</translation>
     </message>
     <message>
-        <source>Show/Hide</source>
-        <translation>显示/隐藏</translation>
-    </message>
-    <message>
         <source>Preferences</source>
         <translation>偏好</translation>
     </message>
@@ -2571,6 +2602,10 @@ If the reinstall does not help, please contact Windscribe support for assistance
     <message>
         <source>Favourites</source>
         <translation>最爱</translation>
+    </message>
+    <message>
+        <source>Show app</source>
+        <translation>节目应用</translation>
     </message>
 </context>
 <context>

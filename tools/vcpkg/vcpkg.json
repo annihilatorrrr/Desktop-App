@@ -24,7 +24,7 @@
         "openssl",
         "openvpn",
         "gtest",
-   	{	
+       {    
             "name": "spdlog",
             "features": [ { "name": "wchar", "platform": "windows" } ]
         },

@@ -99,24 +99,6 @@ ExecuteCmdResult ExecuteCmd::executeNonblockingCmd(const std::wstring &cmd, cons
     return res;
 }
 
-BOOL ExecuteCmd::isTokenElevated(HANDLE handle)
-{
-    TOKEN_ELEVATION Elevation;
-    DWORD cbSize = sizeof(TOKEN_ELEVATION);
-    if (GetTokenInformation(handle, TokenElevation, &Elevation, sizeof(Elevation), &cbSize))
-    {
-        return Elevation.TokenIsElevated;
-    }
-
-    return FALSE;
-}
-
-void ExecuteCmd::safeCloseHandle(HANDLE handle)
-{
-    if (handle)
-        CloseHandle(handle);
-}
-
 std::wstring ExecuteCmd::toWString(const std::string &input)
 {
     // Automatic encoding detection

@@ -134,6 +134,7 @@ private slots:
     void onPreferencesExportLocationNamesClick();
     void onPreferencesImportLocationNamesClick();
     void onPreferencesResetLocationNamesClick();
+    void onPreferencesClearWifiHistoryClick();
 
     // emergency window signals
     void onEmergencyConnectClick();
@@ -225,6 +226,7 @@ private slots:
     void onSplitTunnelingStartFailed();
     void onBackendBridgeApiAvailabilityChanged(bool isAvailable);
     void onBackendIpRotateResult(bool success);
+    void onBackendClearWifiHistoryFinished(bool bSuccess);
 
     void onBackendEngineCrash();
 
@@ -274,7 +276,7 @@ private slots:
 
     void onTrayActivated(QSystemTrayIcon::ActivationReason reason);
     void onTrayPreferences();
-    void onTrayShowHide();
+    void onTrayShow();
     void onTrayHelpMe();
     void onTrayQuit();
 
@@ -349,7 +351,6 @@ private:
 
     void hideSupplementaryWidgets();
 
-    void backToLoginWithErrorMessage(LoginWindow::ERROR_MESSAGE_TYPE errorMessageType, const QString &errorMessage);
     QString getConnectionTime();
     QString getConnectionTransferred();
     void setInitialFirewallState();

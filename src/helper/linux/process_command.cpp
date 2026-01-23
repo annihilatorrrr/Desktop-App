@@ -6,6 +6,7 @@
 #include <sstream>
 #include <stdlib.h>
 #include <spdlog/spdlog.h>
+#include "clear_wifi_history/clear_wifi_history.h"
 #include "execute_cmd.h"
 #include "firewallcontroller.h"
 #include "firewallonboot.h"
@@ -438,4 +439,11 @@ std::string resetMacAddresses(const std::string &pars)
     spdlog::debug("Resetting MAC addresses");
     Utils::resetMacAddresses(ignoreNetwork);
     return std::string();
+}
+
+std::string clearWifiHistoryData(const std::string &pars)
+{
+    spdlog::debug("clearWifiHistoryData");
+    bool success = ClearWiFiHistory::clear();
+    return serializeResult(success);
 }

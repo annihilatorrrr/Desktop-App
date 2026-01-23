@@ -1342,6 +1342,22 @@ Se o problema persistir após uma reinicialização, envie um log de depuração
         <source>In this firewall mode, the Windscribe API will not be available while disconnected, this could have unintended consequences. Use at own risk.</source>
         <translation>Neste modo de firewall, a API Windscribe não estará disponível enquanto estiver desconectada, isso pode ter consequências indesejadas. Utilização por conta e risco.</translation>
     </message>
+    <message>
+        <source>Clear Wi-Fi History</source>
+        <translation>História Limpa do Wi-Fi</translation>
+    </message>
+    <message>
+        <source>Remove Wi-Fi SSID and MAC information from your operating system to prevent location history tracking. Warning: this will also delete all Wi-Fi passwords except for the currently connected network. On some systems, this may temporarily disable Wi-Fi.</source>
+        <translation>Remova o SSID Wi-Fi e as informações MAC do seu sistema operativo para evitar o rastreio do histórico de localização. Aviso: isto também apaga todas as palavras-passe Wi-Fi, exceto a rede atualmente ligada. Em alguns sistemas, isto pode desativar temporariamente o Wi-Fi.</translation>
+    </message>
+    <message>
+        <source>Are you sure?</source>
+        <translation>Tens a certeza?</translation>
+    </message>
+    <message>
+        <source>Are you sure you want to clear all your Wi-Fi history? This will also clear all Wi-Fi passwords except for the one you&apos;re currently connected to. This may also temporarily disable your Wi-Fi.</source>
+        <translation>Tens a certeza de que queres apagar todo o teu histórico de Wi-Fi? Isto também vai apagar todas as palavras-passe do Wi-Fi, exceto aquela a que está atualmente ligado. Isto pode também desativar temporariamente o seu Wi-Fi.</translation>
+    </message>
 </context>
 <context>
     <name>PreferencesWindow::DecoyTrafficGroup</name>
@@ -1864,6 +1880,25 @@ Conecte-se a uma rede primeiro</translation>
     <message>
         <source>Look &amp; Feel</source>
         <translation>Olhar e Sentir</translation>
+    </message>
+</context>
+<context>
+    <name>PreferencesWindow::PreferencesWindowItem</name>
+    <message>
+        <source>Unsaved Changes</source>
+        <translation>Alterações Não Guardadas</translation>
+    </message>
+    <message>
+        <source>Discard</source>
+        <translation>Descartar</translation>
+    </message>
+    <message>
+        <source>You have unsaved changes in edit fields. Do you want to save them?</source>
+        <translation>Tens alterações não guardadas nos campos de edição. Queres salvá-los?</translation>
+    </message>
+    <message>
+        <source>Save</source>
+        <translation>Guardar</translation>
     </message>
 </context>
 <context>
@@ -2553,10 +2588,6 @@ Se a reinstalação não ajudar, entre em contato com o suporte do Windscribe pa
         <translation>Configurações personalizadas</translation>
     </message>
     <message>
-        <source>Show/Hide</source>
-        <translation>Mostrar/Ocultar</translation>
-    </message>
-    <message>
         <source>Preferences</source>
         <translation>Preferências</translation>
     </message>
@@ -2571,6 +2602,10 @@ Se a reinstalação não ajudar, entre em contato com o suporte do Windscribe pa
     <message>
         <source>Favourites</source>
         <translation>Favoritos</translation>
+    </message>
+    <message>
+        <source>Show app</source>
+        <translation>Aplicação de mostrar</translation>
     </message>
 </context>
 <context>

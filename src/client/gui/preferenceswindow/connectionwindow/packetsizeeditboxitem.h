@@ -7,10 +7,11 @@
 #include "commongraphics/baseitem.h"
 #include "commongraphics/iconbutton.h"
 #include "commonwidgets/custommenulineedit.h"
+#include "preferenceswindow/ieditableitem.h"
 
 namespace PreferencesWindow {
 
-class PacketSizeEditBoxItem : public CommonGraphics::BaseItem
+class PacketSizeEditBoxItem : public CommonGraphics::BaseItem, public IEditableItem
 {
     Q_OBJECT
 public:
@@ -30,6 +31,9 @@ public:
     void setDetectButtonSelectedState(bool selected);
 
     bool lineEditHasFocus();
+    bool isInEditMode() const override;
+    void save() override;
+    void discard() override;
 
 signals:
     void textChanged(const QString &text);

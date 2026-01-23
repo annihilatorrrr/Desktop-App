@@ -25,6 +25,7 @@
 #include "dns_firewall.h"
 #include "utils.h"
 #include "wmi_utils.h"
+#include "clear_wifi_history/clear_wifi_history.h"
 
 struct SPLIT_TUNNELING_PARS
 {
@@ -323,6 +324,13 @@ std::string setFirewallOnBoot(const std::string &pars)
     spdlog::debug("setFirewallOnBoot: {}", bEnable ? "enabled" : "disabled");
     FirewallOnBootManager::instance().setEnabled(bEnable);
     return std::string();
+}
+
+std::string clearWifiHistoryData(const std::string &pars)
+{
+    spdlog::debug("clearWifiHistoryData");
+    bool success = ClearWiFiHistory::clear();
+    return serializeResult(success);
 }
 
 std::string addHosts(const std::string &pars)

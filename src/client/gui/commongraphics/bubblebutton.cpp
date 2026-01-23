@@ -104,6 +104,10 @@ void BubbleButton::setStyle(Style style)
         curFillColor2_ = QColor(0, 106, 255, 178);
         curTextColor_ = QColor(223, 238, 255);
         hoverColor_ = Qt::white;
+    } else if (style == kRed) {
+        curFillColor_ = QColor(228, 18, 40);
+        curTextColor_ = QColor(255, 255, 255);
+        hoverColor_ = Qt::white;
     }
 
     fillColor_ = curFillColor_;

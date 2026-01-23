@@ -15,6 +15,8 @@
 #include "utils/ws_assert.h"
 #include "utils/utils.h"
 #include "dpiscalemanager.h"
+#include "generalmessagecontroller.h"
+#include "ieditableitem.h"
 
 namespace PreferencesWindow {
 
@@ -56,6 +58,7 @@ PreferencesWindowItem::PreferencesWindowItem(QGraphicsObject *parent, Preference
     connect(connectionWindowItem_, &ConnectionWindowItem::detectPacketSize, this, &PreferencesWindowItem::detectPacketSizeClick);
     connect(connectionWindowItem_, &ConnectionWindowItem::connectedDnsDomainsClick, this, &PreferencesWindowItem::onConnectedDnsDomainsClick);
     connect(connectionWindowItem_, &ConnectionWindowItem::fetchControldDevices, this, &PreferencesWindowItem::fetchControldDevices);
+    connect(connectionWindowItem_, &ConnectionWindowItem::clearWifiHistoryClick, this, &PreferencesWindowItem::clearWifiHistoryClick);
 
     advancedWindowItem_ = new AdvancedWindowItem(nullptr, preferences, preferencesHelper);
     connect(advancedWindowItem_, &AdvancedWindowItem::advParametersClick, this, &PreferencesWindowItem::onAdvParametersClick);
@@ -219,6 +222,11 @@ void PreferencesWindowItem::setSendLogResult(bool bSuccess)
     helpWindowItem_->setSendLogResult(bSuccess);
 }
 
+void PreferencesWindowItem::setClearWifiHistoryResult(bool bSuccess)
+{
+    connectionWindowItem_->setClearWifiHistoryResult(bSuccess);
+}
+
 void PreferencesWindowItem::updateNetworkState(types::NetworkInterface network)
 {
     networkOptionsWindowItem_->setCurrentNetwork(network);
@@ -304,6 +312,7 @@ void PreferencesWindowItem::changeTab(PREFERENCES_TAB_TYPE tab)
 
 void PreferencesWindowItem::onCurrentTabChanged(PREFERENCES_TAB_TYPE tab)
 {
+    checkUnsavedChanges(true);
     changeTab(tab);
 }
 
@@ -345,11 +354,118 @@ void PreferencesWindowItem::moveOnePageBack()
 
 void PreferencesWindowItem::onBackArrowButtonClicked()
 {
+    checkUnsavedChanges();
+
     if (isShowSubPage_) {
         moveOnePageBack();
     } else {
         emit escape();
     }
+}
+
+void PreferencesWindowItem::checkUnsavedChanges(bool fromPreferences)
+{
+    QGraphicsObject *currentItem = scrollAreaItem_->item();
+
+    if (!currentItem) {
+        return;
+    }
+
+    std::function<bool(QGraphicsItem*)> hasEditBoxInEditMode = [&](QGraphicsItem *item) -> bool {
+        if (!item) {
+            return false;
+        }
+
+        if (auto *editable = dynamic_cast<IEditableItem*>(item)) {
+            if (editable->isInEditMode()) {
+                return true;
+            }
+        }
+
+        for (QGraphicsItem *child : item->childItems()) {
+            if (hasEditBoxInEditMode(child)) {
+                return true;
+            }
+        }
+
+        return false;
+    };
+
+    if (!hasEditBoxInEditMode(currentItem)) {
+        return;
+    }
+
+    GeneralMessage::Flags flags = GeneralMessage::kPriority;
+    if (fromPreferences) {
+        flags = static_cast<GeneralMessage::Flags>(flags | GeneralMessage::kFromPreferences);
+    }
+
+    GeneralMessageController::instance().showMessage(
+        "WARNING_WHITE",
+        tr("Unsaved Changes"),
+        tr("You have unsaved changes in edit fields. Do you want to save them?"),
+        tr("Save"),
+        tr("Discard"),
+        "",
+        [this, currentItem](bool) {
+            saveAllEditBoxes(currentItem);
+        },
+        [this, currentItem](bool) {
+            discardAllEditBoxes(currentItem);
+        },
+        nullptr,
+        flags
+    );
+}
+
+void PreferencesWindowItem::saveAllEditBoxes(QGraphicsObject *item)
+{
+    if (!item) {
+        return;
+    }
+
+    std::function<void(QGraphicsItem*)> saveRecursive = [&](QGraphicsItem *item) {
+        if (!item) {
+            return;
+        }
+
+        if (auto *editable = dynamic_cast<IEditableItem*>(item)) {
+            if (editable->isInEditMode()) {
+                editable->save();
+            }
+        }
+
+        for (QGraphicsItem *child : item->childItems()) {
+            saveRecursive(child);
+        }
+    };
+
+    saveRecursive(item);
+}
+
+void PreferencesWindowItem::discardAllEditBoxes(QGraphicsObject *item)
+{
+    if (!item) {
+        return;
+    }
+
+    std::function<void(QGraphicsItem*)> discardRecursive = [&](QGraphicsItem *item) {
+        if (!item) {
+            return;
+        }
+
+        if (auto *editable = dynamic_cast<IEditableItem*>(item)) {
+            if (editable->isInEditMode()) {
+                editable->discard();
+            }
+        }
+
+        for (QGraphicsItem *child : item->childItems()) {
+            discardRecursive(child);
+        }
+    };
+
+    discardRecursive(item);
 }
 
 void PreferencesWindowItem::onNetworkOptionsPageClick()
@@ -617,6 +733,11 @@ void PreferencesWindowItem::onWindowExpanded()
     if (tabControlItem_->currentTab() == TAB_CONNECTION && connectionWindowItem_->getScreen() == CONNECTION_SCREEN_HOME) {
         connectionWindowItem_->checkLocalDns();
     }
+}
+
+void PreferencesWindowItem::onWindowAboutToCollapse()
+{
+    checkUnsavedChanges();
 }
 
 void PreferencesWindowItem::onWindowCollapsed()

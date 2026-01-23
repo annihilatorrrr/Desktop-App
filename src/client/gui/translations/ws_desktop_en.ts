@@ -1342,6 +1342,22 @@ If the problem persists after a restart, please send a debug log and open a supp
         <source>In this firewall mode, the Windscribe API will not be available while disconnected, this could have unintended consequences. Use at own risk.</source>
         <translation>In this firewall mode, the Windscribe API will not be available while disconnected, this could have unintended consequences. Use at own risk.</translation>
     </message>
+    <message>
+        <source>Clear Wi-Fi History</source>
+        <translation>Clear Wi-Fi History</translation>
+    </message>
+    <message>
+        <source>Remove Wi-Fi SSID and MAC information from your operating system to prevent location history tracking. Warning: this will also delete all Wi-Fi passwords except for the currently connected network. On some systems, this may temporarily disable Wi-Fi.</source>
+        <translation>Remove Wi-Fi SSID and MAC information from your operating system to prevent location history tracking. Warning: this will also delete all Wi-Fi passwords except for the currently connected network. On some systems, this may temporarily disable Wi-Fi.</translation>
+    </message>
+    <message>
+        <source>Are you sure?</source>
+        <translation>Are you sure?</translation>
+    </message>
+    <message>
+        <source>Are you sure you want to clear all your Wi-Fi history? This will also clear all Wi-Fi passwords except for the one you&apos;re currently connected to. This may also temporarily disable your Wi-Fi.</source>
+        <translation>Are you sure you want to clear all your Wi-Fi history? This will also clear all Wi-Fi passwords except for the one you&apos;re currently connected to. This may also temporarily disable your Wi-Fi.</translation>
+    </message>
 </context>
 <context>
     <name>PreferencesWindow::DecoyTrafficGroup</name>
@@ -1864,6 +1880,25 @@ Connect to a network first</translation>
     <message>
         <source>Look &amp; Feel</source>
         <translation>Look &amp; Feel</translation>
+    </message>
+</context>
+<context>
+    <name>PreferencesWindow::PreferencesWindowItem</name>
+    <message>
+        <source>Unsaved Changes</source>
+        <translation>Unsaved Changes</translation>
+    </message>
+    <message>
+        <source>Discard</source>
+        <translation>Discard</translation>
+    </message>
+    <message>
+        <source>You have unsaved changes in edit fields. Do you want to save them?</source>
+        <translation>You have unsaved changes in edit fields. Do you want to save them?</translation>
+    </message>
+    <message>
+        <source>Save</source>
+        <translation>Save</translation>
     </message>
 </context>
 <context>
@@ -2553,10 +2588,6 @@ If the reinstall does not help, please contact Windscribe support for assistance
         <translation>Custom configs</translation>
     </message>
     <message>
-        <source>Show/Hide</source>
-        <translation>Show/Hide</translation>
-    </message>
-    <message>
         <source>Preferences</source>
         <translation>Preferences</translation>
     </message>
@@ -2571,6 +2602,10 @@ If the reinstall does not help, please contact Windscribe support for assistance
     <message>
         <source>Favourites</source>
         <translation>Favourites</translation>
+    </message>
+    <message>
+        <source>Show app</source>
+        <translation>Show app</translation>
     </message>
 </context>
 <context>

@@ -287,6 +287,15 @@ QList<types::NetworkInterface> currentNetworkInterfaces(bool includeNoInterface)
     names = dir.entryList(QDir::Dirs | QDir::NoDotAndDotDot);
 
     for (const QString name : names) {
+        // Skip non-physical devices
+        QDir deviceDir("/sys/class/net/" + name +  "/device");
+        if (!deviceDir.exists()) {
+            continue;
+        }
+        // Skip interfaces that aren't up
+        if (!isActiveByIfName(name)) {
+            continue;
+        }
         interfaces.push_back(networkInterfaceByName(name));
     }
     return interfaces;

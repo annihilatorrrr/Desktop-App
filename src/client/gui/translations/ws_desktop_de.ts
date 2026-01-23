@@ -1342,6 +1342,22 @@ Wenn das Problem nach einem Neustart weiterhin besteht, senden Sie bitte ein Deb
         <source>In this firewall mode, the Windscribe API will not be available while disconnected, this could have unintended consequences. Use at own risk.</source>
         <translation>In diesem Firewall-Modus ist die Windscribe-API nicht verfügbar, wenn die Verbindung getrennt ist, was unbeabsichtigte Folgen haben kann. Die Nutzung erfolgt auf eigene Gefahr.</translation>
     </message>
+    <message>
+        <source>Clear Wi-Fi History</source>
+        <translation>Klare Wi-Fi-Geschichte</translation>
+    </message>
+    <message>
+        <source>Remove Wi-Fi SSID and MAC information from your operating system to prevent location history tracking. Warning: this will also delete all Wi-Fi passwords except for the currently connected network. On some systems, this may temporarily disable Wi-Fi.</source>
+        <translation>Entfernen Sie die WLAN-SSID und MAC-Informationen aus Ihrem Betriebssystem, um die Erfassung des Standortverlaufs zu verhindern. Warnung: Dadurch werden auch alle WLAN-Passwörter gelöscht, außer dem derzeit verbundenen Netzwerk. Auf einigen Systemen kann dies das WLAN vorübergehend deaktivieren.</translation>
+    </message>
+    <message>
+        <source>Are you sure?</source>
+        <translation>Bist du sicher?</translation>
+    </message>
+    <message>
+        <source>Are you sure you want to clear all your Wi-Fi history? This will also clear all Wi-Fi passwords except for the one you&apos;re currently connected to. This may also temporarily disable your Wi-Fi.</source>
+        <translation>Bist du sicher, dass du deinen gesamten WLAN-Verlauf löschen möchtest? Dadurch werden auch alle WLAN-Passwörter gelöscht, außer dem, mit dem du aktuell verbunden bist. Das kann auch vorübergehend Ihr WLAN deaktivieren.</translation>
+    </message>
 </context>
 <context>
     <name>PreferencesWindow::DecoyTrafficGroup</name>
@@ -1864,6 +1880,25 @@ Zuerst eine Verbindung mit einem Netzwerk herstellen</translation>
     <message>
         <source>Look &amp; Feel</source>
         <translation>Aussehen &amp; Haptik</translation>
+    </message>
+</context>
+<context>
+    <name>PreferencesWindow::PreferencesWindowItem</name>
+    <message>
+        <source>Unsaved Changes</source>
+        <translation>Nicht gespeicherte Änderungen</translation>
+    </message>
+    <message>
+        <source>Discard</source>
+        <translation>Abwerfen</translation>
+    </message>
+    <message>
+        <source>You have unsaved changes in edit fields. Do you want to save them?</source>
+        <translation>Du hast nicht gespeicherte Änderungen in den Bearbeitungsfeldern. Willst du sie retten?</translation>
+    </message>
+    <message>
+        <source>Save</source>
+        <translation>Speichern</translation>
     </message>
 </context>
 <context>
@@ -2553,10 +2588,6 @@ Wenn die Neuinstallation nicht hilft, wenden Sie sich bitte an den Windscribe-Su
         <translation>Benutzerdefinierte Konfigurationen</translation>
     </message>
     <message>
-        <source>Show/Hide</source>
-        <translation>Ein-/Ausblenden</translation>
-    </message>
-    <message>
         <source>Preferences</source>
         <translation>Einstellungen</translation>
     </message>
@@ -2571,6 +2602,10 @@ Wenn die Neuinstallation nicht hilft, wenden Sie sich bitte an den Windscribe-Su
     <message>
         <source>Favourites</source>
         <translation>Favoriten</translation>
+    </message>
+    <message>
+        <source>Show app</source>
+        <translation>Show-App</translation>
     </message>
 </context>
 <context>

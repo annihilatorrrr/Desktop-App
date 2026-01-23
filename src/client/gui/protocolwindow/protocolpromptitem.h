@@ -35,6 +35,9 @@ public:
     void setProtocolStatus(const QVector<types::ProtocolStatus> &status);
     void clearItems() override;
 
+protected:
+    void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
+
 public slots:
     void resetProtocolStatus();
 

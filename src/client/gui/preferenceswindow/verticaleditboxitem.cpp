@@ -71,7 +71,7 @@ void VerticalEditBoxItem::paint(QPainter *painter, const QStyleOptionGraphicsIte
         painter->drawText(boundingRect().adjusted(PREFERENCES_MARGIN_X*G_SCALE,
                                                   PREFERENCE_GROUP_ITEM_HEIGHT*G_SCALE,
                                                   -(2*PREFERENCES_MARGIN_X + ICON_WIDTH)*G_SCALE,
-                                                  0),
+                                                  -PREFERENCES_ITEM_Y*G_SCALE),
                           Qt::AlignLeft | Qt::AlignVCenter,
                           fm.elidedText(t,
                                         Qt::ElideRight,
@@ -164,6 +164,25 @@ bool VerticalEditBoxItem::lineEditHasFocus()
     return lineEdit_->hasFocus();
 }
 
+bool VerticalEditBoxItem::isInEditMode() const
+{
+    return isEditMode_;
+}
+
+void VerticalEditBoxItem::save()
+{
+    if (isEditMode_) {
+        onConfirmClick();
+    }
+}
+
+void VerticalEditBoxItem::discard()
+{
+    if (isEditMode_) {
+        onUndoClick();
+    }
+}
+
 void VerticalEditBoxItem::keyPressEvent(QKeyEvent *event)
 {
     if (event->key() == Qt::Key_Return || event->key() == Qt::Key_Enter)
@@ -229,12 +248,12 @@ void VerticalEditBoxItem::updatePositions()
     if (!proxyWidget_->isVisible()) // workaround Qt bug (setGeometry not working when proxyWidget_ is not visible)
     {
         proxyWidget_->show();
-        lineEdit_->setGeometry((PREFERENCES_MARGIN_X)*G_SCALE, top, boundingRect().width() - (2*ICON_WIDTH + 3*PREFERENCES_MARGIN_X)*G_SCALE, ICON_HEIGHT*G_SCALE);
+        lineEdit_->setGeometry((PREFERENCES_MARGIN_X)*G_SCALE, top, boundingRect().width() - (2*ICON_WIDTH + 3*PREFERENCES_MARGIN_X)*G_SCALE, 20*G_SCALE);
         proxyWidget_->hide();
     }
     else
     {
-        lineEdit_->setGeometry((PREFERENCES_MARGIN_X)*G_SCALE, top, boundingRect().width() - (2*ICON_WIDTH + 3*PREFERENCES_MARGIN_X)*G_SCALE, ICON_HEIGHT*G_SCALE);
+        lineEdit_->setGeometry((PREFERENCES_MARGIN_X)*G_SCALE, top, boundingRect().width() - (2*ICON_WIDTH + 3*PREFERENCES_MARGIN_X)*G_SCALE, 20*G_SCALE);
     }
 
     // Calculate error message height and adjust widget height

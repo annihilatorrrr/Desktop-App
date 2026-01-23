@@ -120,6 +120,7 @@ void Backend::init()
     connect(engine_, &Engine::ipRotateResult, this, &Backend::ipRotateResult);
     connect(engine_, &Engine::connectingHostnameChanged, this, &Backend::onEngineConnectingHostnameChanged);
     connect(engine_, &Engine::controldDevicesFetched, this, &Backend::controldDevicesFetched);
+    connect(engine_, &Engine::clearWifiHistoryFinished, this, &Backend::clearWifiHistoryFinished);
     threadEngine_->start(QThread::LowPriority);
 }
 
@@ -198,7 +199,6 @@ void Backend::sendConnect(const LocationID &lid, const types::ConnectionSettings
     // Check if this location has a pinned node/IP in favorites
     // Only pin if user is premium and location is an API location
     QPair<QString, QString> pinnedNode; // hostname, ip
-					//
     LocationID apiLocationId = lid;
 
     // If this is Best Location, convert to the actual API location
@@ -1080,4 +1080,9 @@ QString Backend::getCurrentConnectingHostname() const
 void Backend::fetchControldDevices(const QString &apiKey)
 {
     engine_->fetchControldDevices(apiKey);
+}
+
+void Backend::clearWifiHistory()
+{
+    engine_->clearWifiHistory();
 }

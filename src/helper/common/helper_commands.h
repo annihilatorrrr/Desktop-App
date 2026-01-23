@@ -21,6 +21,7 @@ enum class HelperCommand {
     configureWireGuard,
     getWireGuardStatus,
     setFirewallOnBoot,
+    clearWifiHistoryData,
 
     // Windows
     firewallOn,

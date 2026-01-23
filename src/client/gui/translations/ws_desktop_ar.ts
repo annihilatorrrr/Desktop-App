@@ -1342,6 +1342,22 @@ If the problem persists after a restart, please send a debug log and open a supp
         <source>In this firewall mode, the Windscribe API will not be available while disconnected, this could have unintended consequences. Use at own risk.</source>
         <translation>في وضع جدار الحماية هذا ، لن تكون واجهة برمجة تطبيقات Windscribe متاحة أثناء قطع الاتصال ، وقد يكون لذلك عواقب غير مقصودة. استخدم على مسؤوليتهم الخاصة.</translation>
     </message>
+    <message>
+        <source>Clear Wi-Fi History</source>
+        <translation>تاريخ الواي فاي الواضح</translation>
+    </message>
+    <message>
+        <source>Remove Wi-Fi SSID and MAC information from your operating system to prevent location history tracking. Warning: this will also delete all Wi-Fi passwords except for the currently connected network. On some systems, this may temporarily disable Wi-Fi.</source>
+        <translation>قم بإزالة معلومات SSID وMAC من نظام التشغيل الخاص بك لمنع تتبع تاريخ الموقع. تحذير: هذا سيحذف أيضا جميع كلمات مرور الواي فاي باستثناء الشبكة المتصلة حاليا. في بعض الأنظمة، قد يؤدي ذلك إلى تعطيل الواي فاي مؤقتا.</translation>
+    </message>
+    <message>
+        <source>Are you sure?</source>
+        <translation>هل أنت متأكد؟</translation>
+    </message>
+    <message>
+        <source>Are you sure you want to clear all your Wi-Fi history? This will also clear all Wi-Fi passwords except for the one you&apos;re currently connected to. This may also temporarily disable your Wi-Fi.</source>
+        <translation>هل أنت متأكد أنك تريد مسح كل سجل الواي فاي الخاص بك؟ هذا أيضا سيقوم بمسح جميع كلمات مرور الواي فاي باستثناء تلك التي أنت متصل بها حاليا. وقد يؤدي ذلك أيضا إلى تعطيل الواي فاي مؤقتا.</translation>
+    </message>
 </context>
 <context>
     <name>PreferencesWindow::DecoyTrafficGroup</name>
@@ -1864,6 +1880,25 @@ Connect to a network first</source>
     <message>
         <source>Look &amp; Feel</source>
         <translation>الشكل والمظهر</translation>
+    </message>
+</context>
+<context>
+    <name>PreferencesWindow::PreferencesWindowItem</name>
+    <message>
+        <source>Unsaved Changes</source>
+        <translation>التغييرات غير المحفوظة</translation>
+    </message>
+    <message>
+        <source>Discard</source>
+        <translation>التخلص منها</translation>
+    </message>
+    <message>
+        <source>You have unsaved changes in edit fields. Do you want to save them?</source>
+        <translation>لديك تغييرات غير محفوظة في حقول التعديل. هل تريد إنقاذها؟</translation>
+    </message>
+    <message>
+        <source>Save</source>
+        <translation>حفظ</translation>
     </message>
 </context>
 <context>
@@ -2553,10 +2588,6 @@ If the reinstall does not help, please contact Windscribe support for assistance
         <translation>التكوينات المخصصة</translation>
     </message>
     <message>
-        <source>Show/Hide</source>
-        <translation>إظهار/إخفاء</translation>
-    </message>
-    <message>
         <source>Preferences</source>
         <translation>التفضيلات</translation>
     </message>
@@ -2571,6 +2602,10 @@ If the reinstall does not help, please contact Windscribe support for assistance
     <message>
         <source>Favourites</source>
         <translation>المفضلون</translation>
+    </message>
+    <message>
+        <source>Show app</source>
+        <translation>تطبيق العرض</translation>
     </message>
 </context>
 <context>

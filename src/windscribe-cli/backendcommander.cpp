@@ -138,14 +138,14 @@ void BackendCommander::sendCommand(IPC::CliCommands::State *state)
             return;
         }
         if (state->connectState_.connectState == CONNECT_STATE_DISCONNECTED) {
-            emit finished(1, QObject::tr("Already disconnected"));
+            emit finished(0, QObject::tr("Already disconnected"));
         }
         IPC::CliCommands::Disconnect cmd;
         connection_->sendCommand(cmd);
     }
     else if (cliArgs_.cliCommand() == CLI_COMMAND_FIREWALL_ON) {
         if (state->isFirewallOn_) {
-            emit finished(1, QObject::tr("Firewall already on"));
+            emit finished(0, QObject::tr("Firewall already on"));
             return;
         }
         IPC::CliCommands::Firewall cmd;
@@ -154,7 +154,7 @@ void BackendCommander::sendCommand(IPC::CliCommands::State *state)
     }
     else if (cliArgs_.cliCommand() == CLI_COMMAND_FIREWALL_OFF) {
         if (!state->isFirewallOn_) {
-            emit finished(1, QObject::tr("Firewall already off"));
+            emit finished(0, QObject::tr("Firewall already off"));
             return;
         }
         if (state->isFirewallAlwaysOn_) {
@@ -195,7 +195,7 @@ void BackendCommander::sendCommand(IPC::CliCommands::State *state)
         }
 #endif
         if (state->loginState_ == LOGIN_STATE_LOGGED_IN) {
-            emit finished(1, QObject::tr("Already logged in"));
+            emit finished(0, QObject::tr("Already logged in"));
             return;
         }
         IPC::CliCommands::Login cmd;
@@ -222,7 +222,7 @@ void BackendCommander::sendCommand(IPC::CliCommands::State *state)
         }
 #endif
         if (state->loginState_ == LOGIN_STATE_LOGGED_OUT) {
-            emit finished(1, QObject::tr("Already logged out"));
+            emit finished(0, QObject::tr("Already logged out"));
             return;
         }
         IPC::CliCommands::Logout cmd;

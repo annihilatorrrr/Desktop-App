@@ -57,6 +57,8 @@ public:
     void setIPv6EnabledInFirewall(bool b);
     void setFirewallOnBoot(bool b);
 
+    bool clearWifiHistoryData();
+
     bool addHosts(const QString &hosts);
     bool removeHosts();
 

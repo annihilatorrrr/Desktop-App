@@ -1,3 +1,24 @@
+2.20.4 (19/01/2026)
+All:
+   * Added feature to clear Wi-Fi history. #1585
+   * Added port selection on protocol change screen. #1574
+   * Improved edit box UX. #503
+   * Improved CLI commands to return success when it is already in the correct state. #1616
+   * Improved WireGuard client IP determination and reduced dependency on server API. #1620
+   * Fixed editbox text may be cut off. #825
+   * Fixed back button from captcha screen. #1615
+   * Fixed IP rotate may be disabled unintentionally due to network changes. #1619
+   * Updated ctrld to 1.4.9. #1618
+MacOS:
+   * Improved tray menu UX for 'Show/Hide', replacing it with just 'Show app'. #1614
+   * Fixed helper resource leak. #1617
+Linux:
+   * Improved automatic DNS manager detection. #1611
+   * Improved tray menu UX for 'Show/Hide', replacing it with just 'Show app'. #1614
+   * Fixed helper resource leak. #1617
+   * Fixed invalid interfaces in MAC spoofing interface dropdown. #1621
+
+
 2.20.3 (08/01/2026)
 All:
    * Improved helper command robustness, removed unneeded commands. #1608

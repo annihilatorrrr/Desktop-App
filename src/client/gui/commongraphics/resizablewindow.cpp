@@ -254,6 +254,10 @@ void ResizableWindow::onWindowExpanded()
 {
 }
 
+void ResizableWindow::onWindowAboutToCollapse()
+{
+}
+
 void ResizableWindow::onWindowCollapsed()
 {
 }

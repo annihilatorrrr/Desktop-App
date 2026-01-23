@@ -1342,6 +1342,22 @@ Si le problème persiste après un redémarrage, envoyez un journal de débogage
         <source>In this firewall mode, the Windscribe API will not be available while disconnected, this could have unintended consequences. Use at own risk.</source>
         <translation>Dans ce mode pare-feu, l’API Windscribe ne sera pas disponible lorsqu’elle sera déconnectée, ce qui pourrait avoir des conséquences inattendues. Utilisation à vos risques et périls.</translation>
     </message>
+    <message>
+        <source>Clear Wi-Fi History</source>
+        <translation>Histoire du Wi-Fi Clear</translation>
+    </message>
+    <message>
+        <source>Remove Wi-Fi SSID and MAC information from your operating system to prevent location history tracking. Warning: this will also delete all Wi-Fi passwords except for the currently connected network. On some systems, this may temporarily disable Wi-Fi.</source>
+        <translation>Supprimez les informations SSID Wi-Fi et MAC de votre système d’exploitation pour empêcher le suivi de l’historique de localisation. Attention : cela supprimera également tous les mots de passe Wi-Fi sauf le réseau actuellement connecté. Sur certains systèmes, cela peut temporairement désactiver le Wi-Fi.</translation>
+    </message>
+    <message>
+        <source>Are you sure?</source>
+        <translation>Es-tu sûr?</translation>
+    </message>
+    <message>
+        <source>Are you sure you want to clear all your Wi-Fi history? This will also clear all Wi-Fi passwords except for the one you&apos;re currently connected to. This may also temporarily disable your Wi-Fi.</source>
+        <translation>Êtes-vous sûr de vouloir effacer tout votre historique Wi-Fi ? Cela effacera également tous les mots de passe Wi-Fi sauf celui auquel vous êtes actuellement connecté. Cela peut aussi désactiver temporairement votre Wi-Fi.</translation>
+    </message>
 </context>
 <context>
     <name>PreferencesWindow::DecoyTrafficGroup</name>
@@ -1864,6 +1880,25 @@ Se connecter d’abord à un réseau</translation>
     <message>
         <source>Look &amp; Feel</source>
         <translation>Apparence et convivialité</translation>
+    </message>
+</context>
+<context>
+    <name>PreferencesWindow::PreferencesWindowItem</name>
+    <message>
+        <source>Unsaved Changes</source>
+        <translation>Modifications non enregistrées</translation>
+    </message>
+    <message>
+        <source>Discard</source>
+        <translation>Défausse</translation>
+    </message>
+    <message>
+        <source>You have unsaved changes in edit fields. Do you want to save them?</source>
+        <translation>Vous avez des modifications non enregistrées dans les champs d’édition. Veux-tu les sauver ?</translation>
+    </message>
+    <message>
+        <source>Save</source>
+        <translation>Sauvegarder</translation>
     </message>
 </context>
 <context>
@@ -2553,10 +2588,6 @@ Si la réinstallation ne résout pas le problème, veuillez contacter le support
         <translation>Configurations personnalisées</translation>
     </message>
     <message>
-        <source>Show/Hide</source>
-        <translation>Afficher/Masquer</translation>
-    </message>
-    <message>
         <source>Preferences</source>
         <translation>Préférences</translation>
     </message>
@@ -2571,6 +2602,10 @@ Si la réinstallation ne résout pas le problème, veuillez contacter le support
     <message>
         <source>Favourites</source>
         <translation>Favoris</translation>
+    </message>
+    <message>
+        <source>Show app</source>
+        <translation>Application de présentation</translation>
     </message>
 </context>
 <context>

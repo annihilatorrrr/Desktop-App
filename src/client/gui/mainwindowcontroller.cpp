@@ -1968,6 +1968,11 @@ void MainWindowController::gotoExitWindow(bool isLogout)
               || curWindow_ == WINDOW_ID_UPDATE
               || curWindow_ == WINDOW_ID_UPGRADE);
 
+    if (GeneralMessageController::instance().isShowingPriorityMessage()) {
+        queueWindowChanges_.enqueue(isLogout ? WINDOW_ID_LOGOUT : WINDOW_ID_EXIT);
+        return;
+    }
+
     // If we're overriding a logout with a quit (e.g. user pressed alt-f4 while on the logout prompt),
     // close the previous logout window first
     if (curWindow_ == WINDOW_ID_LOGOUT) {
@@ -2526,6 +2531,8 @@ void MainWindowController::collapsePreferencesFromLogin()
         return;
     }
 
+    preferencesWindow_->onWindowAboutToCollapse();
+
     isAtomicAnimationActive_ = true;
 
     hideUpdateWidget();
@@ -2609,6 +2616,8 @@ void MainWindowController::collapseWindow(ResizableWindow *window, bool bSkipBot
     if (windowSizeManager_->state(window) != WindowSizeManager::kWindowExpanded) {
         return;
     }
+
+    window->onWindowAboutToCollapse();
 
     isAtomicAnimationActive_ = true;
 

@@ -44,6 +44,7 @@ public:
     void setLoggedIn(bool loggedIn);
     void setConfirmEmailResult(bool bSuccess);
     void setSendLogResult(bool bSuccess);
+    void setClearWifiHistoryResult(bool bSuccess);
 
     void updateNetworkState(types::NetworkInterface network);
 
@@ -77,6 +78,7 @@ signals:
     void manageAccountClick();
     void addEmailButtonClick();
     void manageRobertRulesClick();
+    void clearWifiHistoryClick();
 
     void currentNetworkUpdated(types::NetworkInterface);
     void cycleMacAddressClick();
@@ -91,6 +93,7 @@ signals:
 
 public slots:
     virtual void onWindowExpanded() override;
+    virtual void onWindowAboutToCollapse() override;
     virtual void onWindowCollapsed() override;
     void onNetworkOptionsNetworkClick(types::NetworkInterface network);
     void onControldDevicesFetched(CONTROLD_FETCH_RESULT result, const QList<QPair<QString, QString>> &devices);
@@ -127,6 +130,10 @@ protected slots:
 private:
     static constexpr int kTabAreaWidth = 64;
     static constexpr int kMinHeight = 596;
+
+    void checkUnsavedChanges(bool fromPreferences = false);
+    void saveAllEditBoxes(QGraphicsObject *item);
+    void discardAllEditBoxes(QGraphicsObject *item);
 
     PreferencesTabControlItem *tabControlItem_;
     GeneralWindowItem *generalWindowItem_;

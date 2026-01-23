@@ -1342,6 +1342,22 @@ If the problem persists after a restart, please send a debug log and open a supp
         <source>In this firewall mode, the Windscribe API will not be available while disconnected, this could have unintended consequences. Use at own risk.</source>
         <translation>В этом режиме брандмауэра API Windscribe не будет доступен при отключении, это может привести к непредвиденным последствиям. Используйте на свой страх и риск.</translation>
     </message>
+    <message>
+        <source>Clear Wi-Fi History</source>
+        <translation>Чистая история Wi-Fi</translation>
+    </message>
+    <message>
+        <source>Remove Wi-Fi SSID and MAC information from your operating system to prevent location history tracking. Warning: this will also delete all Wi-Fi passwords except for the currently connected network. On some systems, this may temporarily disable Wi-Fi.</source>
+        <translation>Удалите информацию о Wi-Fi SSID и MAC из вашей операционной системы, чтобы предотвратить отслеживание истории местоположения. Внимание: это также удалит все пароли Wi-Fi, кроме текущей сети. В некоторых системах это может временно отключить Wi-Fi.</translation>
+    </message>
+    <message>
+        <source>Are you sure?</source>
+        <translation>Уверен?</translation>
+    </message>
+    <message>
+        <source>Are you sure you want to clear all your Wi-Fi history? This will also clear all Wi-Fi passwords except for the one you&apos;re currently connected to. This may also temporarily disable your Wi-Fi.</source>
+        <translation>Вы уверены, что хотите очистить всю историю Wi-Fi? Это также очистит все пароли от Wi-Fi, кроме того, к которому вы сейчас подключены. Это также может временно отключить ваш Wi-Fi.</translation>
+    </message>
 </context>
 <context>
     <name>PreferencesWindow::DecoyTrafficGroup</name>
@@ -1864,6 +1880,25 @@ Connect to a network first</source>
     <message>
         <source>Look &amp; Feel</source>
         <translation>Внешний вид и ощущения</translation>
+    </message>
+</context>
+<context>
+    <name>PreferencesWindow::PreferencesWindowItem</name>
+    <message>
+        <source>Unsaved Changes</source>
+        <translation>Несохраненные изменения</translation>
+    </message>
+    <message>
+        <source>Discard</source>
+        <translation>Сброс</translation>
+    </message>
+    <message>
+        <source>You have unsaved changes in edit fields. Do you want to save them?</source>
+        <translation>У вас есть несохраненные изменения в полях редактирования. Ты хочешь их спасти?</translation>
+    </message>
+    <message>
+        <source>Save</source>
+        <translation>Сохранить</translation>
     </message>
 </context>
 <context>
@@ -2553,10 +2588,6 @@ If the reinstall does not help, please contact Windscribe support for assistance
         <translation>Пользовательские конфигурации</translation>
     </message>
     <message>
-        <source>Show/Hide</source>
-        <translation>Показать/Скрыть</translation>
-    </message>
-    <message>
         <source>Preferences</source>
         <translation>Настройки</translation>
     </message>
@@ -2571,6 +2602,10 @@ If the reinstall does not help, please contact Windscribe support for assistance
     <message>
         <source>Favourites</source>
         <translation>Любимые</translation>
+    </message>
+    <message>
+        <source>Show app</source>
+        <translation>Показать приложение</translation>
     </message>
 </context>
 <context>

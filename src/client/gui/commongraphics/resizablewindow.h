@@ -44,6 +44,7 @@ signals:
 
 public slots:
     virtual void onWindowExpanded();
+    virtual void onWindowAboutToCollapse();
     virtual void onWindowCollapsed();
 
 protected slots:

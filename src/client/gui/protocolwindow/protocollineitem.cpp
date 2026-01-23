@@ -1,6 +1,8 @@
 #include "protocollineitem.h"
+#include "protocolpromptitem.h"
 
 #include <QPainter>
+#include <QGraphicsSceneMouseEvent>
 #include "commongraphics/commongraphics.h"
 #include "graphicresources/fontmanager.h"
 #include "graphicresources/imageresourcessvg.h"
@@ -8,8 +10,8 @@
 
 namespace ProtocolWindow {
 
-ProtocolLineItem::ProtocolLineItem(ScalableGraphicsObject *parent, const types::ProtocolStatus &status, const QString &desc)
-    : BaseItem(parent, 64*G_SCALE, "", true, WINDOW_WIDTH - 72), desc_(desc), status_(status), hoverValue_(0.0)
+ProtocolLineItem::ProtocolLineItem(ScalableGraphicsObject *parent, const types::ProtocolStatus &status, const QString &desc, const QVector<uint> &availablePorts)
+    : BaseItem(parent, 64*G_SCALE, "", true, WINDOW_WIDTH - 72), desc_(desc), status_(status), availablePorts_(availablePorts), hoverValue_(0.0), portAreaHovered_(false), portMenu_(nullptr), portMenuProxy_(nullptr)
 {
     if (status_.status == types::ProtocolStatus::kConnected ||
         status_.status == types::ProtocolStatus::kFailed)
@@ -18,6 +20,22 @@ ProtocolLineItem::ProtocolLineItem(ScalableGraphicsObject *parent, const types::
     }
     setAcceptHoverEvents(true);
     connect(&hoverAnimation_, &QVariantAnimation::valueChanged, this, &ProtocolLineItem::onHoverValueChanged);
+
+    bool showPortDropdown = false;
+    ProtocolPromptItem *promptItem = qobject_cast<ProtocolPromptItem*>(parent);
+    if (promptItem && promptItem->mode() == ProtocolWindowMode::kChangeProtocol) {
+        showPortDropdown = true;
+    }
+
+    if (showPortDropdown && availablePorts_.size() > 1 && status_.status == types::ProtocolStatus::kDisconnected) {
+        portDropdownIcon_ = new IconButton(16, 16, "preferences/CNTXT_MENU_ICON", "", this);
+        portDropdownIcon_->setClickable(false);
+        portDropdownIcon_->setUnhoverOpacity(0.7);
+        portDropdownIcon_->setHoverOpacity(OPACITY_FULL);
+        updatePortDropdownIconPosition();
+    } else {
+        portDropdownIcon_ = nullptr;
+    }
 }
 
 void ProtocolLineItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
@@ -109,7 +127,7 @@ void ProtocolLineItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *
             painter->setPen(QColor(255, 255, 255));
         }
 
-        painter->setOpacity(OPACITY_SIXTY);
+        painter->setOpacity(portAreaHovered_ ? OPACITY_FULL : OPACITY_SIXTY);
         painter->drawText(boundingRect().adjusted(protocolWidth + (kTextIndent + 17)*G_SCALE, kFirstLineY*G_SCALE, 0, 0), QString::number(status_.port));
     }
 
@@ -254,17 +272,29 @@ void ProtocolLineItem::clearCountdown()
 
 void ProtocolLineItem::updateScaling() {
     setHeight(64*G_SCALE);
+    updatePortDropdownIconPosition();
     update();
 }
 
 void ProtocolLineItem::hoverEnterEvent(QGraphicsSceneHoverEvent* event)
 {
     startAnAnimation<double>(hoverAnimation_, hoverValue_, 1.0, ANIMATION_SPEED_FAST);
+    updatePortHoverState(event->pos());
 }
 
 void ProtocolLineItem::hoverLeaveEvent(QGraphicsSceneHoverEvent* event)
 {
     startAnAnimation<double>(hoverAnimation_, hoverValue_, 0.0, ANIMATION_SPEED_FAST);
+    portAreaHovered_ = false;
+    if (portDropdownIcon_) {
+        portDropdownIcon_->unhover();
+    }
+    update();
+}
+
+void ProtocolLineItem::hoverMoveEvent(QGraphicsSceneHoverEvent* event)
+{
+    updatePortHoverState(event->pos());
 }
 
 void ProtocolLineItem::onHoverValueChanged(const QVariant &value)
@@ -277,6 +307,130 @@ void ProtocolLineItem::setDescription(const QString &desc)
 {
     desc_ = desc;
     update();
+}
+
+void ProtocolLineItem::updatePortDropdownIconPosition()
+{
+    if (!portDropdownIcon_) return;
+
+    QFont font = FontManager::instance().getFont(14, QFont::Bold);
+    QFontMetrics fm(font);
+    const QString protocolString = status_.protocol.toLongString();
+    const int protocolWidth = fm.horizontalAdvance(protocolString);
+
+    QFont portFont = FontManager::instance().getFont(14, QFont::Normal);
+    QFontMetrics portFm(portFont);
+    const int portWidth = portFm.horizontalAdvance(QString::number(status_.port));
+
+    const int portX = protocolWidth + (kTextIndent + 17)*G_SCALE;
+    const int iconX = portX + portWidth + 4*G_SCALE;
+
+    portDropdownIcon_->setPos(iconX, kFirstLineY*G_SCALE);
+}
+
+void ProtocolLineItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
+{
+    if (availablePorts_.size() > 1 && status_.status == types::ProtocolStatus::kDisconnected && isPortAreaHovered(event->pos())) {
+        showPortMenu();
+        event->accept();
+    } else {
+        BaseItem::mousePressEvent(event);
+    }
+}
+
+bool ProtocolLineItem::isPortAreaHovered(const QPointF &pos) const
+{
+    if (!portDropdownIcon_) return false;
+
+    QFont font = FontManager::instance().getFont(14, QFont::Bold);
+    QFontMetrics fm(font);
+    const QString protocolString = status_.protocol.toLongString();
+    const int protocolWidth = fm.horizontalAdvance(protocolString);
+
+    const int portX = protocolWidth + (kTextIndent + 17)*G_SCALE;
+    QFont portFont = FontManager::instance().getFont(14, QFont::Normal);
+    QFontMetrics portFm(portFont);
+    const int portWidth = portFm.horizontalAdvance(QString::number(status_.port));
+
+    QRectF portRect(portX, kFirstLineY*G_SCALE - 5*G_SCALE, portWidth + portDropdownIcon_->boundingRect().width() + 10*G_SCALE, 20*G_SCALE);
+    return portRect.contains(pos);
+}
+
+void ProtocolLineItem::showPortMenu()
+{
+    if (!portMenu_) {
+        portMenu_ = new CommonWidgets::ComboMenuWidget();
+        portMenu_->setMaxItemsShowing(5);
+        for (uint port : availablePorts_) {
+            portMenu_->addItem(QString::number(port), QVariant(port));
+        }
+        connect(portMenu_, &CommonWidgets::ComboMenuWidget::itemClicked, this, &ProtocolLineItem::onPortMenuItemSelected);
+        connect(portMenu_, &CommonWidgets::ComboMenuWidget::hidden, this, &ProtocolLineItem::onPortMenuHidden);
+
+        portMenuProxy_ = new QGraphicsProxyWidget(parentItem());
+        portMenuProxy_->setWidget(portMenu_);
+        portMenuProxy_->setZValue(1000);
+        portMenuProxy_->setFlag(QGraphicsItem::ItemIsPanel, true);
+    }
+
+    QFont font = FontManager::instance().getFont(14, QFont::Bold);
+    QFontMetrics fm(font);
+    const QString protocolString = status_.protocol.toLongString();
+    const int protocolWidth = fm.horizontalAdvance(protocolString);
+
+    QFont portFont = FontManager::instance().getFont(14, QFont::Normal);
+    QFontMetrics portFm(portFont);
+    const int portWidth = portFm.horizontalAdvance(QString::number(status_.port));
+
+    const int portX = protocolWidth + (kTextIndent + 17)*G_SCALE;
+    const int rightEdge = portX + portWidth + portDropdownIcon_->boundingRect().width() + 4*G_SCALE;
+    const int menuX = rightEdge - portMenu_->width();
+
+    QPointF globalPos = mapToParent(QPointF(menuX, kFirstLineY*G_SCALE));
+    portMenuProxy_->setPos(globalPos);
+    portMenuProxy_->setVisible(true);
+    portMenu_->show();
+    portMenu_->setFocus();
+}
+
+void ProtocolLineItem::onPortMenuItemSelected(QString text, QVariant data)
+{
+    status_.port = data.toUInt();
+    portMenu_->hide();
+    updatePortDropdownIconPosition();
+    update();
+}
+
+void ProtocolLineItem::onPortMenuHidden()
+{
+    if (portMenuProxy_) {
+        portMenuProxy_->setVisible(false);
+    }
+}
+
+void ProtocolLineItem::hideOpenPopups()
+{
+    if (portMenu_ && portMenu_->isVisible()) {
+        portMenu_->hide();
+    }
+}
+
+void ProtocolLineItem::updatePortHoverState(const QPointF &pos)
+{
+    bool wasHovered = portAreaHovered_;
+    portAreaHovered_ = isPortAreaHovered(pos);
+
+    if (portDropdownIcon_) {
+        if (portAreaHovered_) {
+            portDropdownIcon_->hover();
+        } else {
+            portDropdownIcon_->unhover();
+        }
+    }
+
+    if (wasHovered != portAreaHovered_) {
+        update();
+    }
 }
 
 } // namespace ProtocolWindow

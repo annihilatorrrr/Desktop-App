@@ -47,4 +47,6 @@ public:
     bool startStunnel(const QString &hostname, unsigned int port, unsigned int localPort, bool extraPadding);
     bool startWstunnel(const QString &hostname, unsigned int port, unsigned int localPort);
     bool setMacAddress(const QString &interface, const QString &macAddress, const QString &network = "", bool isWifi = false);
+
+    bool clearWifiHistoryData();
 };

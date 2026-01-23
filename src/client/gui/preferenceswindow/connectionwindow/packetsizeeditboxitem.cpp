@@ -196,6 +196,25 @@ bool PacketSizeEditBoxItem::lineEditHasFocus()
     return lineEdit_->hasFocus();
 }
 
+bool PacketSizeEditBoxItem::isInEditMode() const
+{
+    return isEditMode_;
+}
+
+void PacketSizeEditBoxItem::save()
+{
+    if (isEditMode_) {
+        onConfirmClick();
+    }
+}
+
+void PacketSizeEditBoxItem::discard()
+{
+    if (isEditMode_) {
+        onUndoClick();
+    }
+}
+
 void PacketSizeEditBoxItem::keyPressEvent(QKeyEvent *event)
 {
     if (event->key() == Qt::Key_Escape) {
@@ -287,10 +306,10 @@ void PacketSizeEditBoxItem::updatePositions()
 
     if (!proxyWidget_->isVisible()) { // workaround Qt bug (setGeometry not working when proxyWidget_ is not visible)
         proxyWidget_->show();
-        lineEdit_->setGeometry(PREFERENCES_MARGIN_X*G_SCALE, PREFERENCES_ITEM_Y*G_SCALE, 180*G_SCALE, ICON_HEIGHT*G_SCALE);
+        lineEdit_->setGeometry(PREFERENCES_MARGIN_X*G_SCALE, PREFERENCES_ITEM_Y*G_SCALE, 180*G_SCALE, 20*G_SCALE);
         proxyWidget_->hide();
     } else {
-        lineEdit_->setGeometry(PREFERENCES_MARGIN_X*G_SCALE, PREFERENCES_ITEM_Y*G_SCALE, 180*G_SCALE, ICON_HEIGHT*G_SCALE);
+        lineEdit_->setGeometry(PREFERENCES_MARGIN_X*G_SCALE, PREFERENCES_ITEM_Y*G_SCALE, 180*G_SCALE, 20*G_SCALE);
     }
 }
 

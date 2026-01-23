@@ -20,6 +20,7 @@
 #include "utils.h"
 #include "utils/executable_signature/executable_signature.h"
 #include "wireguard/wireguardcontroller.h"
+#include "clear_wifi_history/clear_wifi_history.h"
 
 std::string processCommand(HelperCommand cmdId, const std::string &pars)
 {
@@ -580,4 +581,10 @@ std::string createCliSymlink(const std::string &pars)
     }
 
     return serializeResult(true);
+}
+
+std::string clearWifiHistoryData(const std::string &pars)
+{
+    bool success = ClearWiFiHistory::clear();
+    return serializeResult(success);
 }

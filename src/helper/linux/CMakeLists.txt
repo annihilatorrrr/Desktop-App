@@ -20,6 +20,7 @@ find_package(skyr-url CONFIG REQUIRED)
 find_package(spdlog CONFIG REQUIRED)
 
 set(SOURCES
+    clear_wifi_history/clear_wifi_history.cpp
     execute_cmd.cpp
     firewallcontroller.cpp
     firewallonboot.cpp

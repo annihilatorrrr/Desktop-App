@@ -83,7 +83,7 @@ target_sources(7zip PRIVATE
 
     C/7zBuf2.c
     C/7zStream.c
-    C/7zArcIn.c		# Added by Windscribe
+    C/7zArcIn.c         # Added by Windscribe
     C/7zAlloc.c         # Added by Windscribe
     C/7zBuf.c           # Added by Windscribe
     C/7zFile.c          # Added by Windscribe

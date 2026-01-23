@@ -2,6 +2,10 @@
 
 #include <openssl/bio.h>
 #include <openssl/evp.h>
+#include <openssl/sha.h>
+#include <vector>
+#include <string>
+#include <cstdint>
 
 namespace wsl
 {
@@ -100,6 +104,19 @@ int EvpBioCharBuf::write(const void *data, int dlen)
     }
 
     return 0;
+}
+
+inline
+uint32_t truncatedHash(const uint8_t* key, size_t keyLen)
+{
+    if (key == nullptr || keyLen == 0) {
+        return 0;
+    }
+
+    unsigned char hash[SHA256_DIGEST_LENGTH];
+    SHA256(key, keyLen, hash);
+
+    return (hash[0] << 24) | (hash[1] << 16) | (hash[2] << 8) | hash[3];
 }
 
 }

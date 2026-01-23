@@ -29,6 +29,16 @@ public:
                      GeneralMessage::Flags flags = GeneralMessage::Flags::kNone,
                      const QString &learnMoreUrl = "");
 
+    void showMessageWithRedAccept(const QString &icon, const QString &title, const QString &desc,
+                     const QString &acceptText,
+                     const QString &rejectText = "",
+                     const QString &tertiaryText = "",
+                     std::function<void(bool)> acceptFunc = std::function<void(bool)>(nullptr),
+                     std::function<void(bool)> rejectFunc = std::function<void(bool)>(nullptr),
+                     std::function<void(bool)> tertiaryFunc = std::function<void(bool)>(nullptr),
+                     GeneralMessage::Flags flags = GeneralMessage::Flags::kNone,
+                     const QString &learnMoreUrl = "");
+
     void showCredentialPrompt(const QString &icon, const QString &title, const QString &desc,
                               const QString &username,
                               const QString &acceptText,
@@ -42,6 +52,7 @@ public:
     void showMessage(GeneralMessage *message);
     void showCredentialsPrompt(GeneralMessage *message);
     bool hasMessages() const;
+    bool isShowingPriorityMessage() const;
     void setSource(MainWindowController::WINDOW_ID source);
 
     static inline const char *kOk = QT_TR_NOOP("Ok");

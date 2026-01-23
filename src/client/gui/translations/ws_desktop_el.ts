@@ -1342,6 +1342,22 @@ If the problem persists after a restart, please send a debug log and open a supp
         <source>LAN traffic is currently blocked by the Windscribe firewall.  Do you want to allow LAN traffic to bypass the firewall in order for this feature to work?</source>
         <translation>Η κυκλοφορία LAN αποκλείεται αυτήν τη στιγμή από το τείχος προστασίας Windscrib.  Θέλετε να επιτρέψετε στην κυκλοφορία LAN να παρακάμψει το τείχος προστασίας για να λειτουργήσει αυτή η δυνατότητα;</translation>
     </message>
+    <message>
+        <source>Clear Wi-Fi History</source>
+        <translation>Εκκαθάριση ιστορικού Wi-Fi</translation>
+    </message>
+    <message>
+        <source>Remove Wi-Fi SSID and MAC information from your operating system to prevent location history tracking. Warning: this will also delete all Wi-Fi passwords except for the currently connected network. On some systems, this may temporarily disable Wi-Fi.</source>
+        <translation>Καταργήστε τις πληροφορίες SSID και MAC Wi-Fi από το λειτουργικό σας σύστημα για να αποτρέψετε την παρακολούθηση του ιστορικού τοποθεσίας. Προειδοποίηση: αυτό θα διαγράψει επίσης όλους τους κωδικούς πρόσβασης Wi-Fi εκτός από το τρέχον συνδεδεμένο δίκτυο. Σε ορισμένα συστήματα, αυτό μπορεί να απενεργοποιήσει προσωρινά το Wi-Fi.</translation>
+    </message>
+    <message>
+        <source>Are you sure?</source>
+        <translation>Είσαι σίγουρος?</translation>
+    </message>
+    <message>
+        <source>Are you sure you want to clear all your Wi-Fi history? This will also clear all Wi-Fi passwords except for the one you&apos;re currently connected to. This may also temporarily disable your Wi-Fi.</source>
+        <translation>Είστε βέβαιοι ότι θέλετε να διαγράψετε όλο το ιστορικό Wi-Fi σας; Αυτό θα διαγράψει επίσης όλους τους κωδικούς πρόσβασης Wi-Fi εκτός από αυτόν στον οποίο είστε συνδεδεμένοι αυτήν τη στιγμή. Αυτό μπορεί επίσης να απενεργοποιήσει προσωρινά το Wi-Fi σας.</translation>
+    </message>
 </context>
 <context>
     <name>PreferencesWindow::DecoyTrafficGroup</name>
@@ -1864,6 +1880,25 @@ Connect to a network first</source>
     <message>
         <source>Quit</source>
         <translation>Παραιτούμαι</translation>
+    </message>
+</context>
+<context>
+    <name>PreferencesWindow::PreferencesWindowItem</name>
+    <message>
+        <source>Unsaved Changes</source>
+        <translation>Μη αποθηκευμένες αλλαγές</translation>
+    </message>
+    <message>
+        <source>Discard</source>
+        <translation>Απόρριψη</translation>
+    </message>
+    <message>
+        <source>You have unsaved changes in edit fields. Do you want to save them?</source>
+        <translation>Έχετε μη αποθηκευμένες αλλαγές στα πεδία επεξεργασίας. Θέλετε να τα σώσετε;</translation>
+    </message>
+    <message>
+        <source>Save</source>
+        <translation>Αποθήκευση</translation>
     </message>
 </context>
 <context>
@@ -2553,10 +2588,6 @@ If the reinstall does not help, please contact Windscribe support for assistance
         <translation>Προσαρμοσμένες διαμορφώσεις</translation>
     </message>
     <message>
-        <source>Show/Hide</source>
-        <translation>Εμφάνιση/Απόκρυψη</translation>
-    </message>
-    <message>
         <source>Preferences</source>
         <translation>Προτιμήσεις</translation>
     </message>
@@ -2571,6 +2602,10 @@ If the reinstall does not help, please contact Windscribe support for assistance
     <message>
         <source>Favourites</source>
         <translation>Αγαπημένα</translation>
+    </message>
+    <message>
+        <source>Show app</source>
+        <translation>Εμφάνιση εφαρμογής</translation>
     </message>
 </context>
 <context>

@@ -14,6 +14,7 @@ set(SOURCES
     ../../client/common/utils/executable_signature/executable_signature_mac.mm
     ../../client/common/utils/executable_signature/executable_signature.h
     3rdparty/pstream.h
+    clear_wifi_history/clear_wifi_history.mm
     execute_cmd.cpp
     execute_cmd.h
     files_manager.cpp

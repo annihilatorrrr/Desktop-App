@@ -90,6 +90,8 @@ void GeneralMessageItem::setStyle(GeneralMessageWindow::Style style)
         CommonGraphics::BubbleButton::Style buttonStyle = CommonGraphics::BubbleButton::kBright;
         if (style_ == GeneralMessageWindow::kDark) {
             buttonStyle = CommonGraphics::BubbleButton::kDark;
+        } else if (style_ == GeneralMessageWindow::kRed) {
+            buttonStyle = CommonGraphics::BubbleButton::kRed;
         }
         acceptButton_->setStyle(buttonStyle);
     }
@@ -141,6 +143,8 @@ void GeneralMessageItem::setAcceptText(const QString &text, bool showRemember)
         CommonGraphics::BubbleButton::Style buttonStyle = CommonGraphics::BubbleButton::kBright;
         if (style_ == GeneralMessageWindow::kDark) {
             buttonStyle = CommonGraphics::BubbleButton::kDark;
+        } else if (style_ == GeneralMessageWindow::kRed) {
+            buttonStyle = CommonGraphics::BubbleButton::kRed;
         }
 
         acceptButton_ = new ButtonWithCheckbox(this, buttonStyle, text, showRemember ? tr("Remember") : "");

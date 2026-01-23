@@ -2,10 +2,10 @@
 #include <QDataStream>
 #include <QIODevice>
 #include <QSettings>
-#include "types/global_consts.h"
-#include "api_responses/wgconfigs_connect.h"
 #include "api_responses/wgconfigs_init.h"
+#include "types/global_consts.h"
 #include "utils/log/categories.h"
+#include "utils/openssl_utils.h"
 #include "utils/utils.h"
 #include "utils/ws_assert.h"
 
@@ -31,19 +31,16 @@ void GetWireGuardConfig::getWireGuardConfig(const QString &serverName, bool dele
     serverName_ = serverName;
     deleteOldestKey_ = deleteOldestKey;
     deviceId_ = deviceId;
-    isErrorCode1311Guard_ = false;
-    isRetryConnectRequest_ = false;
     isRetryInitRequest_ = false;
 
     wireGuardConfig_.reset();
-    // restore a key-pair and peer parameters stored on disk
-    // if they are not found in settings, they will be generated and saved later by this class flow.
-    QString publicKey, privateKey, presharedKey, allowedIPs;
-    if (getWireGuardKeyPair(publicKey, privateKey) && getWireGuardPeerInfo(presharedKey, allowedIPs)) {
-        wireGuardConfig_.setKeyPair(publicKey, privateKey);
-        wireGuardConfig_.setPeerPresharedKey(presharedKey);
-        wireGuardConfig_.setPeerAllowedIPs(allowedIPs);
-        submitWireguardConnectRequest();
+    WireGuardConfig storedConfig = readWireGuardConfigFromSettings();
+    if (storedConfig.haveKeyPair() && storedConfig.haveServerGeneratedPeerParams() && !storedConfig.clientIpAddress().isEmpty()) {
+        wireGuardConfig_ = storedConfig;
+        emit getWireGuardConfigAnswer(WireGuardConfigRetCode::kSuccess, wireGuardConfig_);
+    } else if (storedConfig.haveKeyPair()) {
+        wireGuardConfig_.setKeyPair(storedConfig.clientPublicKey(), storedConfig.clientPrivateKey());
+        submitWireGuardInitRequest(false);
     } else {
         submitWireGuardInitRequest(true);
     }
@@ -89,71 +86,31 @@ void GetWireGuardConfig::onWgConfigsInitAnswer(wsnet::ServerApiRetCode serverApi
     wireGuardConfig_.setPeerPresharedKey(res.presharedKey());
     wireGuardConfig_.setPeerAllowedIPs(WireGuardConfig::stripIpv6Address(res.allowedIps()));
 
-    // Persist the peer parameters we received.
-    setWireGuardPeerInfo(wireGuardConfig_.peerPresharedKey(), wireGuardConfig_.peerAllowedIps());
-
-    submitWireguardConnectRequest();
-}
-
-void GetWireGuardConfig::onWgConfigsConnectAnswer(ServerApiRetCode serverApiRetCode, const std::string &jsonData)
-{
-    request_.reset();
-
-    if (serverApiRetCode == ServerApiRetCode::kFailoverFailed) {
-        emit getWireGuardConfigAnswer(WireGuardConfigRetCode::kFailoverFailed, wireGuardConfig_);
-        return;
-    } else if (serverApiRetCode != ServerApiRetCode::kSuccess) {
+    if (res.hashedCIDR().isEmpty()) {
+        qCDebug(LOG_WIREGUARD) << "Failed to get WG config: HashedCIDR is missing";
         emit getWireGuardConfigAnswer(WireGuardConfigRetCode::kFailed, wireGuardConfig_);
         return;
     }
 
-    api_responses::WgConfigsConnect res(jsonData);
-    if (res.isErrorCode()) {
-        if (res.errorCode() == 1311) {
-            // This means all the user's public keys were nuked on the server and what we have locally is useless.
-            // Discard all locally stored keys and start fresh with a new 'init' API call.  In case of an unexpected
-            // API issue, guard against looping behavior where you run "init" and "connect" which returns the same error.
-            if (!isErrorCode1311Guard_) {
-                isErrorCode1311Guard_ = true;
-                wireGuardConfig_.reset();
-                removeWireGuardSettings();
-                submitWireGuardInitRequest(true);
-                return;
-            }
-        } else if (res.errorCode() == 1312) {
-            // This error is returned when an interface address cannot be assigned. This is likely a major API issue,
-            // since this shouldn't happen. Retry the 'connect' API once. If it fails again, abort the connection attempt.
-            if (!isRetryConnectRequest_) {
-                isRetryConnectRequest_ = true;
-                submitWireguardConnectRequest();
-                return;
-            }
-        }
-
+    QString cidr = res.hashedCIDR().first();
+    QString clientAddress = generateClientAddress(cidr);
+    if (clientAddress.isEmpty()) {
+        qCDebug(LOG_WIREGUARD) << "Failed to generate client address from CIDR:" << cidr;
         emit getWireGuardConfigAnswer(WireGuardConfigRetCode::kFailed, wireGuardConfig_);
         return;
     }
 
-    wireGuardConfig_.setClientIpAddress(WireGuardConfig::stripIpv6Address(res.ipAddress()));
-    wireGuardConfig_.setClientDnsAddress(WireGuardConfig::stripIpv6Address(res.dnsAddress()));
+    wireGuardConfig_.setClientIpAddress(clientAddress);
+    wireGuardConfig_.setClientDnsAddress("10.255.255.1");
+
+    writeWireGuardConfigToSettings(wireGuardConfig_);
+
     emit getWireGuardConfigAnswer(WireGuardConfigRetCode::kSuccess, wireGuardConfig_);
-}
-
-void GetWireGuardConfig::submitWireguardConnectRequest()
-{
-    WS_ASSERT(request_ == nullptr);
-    request_ = WSNet::instance()->serverAPI()->wgConfigsConnect(WSNet::instance()->apiResourcersManager()->authHash(), wireGuardConfig_.clientPublicKey().toStdString(),
-                                                                serverName_.toStdString(), deviceId_.toStdString(), std::string(),
-                                                                [this](ServerApiRetCode serverApiRetCode, const std::string &jsonData)
-                                                                {
-                                                                    QMetaObject::invokeMethod(this, [this, serverApiRetCode, jsonData]() {
-                                                                        onWgConfigsConnectAnswer(serverApiRetCode, jsonData);
-                                                                    });
-                                                                });
 }
 
 void GetWireGuardConfig::submitWireGuardInitRequest(bool generateKeyPair)
 {
+    qCDebug(LOG_WIREGUARD) << "Calling WireGuard init with" << (generateKeyPair ? "new" : "existing") << "keypair";
     if (generateKeyPair) {
         if (!wireGuardConfig_.generateKeyPair()) {
             request_ = nullptr;
@@ -174,42 +131,10 @@ void GetWireGuardConfig::submitWireGuardInitRequest(bool generateKeyPair)
                                                                 });
 }
 
-bool GetWireGuardConfig::getWireGuardKeyPair(QString &publicKey, QString &privateKey)
-{
-    WireGuardConfig wgConfig = readWireGuardConfigFromSettings();
-    if (!wgConfig.clientPublicKey().isEmpty() && !wgConfig.clientPrivateKey().isEmpty())
-    {
-        publicKey = wgConfig.clientPublicKey();
-        privateKey = wgConfig.clientPrivateKey();
-        return true;
-    }
-    return false;
-}
-
 void GetWireGuardConfig::setWireGuardKeyPair(const QString &publicKey, const QString &privateKey)
 {
     WireGuardConfig wgConfig = readWireGuardConfigFromSettings();
     wgConfig.setKeyPair(publicKey, privateKey);
-    writeWireGuardConfigToSettings(wgConfig);
-}
-
-bool GetWireGuardConfig::getWireGuardPeerInfo(QString &presharedKey, QString &allowedIPs)
-{
-    WireGuardConfig wgConfig = readWireGuardConfigFromSettings();
-    if (!wgConfig.peerPresharedKey().isEmpty() && !wgConfig.peerAllowedIps().isEmpty())
-    {
-        presharedKey = wgConfig.peerPresharedKey();
-        allowedIPs = wgConfig.peerAllowedIps();
-        return true;
-    }
-    return false;
-}
-
-void GetWireGuardConfig::setWireGuardPeerInfo(const QString &presharedKey, const QString &allowedIPs)
-{
-    WireGuardConfig wgConfig = readWireGuardConfigFromSettings();
-    wgConfig.setPeerPresharedKey(presharedKey);
-    wgConfig.setPeerAllowedIPs(allowedIPs);
     writeWireGuardConfigToSettings(wgConfig);
 }
 
@@ -268,4 +193,55 @@ void GetWireGuardConfig::removeWireGuardSettings()
     settings.remove("wireguardPrivateKey");
     settings.remove("wireguardPresharedKey");
     settings.remove("wireguardAllowedIPs");
+}
+
+QString GetWireGuardConfig::generateClientAddress(const QString &cidr)
+{
+    if (cidr.isEmpty() || wireGuardConfig_.clientPublicKey().isEmpty()) {
+        return QString();
+    }
+
+    auto slashPos = cidr.indexOf('/');
+    if (slashPos == -1) {
+        return QString();
+    }
+
+    QString ipPart = cidr.left(slashPos);
+    QString prefixPart = cidr.mid(slashPos + 1);
+    bool ok;
+    int prefix = prefixPart.toInt(&ok);
+    if (!ok || prefix < 0 || prefix > 32) {
+        return QString();
+    }
+
+    QStringList octets = ipPart.split('.');
+    if (octets.size() != 4) {
+        return QString();
+    }
+
+    uint32_t networkAddress = 0;
+    for (int i = 0; i < 4; i++) {
+        int octet = octets[i].toInt(&ok);
+        if (!ok || octet < 0 || octet > 255) {
+            return QString();
+        }
+        networkAddress |= (octet << (8 * (3 - i)));
+    }
+
+    int hostBits = 32 - prefix;
+    uint32_t hostMask = hostBits == 32 ? 0xFFFFFFFF : (1u << hostBits) - 1;
+    uint32_t networkMask = ~hostMask;
+
+    QByteArray keyBytes = QByteArray::fromBase64(wireGuardConfig_.clientPublicKey().toLatin1());
+    uint32_t hash = wsl::truncatedHash(reinterpret_cast<const uint8_t*>(keyBytes.data()), keyBytes.size());
+
+    uint32_t ipInt = (networkAddress & networkMask) | (hash & hostMask);
+
+    QString result = QString("%1.%2.%3.%4")
+        .arg((ipInt >> 24) & 0xFF)
+        .arg((ipInt >> 16) & 0xFF)
+        .arg((ipInt >> 8) & 0xFF)
+        .arg(ipInt & 0xFF);
+
+    return result;
 }

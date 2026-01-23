@@ -38,6 +38,7 @@ public:
     void setCurrentNetwork(const types::NetworkInterface &networkInterface);
     void setPacketSizeDetectionState(bool on);
     void showPacketSizeDetectionError(const QString &title, const QString &message);
+    void setClearWifiHistoryResult(bool success);
 
 signals:
     void networkOptionsPageClick();
@@ -47,6 +48,7 @@ signals:
     void detectPacketSize();
     void connectedDnsDomainsClick(const QStringList &domains);
     void fetchControldDevices(const QString &apiKey);
+    void clearWifiHistoryClick();
 
 public slots:
     void checkLocalDns();
@@ -88,6 +90,7 @@ private slots:
     void onIsAutoConnectPreferencesChangedByUser(bool b);
 
     void onUpdateIsSecureHotspotSupported();
+    void onClearWifiHistoryClick();
     void onLanguageChanged();
 
 protected:
@@ -117,6 +120,14 @@ private:
     SecureHotspotGroup *secureHotspotGroup_;
     ProxyGatewayGroup *proxyGatewayGroup_;
     DecoyTrafficGroup *decoyTrafficGroup_;
+
+    PreferenceGroup *clearWifiHistoryGroup_;
+    LinkItem *clearWifiHistoryItem_;
+    enum class ClearWifiState {
+        kNotInitiated,
+        kInitiated,
+        kFinished
+    } clearWifiState_ = ClearWifiState::kNotInitiated;
 
     bool isIkev2(const types::ConnectionSettings &cs) const;
 

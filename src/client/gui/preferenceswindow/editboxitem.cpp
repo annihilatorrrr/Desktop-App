@@ -130,6 +130,25 @@ bool EditBoxItem::lineEditHasFocus()
     return lineEdit_->hasFocus();
 }
 
+bool EditBoxItem::isInEditMode() const
+{
+    return isEditMode_;
+}
+
+void EditBoxItem::save()
+{
+    if (isEditMode_) {
+        onConfirmClick();
+    }
+}
+
+void EditBoxItem::discard()
+{
+    if (isEditMode_) {
+        onUndoClick();
+    }
+}
+
 void EditBoxItem::keyPressEvent(QKeyEvent *event)
 {
     if (event->key() == Qt::Key_Return || event->key() == Qt::Key_Enter) {
@@ -194,12 +213,12 @@ void EditBoxItem::updatePositions()
     if (!proxyWidget_->isVisible()) // workaround Qt bug (setGeometry not working when proxyWidget_ is not visible)
     {
         proxyWidget_->show();
-        lineEdit_->setGeometry(PREFERENCES_MARGIN_X*G_SCALE, PREFERENCES_ITEM_Y*G_SCALE, boundingRect().width() - (2*ICON_WIDTH + 3*PREFERENCES_MARGIN_X)*G_SCALE, ICON_HEIGHT*G_SCALE);
+        lineEdit_->setGeometry(PREFERENCES_MARGIN_X*G_SCALE, PREFERENCES_ITEM_Y*G_SCALE, boundingRect().width() - (2*ICON_WIDTH + 3*PREFERENCES_MARGIN_X)*G_SCALE, 20*G_SCALE);
         proxyWidget_->hide();
     }
     else
     {
-        lineEdit_->setGeometry(PREFERENCES_MARGIN_X*G_SCALE, PREFERENCES_ITEM_Y*G_SCALE, boundingRect().width() - (2*ICON_WIDTH + 3*PREFERENCES_MARGIN_X)*G_SCALE, ICON_HEIGHT*G_SCALE);
+        lineEdit_->setGeometry(PREFERENCES_MARGIN_X*G_SCALE, PREFERENCES_ITEM_Y*G_SCALE, boundingRect().width() - (2*ICON_WIDTH + 3*PREFERENCES_MARGIN_X)*G_SCALE, 20*G_SCALE);
     }
 }
 

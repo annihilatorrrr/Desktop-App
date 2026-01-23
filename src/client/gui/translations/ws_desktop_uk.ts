@@ -1342,6 +1342,22 @@ If the problem persists after a restart, please send a debug log and open a supp
         <source>In this firewall mode, the Windscribe API will not be available while disconnected, this could have unintended consequences. Use at own risk.</source>
         <translation>У цьому режимі брандмауера API Windscribe не буде доступний у відключеному стані, це може мати непередбачені наслідки. Використання на свій ризик.</translation>
     </message>
+    <message>
+        <source>Clear Wi-Fi History</source>
+        <translation>Чиста історія Wi-Fi</translation>
+    </message>
+    <message>
+        <source>Remove Wi-Fi SSID and MAC information from your operating system to prevent location history tracking. Warning: this will also delete all Wi-Fi passwords except for the currently connected network. On some systems, this may temporarily disable Wi-Fi.</source>
+        <translation>Видаліть інформацію про Wi-Fi SSID та MAC з операційної системи, щоб запобігти відстеженню історії місцезнаходження. Увага: це також видаляє всі паролі Wi-Fi, крім поточної підключеної мережі. На деяких системах це може тимчасово вимикати Wi-Fi.</translation>
+    </message>
+    <message>
+        <source>Are you sure?</source>
+        <translation>Ти впевнений?</translation>
+    </message>
+    <message>
+        <source>Are you sure you want to clear all your Wi-Fi history? This will also clear all Wi-Fi passwords except for the one you&apos;re currently connected to. This may also temporarily disable your Wi-Fi.</source>
+        <translation>Ви впевнені, що хочете очистити всю історію Wi-Fi? Це також очистить всі паролі Wi-Fi, крім того, до якого ви підключені зараз. Це також може тимчасово вимкнути ваш Wi-Fi.</translation>
+    </message>
 </context>
 <context>
     <name>PreferencesWindow::DecoyTrafficGroup</name>
@@ -1864,6 +1880,25 @@ Connect to a network first</source>
     <message>
         <source>Look &amp; Feel</source>
         <translation>Зовнішній вигляд і поведінка</translation>
+    </message>
+</context>
+<context>
+    <name>PreferencesWindow::PreferencesWindowItem</name>
+    <message>
+        <source>Unsaved Changes</source>
+        <translation>Незбережені зміни</translation>
+    </message>
+    <message>
+        <source>Discard</source>
+        <translation>Викид</translation>
+    </message>
+    <message>
+        <source>You have unsaved changes in edit fields. Do you want to save them?</source>
+        <translation>У вас є незбережені зміни в полях редагування. Хочеш їх врятувати?</translation>
+    </message>
+    <message>
+        <source>Save</source>
+        <translation>Збереження</translation>
     </message>
 </context>
 <context>
@@ -2553,10 +2588,6 @@ If the reinstall does not help, please contact Windscribe support for assistance
         <translation>Користувацькі конфігурації</translation>
     </message>
     <message>
-        <source>Show/Hide</source>
-        <translation>Показати/Приховати</translation>
-    </message>
-    <message>
         <source>Preferences</source>
         <translation>Налаштування</translation>
     </message>
@@ -2571,6 +2602,10 @@ If the reinstall does not help, please contact Windscribe support for assistance
     <message>
         <source>Favourites</source>
         <translation>Улюблені</translation>
+    </message>
+    <message>
+        <source>Show app</source>
+        <translation>Показати додаток</translation>
     </message>
 </context>
 <context>

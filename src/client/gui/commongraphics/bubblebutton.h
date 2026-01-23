@@ -15,7 +15,7 @@ class BubbleButton: public ClickableGraphicsObject
 {
     Q_OBJECT
 public:
-    enum Style { kBright, kDark, kOutline, kWelcome, kWelcomeSecondary, kBanner };
+    enum Style { kBright, kDark, kOutline, kWelcome, kWelcomeSecondary, kBanner, kRed };
     BubbleButton(ScalableGraphicsObject *parent, Style style, int width, int height, int radius);
 
     QRectF boundingRect() const override;

@@ -1342,6 +1342,22 @@ Jika masalah berlanjut setelah restart, silakan kirim log debug dan buka tiket d
         <source>In this firewall mode, the Windscribe API will not be available while disconnected, this could have unintended consequences. Use at own risk.</source>
         <translation>Dalam mode firewall ini, API Windscribe tidak akan tersedia saat terputus, ini dapat memiliki konsekuensi yang tidak diinginkan. Gunakan dengan risiko sendiri.</translation>
     </message>
+    <message>
+        <source>Clear Wi-Fi History</source>
+        <translation>Hapus Riwayat Wi-Fi</translation>
+    </message>
+    <message>
+        <source>Remove Wi-Fi SSID and MAC information from your operating system to prevent location history tracking. Warning: this will also delete all Wi-Fi passwords except for the currently connected network. On some systems, this may temporarily disable Wi-Fi.</source>
+        <translation>Hapus informasi SSID dan MAC Wi-Fi dari sistem operasi Anda untuk mencegah pelacakan riwayat lokasi. Peringatan: ini juga akan menghapus semua kata sandi Wi-Fi kecuali jaringan yang saat ini terhubung. Pada beberapa sistem, ini dapat menonaktifkan Wi-Fi untuk sementara.</translation>
+    </message>
+    <message>
+        <source>Are you sure?</source>
+        <translation>Kamu yakin?</translation>
+    </message>
+    <message>
+        <source>Are you sure you want to clear all your Wi-Fi history? This will also clear all Wi-Fi passwords except for the one you&apos;re currently connected to. This may also temporarily disable your Wi-Fi.</source>
+        <translation>Apakah Anda yakin ingin menghapus semua riwayat Wi-Fi Anda? Ini juga akan menghapus semua kata sandi Wi-Fi kecuali yang saat ini Anda sambungkan. Ini juga dapat menonaktifkan Wi-Fi Anda untuk sementara.</translation>
+    </message>
 </context>
 <context>
     <name>PreferencesWindow::DecoyTrafficGroup</name>
@@ -1864,6 +1880,25 @@ Menyambungkan ke jaringan terlebih dahulu</translation>
     <message>
         <source>Look &amp; Feel</source>
         <translation>Tampilan dan Nuansa</translation>
+    </message>
+</context>
+<context>
+    <name>PreferencesWindow::PreferencesWindowItem</name>
+    <message>
+        <source>Unsaved Changes</source>
+        <translation>Perubahan yang Tidak Disimpan</translation>
+    </message>
+    <message>
+        <source>Discard</source>
+        <translation>Buang</translation>
+    </message>
+    <message>
+        <source>You have unsaved changes in edit fields. Do you want to save them?</source>
+        <translation>Anda memiliki perubahan yang belum disimpan di bidang edit. Apakah Anda ingin menyimpannya?</translation>
+    </message>
+    <message>
+        <source>Save</source>
+        <translation>Simpan</translation>
     </message>
 </context>
 <context>
@@ -2553,10 +2588,6 @@ Jika penginstalan ulang tidak membantu, hubungi dukungan Windscribe untuk mendap
         <translation>Konfigurasi kustom</translation>
     </message>
     <message>
-        <source>Show/Hide</source>
-        <translation>Tampilkan/Sembunyikan</translation>
-    </message>
-    <message>
         <source>Preferences</source>
         <translation>Preferensi</translation>
     </message>
@@ -2571,6 +2602,10 @@ Jika penginstalan ulang tidak membantu, hubungi dukungan Windscribe untuk mendap
     <message>
         <source>Favourites</source>
         <translation>Favorit</translation>
+    </message>
+    <message>
+        <source>Show app</source>
+        <translation>Tampilkan aplikasi</translation>
     </message>
 </context>
 <context>

@@ -125,6 +125,8 @@ public:
     QString getCurrentConnectingHostname() const;
     void fetchControldDevices(const QString &apiKey);
 
+    void clearWifiHistory();
+
 private slots:
     void onEngineSettingsChangedInPreferences();
 
@@ -258,6 +260,8 @@ signals:
 
     void bridgeApiAvailabilityChanged(bool isAvailable);
     void ipRotateResult(bool success);
+
+    void clearWifiHistoryFinished(bool success);
 
 private:
     bool isSavedApiSettingsExists_;

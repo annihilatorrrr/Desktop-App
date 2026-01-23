@@ -51,6 +51,17 @@ void GeneralMessageController::showMessage(const QString &icon, const QString &t
     showMessage(new GeneralMessage(icon, title, desc, acceptText, rejectText, tertiaryText, acceptFunc, rejectFunc, tertiaryFunc, getSource(), flags, learnMoreUrl));
 }
 
+void GeneralMessageController::showMessageWithRedAccept(const QString &icon, const QString &title, const QString &desc, const QString &acceptText, const QString &rejectText, const QString &tertiaryText, std::function<void (bool)> acceptFunc, std::function<void (bool)> rejectFunc, std::function<void (bool)> tertiaryFunc, GeneralMessage::Flags flags, const QString &learnMoreUrl)
+{
+    if (controller_ == nullptr) {
+        // not initialized
+        return;
+    }
+    auto msg = new GeneralMessage(icon, title, desc, acceptText, rejectText, tertiaryText, acceptFunc, rejectFunc, tertiaryFunc, getSource(), flags, learnMoreUrl);
+    msg->isRedAcceptButton = true;
+    showMessage(msg);
+}
+
 void GeneralMessageController::showCredentialPrompt(const QString &icon, const QString &title, const QString &desc, const QString &username,
                                                     const QString &acceptText, const QString &rejectText, const QString &tertiaryText,
                                                     std::function<void(const QString &, const QString &, bool)> acceptFunc,
@@ -79,9 +90,14 @@ void GeneralMessageController::showMessage(GeneralMessage *message)
         }
     }
 
-    messages_.append(message);
-    if (!isShowing_) {
+    if (message->flags & GeneralMessage::kPriority) {
+        messages_.prepend(message);
         showNext();
+    } else {
+        messages_.append(message);
+        if (!isShowing_) {
+            showNext();
+        }
     }
 }
 
@@ -101,6 +117,10 @@ void GeneralMessageController::showNext()
         window->setStyle(GeneralMessageWindow::Style::kDark);
     } else {
         window->setStyle(GeneralMessageWindow::Style::kBright);
+    }
+
+    if (message->isRedAcceptButton) {
+        window->setStyle(GeneralMessageWindow::Style::kRed);
     }
 
     window->setIcon(message->icon);
@@ -199,6 +219,11 @@ void GeneralMessageController::handleResult(Result res)
 bool GeneralMessageController::hasMessages() const
 {
     return !messages_.isEmpty();
+}
+
+bool GeneralMessageController::isShowingPriorityMessage() const
+{
+    return isShowing_ && !messages_.isEmpty() && (messages_.first()->flags & GeneralMessage::kPriority);
 }
 
 void GeneralMessageController::setSource(MainWindowController::WINDOW_ID source)

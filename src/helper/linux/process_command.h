@@ -26,6 +26,7 @@ std::string startWstunnel(const std::string &pars);
 std::string setMacAddress(const std::string &pars);
 std::string setDnsLeakProtectEnabled(const std::string &pars);
 std::string resetMacAddresses(const std::string &pars);
+std::string clearWifiHistoryData(const std::string &pars);
 
 static const std::map<const HelperCommand, std::function<std::string(const std::string &)>> kCommands = {
     { HelperCommand::getHelperVersion, getHelperVersion },
@@ -48,7 +49,8 @@ static const std::map<const HelperCommand, std::function<std::string(const std::
     { HelperCommand::startWstunnel, startWstunnel },
     { HelperCommand::setMacAddress, setMacAddress },
     { HelperCommand::setDnsLeakProtectEnabled, setDnsLeakProtectEnabled },
-    { HelperCommand::resetMacAddresses, resetMacAddresses }
+    { HelperCommand::resetMacAddresses, resetMacAddresses },
+    { HelperCommand::clearWifiHistoryData, clearWifiHistoryData }
 };
 
 std::string processCommand(HelperCommand cmdId, const std::string &pars);

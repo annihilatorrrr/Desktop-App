@@ -2,8 +2,8 @@
 "dependencies": [
     "gtest",
     "scapix",
-    {	
-    	"name": "spdlog",
+    {    
+        "name": "spdlog",
         "features": [ { "name": "wchar", "platform": "windows" } ]
     },
     {

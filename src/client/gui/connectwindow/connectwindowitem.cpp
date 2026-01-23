@@ -104,8 +104,11 @@ ConnectWindowItem::ConnectWindowItem(QGraphicsObject *parent, Preferences *prefe
     connect(ipUtilsMenu_, &IpUtilsMenu::rotateHoverLeave, this, &ConnectWindowItem::onIpUtilsMenuRotateHoverLeave);
 
     dotMenuButton_ = new IconButton(24, 24, "DOT_MENU", "", this);
-    dotMenuButton_->setUnhoverOpacity(0.6);
-    dotMenuButton_->setVisible(false);
+    dotMenuButton_->setEnabled(false);
+    dotMenuButton_->setUnhoverOpacity(OPACITY_QUARTER);
+    dotMenuButton_->setHoverOpacity(OPACITY_QUARTER);
+    dotMenuButton_->unhover();
+
     setIpUtilsEnabled(false);
     connect(dotMenuButton_, &IconButton::clicked, this, &ConnectWindowItem::onDotMenuButtonClick);
 
@@ -657,11 +660,16 @@ void ConnectWindowItem::setIsPremium(bool isPremium)
 
 void ConnectWindowItem::setIpUtilsEnabled(bool enabled)
 {
+    if (isIpUtilsEnabled_ == enabled) {
+        return;
+    }
+
     isIpUtilsEnabled_ = enabled;
     dotMenuButton_->setEnabled(enabled);
     if (enabled) {
         dotMenuButton_->setUnhoverOpacity(0.6);
         dotMenuButton_->setHoverOpacity(OPACITY_FULL);
+        ipUtilsMenu_->setRotateButtonEnabled(true);
     } else {
         dotMenuButton_->setUnhoverOpacity(OPACITY_QUARTER);
         dotMenuButton_->setHoverOpacity(OPACITY_QUARTER);

@@ -1,6 +1,7 @@
 #include "protocolwindow/protocolpromptitem.h"
 
 #include <QDesktopServices>
+#include <QGraphicsSceneMouseEvent>
 #include <QPainter>
 #include <QUrl>
 
@@ -86,7 +87,8 @@ void ProtocolPromptItem::doResetProtocolStatus()
 
     // Put the protocol shown on connect screen first, regardless if it's connected
     types::ProtocolStatus currentProtocol = connectWindow_->getProtocolStatus();
-    ProtocolLineItem *item = new ProtocolLineItem(this, currentProtocol, getProtocolDescription(currentProtocol.protocol));
+    QVector<uint> currentPorts = preferencesHelper_->getAvailablePortsForProtocol(currentProtocol.protocol);
+    ProtocolLineItem *item = new ProtocolLineItem(this, currentProtocol, getProtocolDescription(currentProtocol.protocol), currentPorts);
     connect(item, &ProtocolLineItem::clicked, this, &ProtocolPromptItem::onProtocolClicked);
     statuses_ << currentProtocol;
     items_ << item;
@@ -111,7 +113,7 @@ void ProtocolPromptItem::doResetProtocolStatus()
         types::ProtocolStatus ps = types::ProtocolStatus(p, ports[0], types::ProtocolStatus::Status::kDisconnected, -1);
         statuses_ << ps;
 
-        ProtocolLineItem *item = new ProtocolLineItem(this, ps, getProtocolDescription(p));
+        ProtocolLineItem *item = new ProtocolLineItem(this, ps, getProtocolDescription(p), ports);
         connect(item, &ProtocolLineItem::clicked, this, &ProtocolPromptItem::onProtocolClicked);
         items_ << item;
         addItem(item);
@@ -148,7 +150,8 @@ void ProtocolPromptItem::setProtocolStatus(const QVector<types::ProtocolStatus> 
     statuses_ = statuses;
 
     for (auto status : statuses) {
-        ProtocolLineItem *item = new ProtocolLineItem(this, status, getProtocolDescription(status.protocol));
+        QVector<uint> ports = preferencesHelper_->getAvailablePortsForProtocol(status.protocol);
+        ProtocolLineItem *item = new ProtocolLineItem(this, status, getProtocolDescription(status.protocol), ports);
         connect(item, &ProtocolLineItem::clicked, this, &ProtocolPromptItem::onProtocolClicked);
         items_ << item;
         addItem(item);
@@ -304,6 +307,12 @@ void ProtocolPromptItem::clearItems()
 {
     cancelButton_ = nullptr;
     BasePage::clearItems();
+}
+
+void ProtocolPromptItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
+{
+    hideOpenPopups();
+    BasePage::mousePressEvent(event);
 }
 
 } // namespace ProtocolWindow

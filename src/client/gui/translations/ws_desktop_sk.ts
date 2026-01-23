@@ -1342,6 +1342,22 @@ Ak problém pretrváva aj po reštarte, pošlite nám denník ladenia, otvorte �
         <source>In this firewall mode, the Windscribe API will not be available while disconnected, this could have unintended consequences. Use at own risk.</source>
         <translation>V tomto režime brány firewall nebude rozhranie Windscribe API dostupné, čo by mohlo mať neželané následky. Používajte na vlastné riziko.</translation>
     </message>
+    <message>
+        <source>Clear Wi-Fi History</source>
+        <translation>Jasná história Wi-Fi</translation>
+    </message>
+    <message>
+        <source>Remove Wi-Fi SSID and MAC information from your operating system to prevent location history tracking. Warning: this will also delete all Wi-Fi passwords except for the currently connected network. On some systems, this may temporarily disable Wi-Fi.</source>
+        <translation>Odstráňte Wi-Fi SSID a MAC údaje z operačného systému, aby ste zabránili sledovaniu histórie polohy. Upozornenie: týmto sa vymažú všetky Wi-Fi heslá okrem aktuálne pripojenej siete. Na niektorých systémoch to môže dočasne vypnúť Wi-Fi.</translation>
+    </message>
+    <message>
+        <source>Are you sure?</source>
+        <translation>Si si istý?</translation>
+    </message>
+    <message>
+        <source>Are you sure you want to clear all your Wi-Fi history? This will also clear all Wi-Fi passwords except for the one you&apos;re currently connected to. This may also temporarily disable your Wi-Fi.</source>
+        <translation>Si si istý, že chceš vymazať všetku svoju Wi-Fi históriu? Tým sa tiež vymažú všetky Wi-Fi heslá okrem toho, na ktoré ste momentálne pripojení. To môže tiež dočasne deaktivovať vašu Wi-Fi.</translation>
+    </message>
 </context>
 <context>
     <name>PreferencesWindow::DecoyTrafficGroup</name>
@@ -1864,6 +1880,25 @@ Najprv sa pripojte k sieti</translation>
     <message>
         <source>Look &amp; Feel</source>
         <translation>Vzhľad a prostredie</translation>
+    </message>
+</context>
+<context>
+    <name>PreferencesWindow::PreferencesWindowItem</name>
+    <message>
+        <source>Unsaved Changes</source>
+        <translation>Neuložené zmeny</translation>
+    </message>
+    <message>
+        <source>Discard</source>
+        <translation>Vyhodiť</translation>
+    </message>
+    <message>
+        <source>You have unsaved changes in edit fields. Do you want to save them?</source>
+        <translation>Máte neuložené zmeny v editačných poliach. Chceš ich zachrániť?</translation>
+    </message>
+    <message>
+        <source>Save</source>
+        <translation>Uložiť</translation>
     </message>
 </context>
 <context>
@@ -2553,10 +2588,6 @@ Ak preinštalovanie nepomôže, obráťte sa na podporu Windscribe a požiadajte
         <translation>Vlastné konfigurácie</translation>
     </message>
     <message>
-        <source>Show/Hide</source>
-        <translation>Zobraziť/Skryť</translation>
-    </message>
-    <message>
         <source>Preferences</source>
         <translation>Predvoľby</translation>
     </message>
@@ -2571,6 +2602,10 @@ Ak preinštalovanie nepomôže, obráťte sa na podporu Windscribe a požiadajte
     <message>
         <source>Favourites</source>
         <translation>Obľúbené</translation>
+    </message>
+    <message>
+        <source>Show app</source>
+        <translation>Aplikácia Show</translation>
     </message>
 </context>
 <context>

@@ -1342,6 +1342,22 @@ If the problem persists after a restart, please send a debug log and open a supp
         <source>In this firewall mode, the Windscribe API will not be available while disconnected, this could have unintended consequences. Use at own risk.</source>
         <translation>در این حالت فایروال، Windscribe API در هنگام قطع شدن در دسترس نخواهد بود، این می تواند عواقب ناخواسته ای داشته باشد. با مسئولیت خود استفاده کنید.</translation>
     </message>
+    <message>
+        <source>Clear Wi-Fi History</source>
+        <translation>تاریخچه وای فای پاک</translation>
+    </message>
+    <message>
+        <source>Remove Wi-Fi SSID and MAC information from your operating system to prevent location history tracking. Warning: this will also delete all Wi-Fi passwords except for the currently connected network. On some systems, this may temporarily disable Wi-Fi.</source>
+        <translation>اطلاعات SSID و MAC وای فای را از سیستم عامل خود حذف کنید تا از ردیابی تاریخچه موقعیت جلوگیری شود. هشدار: این کار همچنین تمام رمزهای وای فای را به جز شبکه متصل فعلی حذف می کند. در برخی سیستم ها، این ممکن است به طور موقت وای فای را غیرفعال کند.</translation>
+    </message>
+    <message>
+        <source>Are you sure?</source>
+        <translation>مطمئنی?</translation>
+    </message>
+    <message>
+        <source>Are you sure you want to clear all your Wi-Fi history? This will also clear all Wi-Fi passwords except for the one you&apos;re currently connected to. This may also temporarily disable your Wi-Fi.</source>
+        <translation>مطمئنی می خواهی تمام تاریخچه وای فای خود را پاک کنی؟ این کار همچنین همه رمزهای وای فای را پاک می کند به جز رمزی که در حال حاضر به آن متصل هستید. این ممکن است به طور موقت وای فای شما را نیز غیرفعال کند.</translation>
+    </message>
 </context>
 <context>
     <name>PreferencesWindow::DecoyTrafficGroup</name>
@@ -1864,6 +1880,25 @@ Connect to a network first</source>
     <message>
         <source>Look &amp; Feel</source>
         <translation>نگاه و احساس</translation>
+    </message>
+</context>
+<context>
+    <name>PreferencesWindow::PreferencesWindowItem</name>
+    <message>
+        <source>Unsaved Changes</source>
+        <translation>تغییرات ذخیره نشده</translation>
+    </message>
+    <message>
+        <source>Discard</source>
+        <translation>دور انداختن</translation>
+    </message>
+    <message>
+        <source>You have unsaved changes in edit fields. Do you want to save them?</source>
+        <translation>شما تغییرات ذخیره نشده ای در فیلدهای ویرایش دارید. می خوای نجاتشون بدی؟</translation>
+    </message>
+    <message>
+        <source>Save</source>
+        <translation>ذخیره</translation>
     </message>
 </context>
 <context>
@@ -2553,10 +2588,6 @@ If the reinstall does not help, please contact Windscribe support for assistance
         <translation>پیکربندی های سفارشی</translation>
     </message>
     <message>
-        <source>Show/Hide</source>
-        <translation>نمایش/مخفی کردن</translation>
-    </message>
-    <message>
         <source>Preferences</source>
         <translation>تنظیمات</translation>
     </message>
@@ -2571,6 +2602,10 @@ If the reinstall does not help, please contact Windscribe support for assistance
     <message>
         <source>Favourites</source>
         <translation>مورد علاقه</translation>
+    </message>
+    <message>
+        <source>Show app</source>
+        <translation>اپلیکیشن Show</translation>
     </message>
 </context>
 <context>

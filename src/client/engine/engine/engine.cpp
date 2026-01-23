@@ -2884,6 +2884,14 @@ void Engine::fetchControldDevices(const QString &apiKey)
     });
 }
 
+void Engine::clearWifiHistory()
+{
+    QMetaObject::invokeMethod(this, [this] {
+        bool result = helper_->clearWifiHistoryData();
+        emit clearWifiHistoryFinished(result);
+    });
+}
+
 void Engine::fetchControldDevicesImpl(const QString &apiKey)
 {
     auto httpRequest = WSNet::instance()->httpNetworkManager()->createGetRequest("https://api.controld.com/devices", 10000);

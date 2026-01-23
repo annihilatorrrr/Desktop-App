@@ -31,8 +31,6 @@ target_sources(common PRIVATE
     staticips.h
     websession.cpp
     websession.h
-    wgconfigs_connect.cpp
-    wgconfigs_connect.h
     wgconfigs_init.cpp
     wgconfigs_init.h
 )

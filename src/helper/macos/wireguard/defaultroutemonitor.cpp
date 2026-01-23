@@ -6,6 +6,7 @@
 #include <boost/algorithm/string/split.hpp>
 #include <net/route.h>
 #include <poll.h>
+#include <unistd.h>
 
 namespace
 {
@@ -35,6 +36,7 @@ void RouteMonitorThread(void *callerContext)
             }
         }
     }
+    close(socket_fd);
     spdlog::info("Default route monitoring finished");
 }
 }  // namespace

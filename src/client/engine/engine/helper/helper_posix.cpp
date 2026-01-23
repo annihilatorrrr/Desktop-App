@@ -271,3 +271,11 @@ bool Helper_posix::setMacAddress(const QString &interface, const QString &macAdd
     return success;
 }
 
+bool Helper_posix::clearWifiHistoryData()
+{
+    auto result = sendCommand(HelperCommand::clearWifiHistoryData);
+    bool success = false;
+    deserializeAnswer(result, success);
+    return success;
+}
+

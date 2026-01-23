@@ -27,9 +27,6 @@ public:
 private:
     ExecuteCmd() = default;
 
-    BOOL isTokenElevated(HANDLE handle);
-    void safeCloseHandle(HANDLE handle);
-
     //  convert std::string to std::wstring with automatic encoding detection
     std::wstring toWString(const std::string &input);
 };

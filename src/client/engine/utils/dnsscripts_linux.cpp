@@ -28,7 +28,6 @@ DnsScripts_linux::SCRIPT_TYPE DnsScripts_linux::detectScript()
 {
     // collecting information about DNS settings
     bool isResolvConfInstalled = false;
-    QString resolvConfSymlink;
     bool isSystemdResolvedServiceRunning = false;
     QString resolvConfFileSymlink;
     QString resolvConfFileHeader;
@@ -39,10 +38,6 @@ DnsScripts_linux::SCRIPT_TYPE DnsScripts_linux::detectScript()
         process.start("resolvconf");
         process.waitForFinished();
         isResolvConfInstalled = (process.error() == QProcess::UnknownError);
-        if (isResolvConfInstalled)
-        {
-            resolvConfSymlink = getSymlink("/sbin/resolvconf");
-        }
     }
 
     // check if the systemd-resolved service is running.
@@ -77,36 +72,23 @@ DnsScripts_linux::SCRIPT_TYPE DnsScripts_linux::detectScript()
         }
     }
 
-    qCDebug(LOG_BASIC) << "DNS-manager configuration: isResolvConfInstalled =" << isResolvConfInstalled << "; resolvConfSymlink =" << resolvConfSymlink <<
-                          "; isSystemdResolvedServiceRunning =" << isSystemdResolvedServiceRunning << "; resolvConfFileSymlink =" << resolvConfFileSymlink;
+    qCDebug(LOG_BASIC) << "DNS-manager configuration: isResolvConfInstalled =" << isResolvConfInstalled << "; isSystemdResolvedServiceRunning =" << isSystemdResolvedServiceRunning << "; resolvConfFileSymlink =" << resolvConfFileSymlink;
     qCDebug(LOG_BASIC) << "/etc/resolv.conf header:" << resolvConfFileHeader;
-
 
     // choosing a DNS-manager method based on the collected information
 
-    // first method: based on check that the resolvconf utility is installed and it's not a symlink to something else (for example on Fedora it's symlink to resolvectl.
-    if (isResolvConfInstalled && resolvConfSymlink == "/sbin/resolvconf")
-    {
-        qCInfo(LOG_BASIC) << "The DNS installation method -> resolvconf";
-        return RESOLV_CONF;
-    }
-
-    // second method: we check if the resolv.conf file is symlinked to determine what is being used
+    // first method: we check if the resolv.conf file is symlinked to determine what is being used
     // and if its symlinked to: /run/systemd/resolve/resolv.conf then we know its systemd-resolved, regardless of which package is installed.
     // also, the systemd-resolved service must be running
-    if (isSystemdResolvedServiceRunning && resolvConfFileSymlink.contains("/run/systemd", Qt::CaseInsensitive))
-    {
-        // relevant for Fedora
-        if (isResolvConfInstalled && resolvConfSymlink.contains("resolvectl", Qt::CaseInsensitive))
-        {
-            qCInfo(LOG_BASIC) << "The DNS installation method -> resolvconf";
-            return RESOLV_CONF;
-        }
-        else
-        {
-            qCInfo(LOG_BASIC) << "The DNS installation method -> systemd-resolve";
-            return SYSTEMD_RESOLVED;
-        }
+    if (isSystemdResolvedServiceRunning && resolvConfFileSymlink.contains("/run/systemd", Qt::CaseInsensitive)) {
+        qCInfo(LOG_BASIC) << "The DNS installation method -> systemd-resolved";
+        return SYSTEMD_RESOLVED;
+    }
+
+    // second method: based on check that the resolvconf utility is installed
+    if (isResolvConfInstalled) {
+        qCInfo(LOG_BASIC) << "The DNS installation method -> resolvconf";
+        return RESOLV_CONF;
     }
 
     // by default use NetworkManager script

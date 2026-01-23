@@ -1342,6 +1342,22 @@ If the problem persists after a restart, please send a debug log and open a supp
         <source>In this firewall mode, the Windscribe API will not be available while disconnected, this could have unintended consequences. Use at own risk.</source>
         <translation>이 방화벽 모드에서는 연결이 끊어진 동안에는 Windscribe API를 사용할 수 없으므로 의도하지 않은 결과가 발생할 수 있습니다. 자신의 책임하에 사용하십시오.</translation>
     </message>
+    <message>
+        <source>Clear Wi-Fi History</source>
+        <translation>와이파이 기록 명확</translation>
+    </message>
+    <message>
+        <source>Remove Wi-Fi SSID and MAC information from your operating system to prevent location history tracking. Warning: this will also delete all Wi-Fi passwords except for the currently connected network. On some systems, this may temporarily disable Wi-Fi.</source>
+        <translation>위치 추적을 막기 위해 운영체제에서 Wi-Fi SSID와 MAC 정보를 제거하세요. 경고: 이 경우 현재 연결된 네트워크를 제외한 모든 Wi-Fi 비밀번호가 삭제됩니다. 일부 시스템에서는 이 때문에 일시적으로 Wi-Fi가 비활성화될 수 있습니다.</translation>
+    </message>
+    <message>
+        <source>Are you sure?</source>
+        <translation>확실한가요?</translation>
+    </message>
+    <message>
+        <source>Are you sure you want to clear all your Wi-Fi history? This will also clear all Wi-Fi passwords except for the one you&apos;re currently connected to. This may also temporarily disable your Wi-Fi.</source>
+        <translation>모든 와이파이 기록을 모두 지우고 싶으신가요? 이렇게 하면 현재 연결된 비밀번호를 제외한 모든 Wi-Fi 비밀번호도 삭제됩니다. 이로 인해 Wi-Fi가 일시적으로 비활성화될 수도 있습니다.</translation>
+    </message>
 </context>
 <context>
     <name>PreferencesWindow::DecoyTrafficGroup</name>
@@ -1864,6 +1880,25 @@ Connect to a network first</source>
     <message>
         <source>Look &amp; Feel</source>
         <translation>디자인</translation>
+    </message>
+</context>
+<context>
+    <name>PreferencesWindow::PreferencesWindowItem</name>
+    <message>
+        <source>Unsaved Changes</source>
+        <translation>저장되지 않은 변경 사항</translation>
+    </message>
+    <message>
+        <source>Discard</source>
+        <translation>버림</translation>
+    </message>
+    <message>
+        <source>You have unsaved changes in edit fields. Do you want to save them?</source>
+        <translation>편집 필드에 저장된 변경 사항이 남아 있습니다. 그들을 구하고 싶어?</translation>
+    </message>
+    <message>
+        <source>Save</source>
+        <translation>저장</translation>
     </message>
 </context>
 <context>
@@ -2553,10 +2588,6 @@ If the reinstall does not help, please contact Windscribe support for assistance
         <translation>사용자 지정 구성</translation>
     </message>
     <message>
-        <source>Show/Hide</source>
-        <translation>표시/숨기기</translation>
-    </message>
-    <message>
         <source>Preferences</source>
         <translation>설정</translation>
     </message>
@@ -2571,6 +2602,10 @@ If the reinstall does not help, please contact Windscribe support for assistance
     <message>
         <source>Favourites</source>
         <translation>우승 후보</translation>
+    </message>
+    <message>
+        <source>Show app</source>
+        <translation>쇼 앱</translation>
     </message>
 </context>
 <context>

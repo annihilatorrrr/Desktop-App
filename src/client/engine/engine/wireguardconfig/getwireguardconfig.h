@@ -31,8 +31,6 @@ signals:
 
 private slots:
     void onWgConfigsInitAnswer(wsnet::ServerApiRetCode serverApiRetCode, const std::string &jsonData);
-    void onWgConfigsConnectAnswer(wsnet::ServerApiRetCode serverApiRetCode, const std::string &jsonData);
-
 
 private:
     static const QString KEY_WIREGUARD_CONFIG;
@@ -40,19 +38,14 @@ private:
     QString serverName_;
     bool deleteOldestKey_;
     QString deviceId_;
-    bool isErrorCode1311Guard_;
-    bool isRetryConnectRequest_;
     bool isRetryInitRequest_;
     std::shared_ptr<wsnet::WSNetCancelableCallback> request_;
     SimpleCrypt simpleCrypt_;
 
-    void submitWireguardConnectRequest();
     void submitWireGuardInitRequest(bool generateKeyPair);
+    QString generateClientAddress(const QString &cidr);
 
-    bool getWireGuardKeyPair(QString &publicKey, QString &privateKey);
     void setWireGuardKeyPair(const QString &publicKey, const QString &privateKey);
-    bool getWireGuardPeerInfo(QString &presharedKey, QString &allowedIPs);
-    void setWireGuardPeerInfo(const QString &presharedKey, const QString &allowedIPs);
     WireGuardConfig readWireGuardConfigFromSettings();
     void writeWireGuardConfigToSettings(const WireGuardConfig &wgConfig);
 

@@ -46,7 +46,7 @@ signals:
     void connectClick();
     void disconnectClick();
     void preferencesClick();
-    void showHideClick();
+    void showClick();
     void helpMeClick();
     void quitClick();
     void locationSelected(const LocationID &lid);

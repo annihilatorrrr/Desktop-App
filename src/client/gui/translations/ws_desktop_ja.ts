@@ -1342,6 +1342,22 @@ If the problem persists after a restart, please send a debug log and open a supp
         <source>In this firewall mode, the Windscribe API will not be available while disconnected, this could have unintended consequences. Use at own risk.</source>
         <translation>このファイアウォールモードでは、切断中はWindscribe APIを使用できないため、意図しない結果を招く可能性があります。自己責任で使用してください。</translation>
     </message>
+    <message>
+        <source>Clear Wi-Fi History</source>
+        <translation>Wi-Fi履歴のクリア</translation>
+    </message>
+    <message>
+        <source>Remove Wi-Fi SSID and MAC information from your operating system to prevent location history tracking. Warning: this will also delete all Wi-Fi passwords except for the currently connected network. On some systems, this may temporarily disable Wi-Fi.</source>
+        <translation>位置履歴の追跡を防ぐために、Wi-Fi SSIDとMAC情報をOSから削除してください。警告:これにより現在接続されているネットワーク以外のすべてのWi-Fiパスワードも削除されます。一部のシステムでは、これにより一時的にWi-Fiが無効になることがあります。</translation>
+    </message>
+    <message>
+        <source>Are you sure?</source>
+        <translation>確かですか。</translation>
+    </message>
+    <message>
+        <source>Are you sure you want to clear all your Wi-Fi history? This will also clear all Wi-Fi passwords except for the one you&apos;re currently connected to. This may also temporarily disable your Wi-Fi.</source>
+        <translation>Wi-Fi履歴をすべて消したいと本当に思っていますか?これにより、現在接続しているWi-Fiのパスワード以外のすべてのパスワードが解除されます。これにより一時的にWi-Fiが無効になることもあります。</translation>
+    </message>
 </context>
 <context>
     <name>PreferencesWindow::DecoyTrafficGroup</name>
@@ -1864,6 +1880,25 @@ Connect to a network first</source>
     <message>
         <source>Look &amp; Feel</source>
         <translation>ルック&amp;フィール</translation>
+    </message>
+</context>
+<context>
+    <name>PreferencesWindow::PreferencesWindowItem</name>
+    <message>
+        <source>Unsaved Changes</source>
+        <translation>保存されていない変更</translation>
+    </message>
+    <message>
+        <source>Discard</source>
+        <translation>捨て駒</translation>
+    </message>
+    <message>
+        <source>You have unsaved changes in edit fields. Do you want to save them?</source>
+        <translation>編集フィールドには保存されていない変更があります。彼らを救いたいのですか?</translation>
+    </message>
+    <message>
+        <source>Save</source>
+        <translation>セーブ</translation>
     </message>
 </context>
 <context>
@@ -2553,10 +2588,6 @@ If the reinstall does not help, please contact Windscribe support for assistance
         <translation>カスタム構成</translation>
     </message>
     <message>
-        <source>Show/Hide</source>
-        <translation>表示/非表示</translation>
-    </message>
-    <message>
         <source>Preferences</source>
         <translation>設定</translation>
     </message>
@@ -2571,6 +2602,10 @@ If the reinstall does not help, please contact Windscribe support for assistance
     <message>
         <source>Favourites</source>
         <translation>お気に入り</translation>
+    </message>
+    <message>
+        <source>Show app</source>
+        <translation>ショーアプリ</translation>
     </message>
 </context>
 <context>

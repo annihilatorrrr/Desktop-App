@@ -249,6 +249,14 @@ void Helper_win::setFirewallOnBoot(bool b)
     sendCommand(HelperCommand::setFirewallOnBoot, b);
 }
 
+bool Helper_win::clearWifiHistoryData()
+{
+    auto result = sendCommand(HelperCommand::clearWifiHistoryData);
+    bool success = false;
+    deserializeAnswer(result, success);
+    return success;
+}
+
 bool Helper_win::addHosts(const QString &hosts)
 {
     auto result = sendCommand(HelperCommand::addHosts, hosts.toStdWString());

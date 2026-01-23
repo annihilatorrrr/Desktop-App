@@ -1342,6 +1342,22 @@ If the problem persists after a restart, please send a debug log and open a supp
         <source>In this firewall mode, the Windscribe API will not be available while disconnected, this could have unintended consequences. Use at own risk.</source>
         <translation>इस फ़ायरवॉल मोड में, डिस्कनेक्ट होने पर विंडसाइड एपीआई उपलब्ध नहीं होगा, इसके अनपेक्षित परिणाम हो सकते हैं। अपने जोखिम पर उपयोग करें।</translation>
     </message>
+    <message>
+        <source>Clear Wi-Fi History</source>
+        <translation>वाई-फाई इतिहास साफ़ करें</translation>
+    </message>
+    <message>
+        <source>Remove Wi-Fi SSID and MAC information from your operating system to prevent location history tracking. Warning: this will also delete all Wi-Fi passwords except for the currently connected network. On some systems, this may temporarily disable Wi-Fi.</source>
+        <translation>स्थान इतिहास ट्रैकिंग को रोकने के लिए अपने ऑपरेटिंग सिस्टम से वाई-फाई एसएसआईडी और मैक जानकारी निकालें। चेतावनी: यह वर्तमान में कनेक्ट किए गए नेटवर्क को छोड़कर सभी वाई-फाई पासवर्ड भी हटा देगा। कुछ सिस्टम पर, यह अस्थायी रूप से वाई-फाई को अक्षम कर सकता है।</translation>
+    </message>
+    <message>
+        <source>Are you sure?</source>
+        <translation>क्या आपको यकीन है?</translation>
+    </message>
+    <message>
+        <source>Are you sure you want to clear all your Wi-Fi history? This will also clear all Wi-Fi passwords except for the one you&apos;re currently connected to. This may also temporarily disable your Wi-Fi.</source>
+        <translation>क्या आप वाकई अपना सारा वाई-फ़ाई इतिहास साफ़ करना चाहते हैं? यह उस पासवर्ड को छोड़कर सभी वाई-फाई पासवर्ड को भी साफ़ कर देगा जिससे आप वर्तमान में जुड़े हुए हैं। यह आपके वाई-फाई को अस्थायी रूप से अक्षम भी कर सकता है।</translation>
+    </message>
 </context>
 <context>
     <name>PreferencesWindow::DecoyTrafficGroup</name>
@@ -1864,6 +1880,25 @@ Connect to a network first</source>
     <message>
         <source>Look &amp; Feel</source>
         <translation>देखो और महसूस करो</translation>
+    </message>
+</context>
+<context>
+    <name>PreferencesWindow::PreferencesWindowItem</name>
+    <message>
+        <source>Unsaved Changes</source>
+        <translation>सहेजे न गए परिवर्तन</translation>
+    </message>
+    <message>
+        <source>Discard</source>
+        <translation>फेंक देना</translation>
+    </message>
+    <message>
+        <source>You have unsaved changes in edit fields. Do you want to save them?</source>
+        <translation>आपके पास संपादन फ़ील्ड में सहेजे न गए परिवर्तन हैं. क्या आप उन्हें बचाना चाहते हैं?</translation>
+    </message>
+    <message>
+        <source>Save</source>
+        <translation>सहेजें</translation>
     </message>
 </context>
 <context>
@@ -2553,10 +2588,6 @@ If the reinstall does not help, please contact Windscribe support for assistance
         <translation>कस्टम कॉन्फ़िगरेशन</translation>
     </message>
     <message>
-        <source>Show/Hide</source>
-        <translation>दिखाओ/छिपाओ</translation>
-    </message>
-    <message>
         <source>Preferences</source>
         <translation>प्राथमिकताएँ</translation>
     </message>
@@ -2571,6 +2602,10 @@ If the reinstall does not help, please contact Windscribe support for assistance
     <message>
         <source>Favourites</source>
         <translation>पसंदीदा</translation>
+    </message>
+    <message>
+        <source>Show app</source>
+        <translation>ऐप दिखाएं</translation>
     </message>
 </context>
 <context>

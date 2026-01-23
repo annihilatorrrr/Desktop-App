@@ -240,7 +240,7 @@ void TrayIcon::createMenuItems()
     }
 
 #if defined(Q_OS_MACOS) || defined(Q_OS_LINUX)
-    trayMenu_.addAction(tr("Show/Hide"), this, &TrayIcon::showHideClick);
+    trayMenu_.addAction(tr("Show app"), this, &TrayIcon::showClick);
 #endif
     trayMenu_.addAction(tr("Preferences"), this, &TrayIcon::preferencesClick);
     trayMenu_.addSeparator();

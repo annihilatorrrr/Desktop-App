@@ -132,6 +132,8 @@ public:
     void rotateIp();
     void fetchControldDevices(const QString &apiKey);
 
+    void clearWifiHistory();
+
 public slots:
     void init();
     void stopPacketDetection();
@@ -208,6 +210,8 @@ signals:
     void ipRotateResult(bool success);
     void connectingHostnameChanged(const QString &hostname);
     void controldDevicesFetched(CONTROLD_FETCH_RESULT result, const QList<QPair<QString, QString>> &devices);
+
+    void clearWifiHistoryFinished(bool success);
 
 private slots:
     void onLostConnectionToHelper();

@@ -28,6 +28,7 @@ std::string enableMacSpoofingOnBoot(const std::string &pars);
 std::string setDnsOfDynamicStoreEntry(const std::string &pars);
 std::string setIpv6Enabled(const std::string &pars);
 std::string deleteRoute(const std::string &pars);
+std::string clearWifiHistoryData(const std::string &pars);
 
 // installer commands
 std::string removeOldInstall(const std::string &pars);
@@ -63,7 +64,8 @@ static const std::map<const HelperCommand, std::function<std::string(const std::
     { HelperCommand::removeOldInstall, removeOldInstall },
     { HelperCommand::setInstallerPaths, setInstallerPaths },
     { HelperCommand::executeFilesStep, executeFilesStep },
-    { HelperCommand::createCliSymlink, createCliSymlink }
+    { HelperCommand::createCliSymlink, createCliSymlink },
+    { HelperCommand::clearWifiHistoryData, clearWifiHistoryData }
 };
 
 std::string processCommand(HelperCommand cmdId, const std::string &pars);

@@ -334,6 +334,7 @@
         <file>svg/preferences/AUTOSECURE_NETWORKS.svg</file>
         <file>svg/preferences/CIRCUMVENT_CENSORSHIP.svg</file>
         <file>svg/preferences/CLEAR_ICON.svg</file>
+        <file>svg/preferences/CLEAR_WIFI_ICON.svg</file>
         <file>svg/preferences/CNTXT_MENU_ICON.svg</file>
         <file>svg/preferences/CNTXT_MENU_SMALL_ICON.svg</file>
         <file>svg/preferences/COMMUNITY_SUPPORT.svg</file>
@@ -350,6 +351,7 @@
         <file>svg/preferences/EDIT_SMALL_ICON.svg</file>
         <file>svg/preferences/ERROR.svg</file>
         <file>svg/preferences/EXTERNAL_LINK_ICON.svg</file>
+        <file>svg/preferences/FAILED_ICON.svg</file>
         <file>svg/preferences/FAKE_NEWS.svg</file>
         <file>svg/preferences/FIREWALL_MODE.svg</file>
         <file>svg/preferences/FRWRD_ARROW_WHITE_ICON.svg</file>
@@ -392,6 +394,7 @@
         <file>svg/preferences/SOCIAL_NETWORKS.svg</file>
         <file>svg/preferences/SOUND_NOTIFICATIONS.svg</file>
         <file>svg/preferences/SPLIT_TUNNELING.svg</file>
+        <file>svg/preferences/SUCCESS_ICON.svg</file>
         <file>svg/preferences/START_MINIMIZED.svg</file>
         <file>svg/preferences/TALK_TO_GARRY.svg</file>
         <file>svg/preferences/TITLE_LINK.svg</file>

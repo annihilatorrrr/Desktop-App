@@ -28,6 +28,7 @@ std::string enableBFE(const std::string &pars);
 std::string resetAndStartRAS(const std::string &pars);
 std::string setIPv6EnabledInFirewall(const std::string &pars);
 std::string setFirewallOnBoot(const std::string &pars);
+std::string clearWifiHistoryData(const std::string &pars);
 std::string addHosts(const std::string &pars);
 std::string removeHosts(const std::string &pars);
 std::string closeAllTcpConnections(const std::string &pars);
@@ -75,6 +76,7 @@ static const std::map<const HelperCommand, std::function<std::string(const std::
     { HelperCommand::resetAndStartRAS, resetAndStartRAS },
     { HelperCommand::setIPv6EnabledInFirewall, setIPv6EnabledInFirewall },
     { HelperCommand::setFirewallOnBoot, setFirewallOnBoot },
+    { HelperCommand::clearWifiHistoryData, clearWifiHistoryData },
     { HelperCommand::addHosts, addHosts },
     { HelperCommand::removeHosts, removeHosts },
     { HelperCommand::closeAllTcpConnections, closeAllTcpConnections },

@@ -1342,6 +1342,22 @@ Yeniden başlatmanın ardından sorun devam ederse lütfen bir hata ayıklama g�
         <source>In this firewall mode, the Windscribe API will not be available while disconnected, this could have unintended consequences. Use at own risk.</source>
         <translation>Bu güvenlik duvarı modunda, bağlantı kesildiğinde Windscribe API&apos;si kullanılamaz, bunun istenmeyen sonuçları olabilir. Kendi sorumluluğunuzdadır kullanın.</translation>
     </message>
+    <message>
+        <source>Clear Wi-Fi History</source>
+        <translation>Wi-Fi Geçmişini Temizle</translation>
+    </message>
+    <message>
+        <source>Remove Wi-Fi SSID and MAC information from your operating system to prevent location history tracking. Warning: this will also delete all Wi-Fi passwords except for the currently connected network. On some systems, this may temporarily disable Wi-Fi.</source>
+        <translation>Konum geçmişi takimini önlemek için işletim sisteminizden Wi-Fi SSID ve MAC bilgilerini kaldırın. Uyarı: Bu durum mevcut ağ hariç tüm Wi-Fi şifrelerini de silecektir. Bazı sistemlerde bu durum geçici olarak Wi-Fi&apos;yi devre dışı bırakabilir.</translation>
+    </message>
+    <message>
+        <source>Are you sure?</source>
+        <translation>Emin misiniz?</translation>
+    </message>
+    <message>
+        <source>Are you sure you want to clear all your Wi-Fi history? This will also clear all Wi-Fi passwords except for the one you&apos;re currently connected to. This may also temporarily disable your Wi-Fi.</source>
+        <translation>Tüm Wi-Fi geçmişinizi temizlemek istediğinizden emin misiniz? Bu ayrıca şu anda bağlı olduğunuz parola dışındaki tüm Wi-Fi şifrelerini temizler. Bu durum Wi-Fi&apos;nizi geçici olarak devre dışı bırakabilir.</translation>
+    </message>
 </context>
 <context>
     <name>PreferencesWindow::DecoyTrafficGroup</name>
@@ -1864,6 +1880,25 @@ Connect to a network first</source>
     <message>
         <source>Look &amp; Feel</source>
         <translation>Bak ve Hisset</translation>
+    </message>
+</context>
+<context>
+    <name>PreferencesWindow::PreferencesWindowItem</name>
+    <message>
+        <source>Unsaved Changes</source>
+        <translation>Kaydedilmemiş Değişiklikler</translation>
+    </message>
+    <message>
+        <source>Discard</source>
+        <translation>Atma</translation>
+    </message>
+    <message>
+        <source>You have unsaved changes in edit fields. Do you want to save them?</source>
+        <translation>Düzenleme alanlarında kaydedilmemiş değişiklikler var. Onları kurtarmak mı istiyorsun?</translation>
+    </message>
+    <message>
+        <source>Save</source>
+        <translation>Kayd et</translation>
     </message>
 </context>
 <context>
@@ -2553,10 +2588,6 @@ Yeniden yükleme yardımcı olmazsa, lütfen yardım için Windscribe desteği i
         <translation>Özel yapılandırmalar</translation>
     </message>
     <message>
-        <source>Show/Hide</source>
-        <translation>Göster/Gizle</translation>
-    </message>
-    <message>
         <source>Preferences</source>
         <translation>Tercihler</translation>
     </message>
@@ -2571,6 +2602,10 @@ Yeniden yükleme yardımcı olmazsa, lütfen yardım için Windscribe desteği i
     <message>
         <source>Favourites</source>
         <translation>Favoriler</translation>
+    </message>
+    <message>
+        <source>Show app</source>
+        <translation>Gösteri uygulaması</translation>
     </message>
 </context>
 <context>

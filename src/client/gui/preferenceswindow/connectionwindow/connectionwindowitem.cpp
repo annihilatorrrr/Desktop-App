@@ -144,6 +144,14 @@ ConnectionWindowItem::ConnectionWindowItem(ScalableGraphicsObject *parent, Prefe
     connect(decoyTrafficGroup_, &DecoyTrafficGroup::decoyTrafficSettingsChanged, this, &ConnectionWindowItem::onDecoyTrafficSettingsChangedByUser);
     addItem(decoyTrafficGroup_);
 
+
+    clearWifiHistoryGroup_ = new PreferenceGroup(this);
+    clearWifiHistoryItem_ = new LinkItem(clearWifiHistoryGroup_, LinkItem::LinkType::SUBPAGE_LINK);
+    clearWifiHistoryItem_->setIcon(ImageResourcesSvg::instance().getIndependentPixmap("preferences/CLEAR_WIFI_ICON"));
+    connect(clearWifiHistoryItem_, &LinkItem::clicked, this, &ConnectionWindowItem::onClearWifiHistoryClick);
+    clearWifiHistoryGroup_->addItem(clearWifiHistoryItem_);
+    addItem(clearWifiHistoryGroup_);
+
     antiCensorshipGroup_ = new PreferenceGroup(this);
     antiCensorshipItem_ = new ToggleItem(antiCensorshipGroup_, tr("Circumvent Censorship"));
     antiCensorshipItem_->setIcon(ImageResourcesSvg::instance().getIndependentPixmap("preferences/CIRCUMVENT_CENSORSHIP"));
@@ -205,6 +213,17 @@ void ConnectionWindowItem::showPacketSizeDetectionError(const QString &title,
                                                         const QString &message)
 {
     packetSizeGroup_->showPacketSizeDetectionError(title, message);
+}
+
+void ConnectionWindowItem::setClearWifiHistoryResult(bool success)
+{
+    if (success) {
+        clearWifiHistoryItem_->setLinkIcon(ImageResourcesSvg::instance().getIndependentPixmap("preferences/SUCCESS_ICON"));
+    } else {
+        clearWifiHistoryItem_->setLinkIcon(ImageResourcesSvg::instance().getIndependentPixmap("preferences/FAILED_ICON"));
+    }
+    clearWifiHistoryItem_->setInProgress(false);
+    clearWifiState_ = ClearWifiState::kFinished;
 }
 
 void ConnectionWindowItem::onFirewallPreferencesChangedByUser(const types::FirewallSettings &fm)
@@ -386,6 +405,11 @@ void ConnectionWindowItem::onLanguageChanged()
     antiCensorshipItem_->setCaption(tr("Circumvent Censorship"));
     antiCensorshipItem_->setDescription(tr("Connect to the VPN even in hostile environment."),
                                         QString("https://%1/features/circumvent-censorship").arg(HardcodedSettings::instance().windscribeServerUrl()));
+
+    clearWifiHistoryItem_->setTitle(tr("Clear Wi-Fi History"));
+    clearWifiHistoryGroup_->setDescription(tr("Remove Wi-Fi SSID and MAC information from your operating system to prevent location history tracking. "
+                                              "Warning: this will also delete all Wi-Fi passwords except for the currently connected network. "
+                                              "On some systems, this may temporarily disable Wi-Fi."));
 }
 
 void ConnectionWindowItem::onIsAllowLanTrafficPreferencesChangedByUser(bool b)
@@ -524,6 +548,37 @@ void ConnectionWindowItem::onUpdateIsSecureHotspotSupported()
         }
     }
 #endif
+}
+
+void ConnectionWindowItem::onClearWifiHistoryClick()
+{
+    auto acceptCallback = [this](bool) {
+        clearWifiState_ = ClearWifiState::kInitiated;
+        clearWifiHistoryItem_->setInProgress(true);
+        // A short delay so that the user sees the progress bar if the cleanup is very fast.
+        QTimer::singleShot(1000, this, [this]() {
+            emit clearWifiHistoryClick();
+        });
+    };
+
+    if (clearWifiState_ == ClearWifiState::kNotInitiated) {
+        GeneralMessageController::instance().showMessageWithRedAccept(
+            "WARNING_WHITE",
+            tr("Are you sure?"),
+            tr("Are you sure you want to clear all your Wi-Fi history? "
+               "This will also clear all Wi-Fi passwords except for the one you're currently connected to. "
+                "This may also temporarily disable your Wi-Fi."),
+            tr("Clear Wi-Fi History"),
+            GeneralMessageController::tr(GeneralMessageController::kCancel),
+            "",
+            acceptCallback,
+            std::function<void(bool b)>(nullptr),
+            std::function<void(bool b)>(nullptr),
+            GeneralMessage::kFromPreferences);
+    } else if (clearWifiState_ == ClearWifiState::kFinished) {
+        clearWifiHistoryItem_->setLinkIcon(ImageResourcesSvg::instance().getIndependentPixmap("preferences/FRWRD_ARROW_WHITE_ICON"));
+        clearWifiState_ = ClearWifiState::kNotInitiated;
+    }
 }
 
 void ConnectionWindowItem::onIsAutoConnectPreferencesChangedByUser(bool on)

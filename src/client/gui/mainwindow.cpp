@@ -166,6 +166,7 @@ MainWindow::MainWindow() :
     connect(backend_, &Backend::robertFiltersChanged, this, &MainWindow::onBackendRobertFiltersChanged);
     connect(backend_, &Backend::bridgeApiAvailabilityChanged, this, &MainWindow::onBackendBridgeApiAvailabilityChanged);
     connect(backend_, &Backend::ipRotateResult, this, &MainWindow::onBackendIpRotateResult);
+    connect(backend_, &Backend::clearWifiHistoryFinished, this, &MainWindow::onBackendClearWifiHistoryFinished);
     connect(backend_, &Backend::setRobertFilterResult, this, &MainWindow::onBackendSetRobertFilterResult);
     connect(backend_, &Backend::protocolStatusChanged, this, &MainWindow::onBackendProtocolStatusChanged);
     connect(backend_, &Backend::splitTunnelingStartFailed, this, &MainWindow::onSplitTunnelingStartFailed);
@@ -283,6 +284,7 @@ MainWindow::MainWindow() :
     connect(mainWindowController_->getPreferencesWindow(), &PreferencesWindow::PreferencesWindowItem::exportLocationNamesClick, this, &MainWindow::onPreferencesExportLocationNamesClick);
     connect(mainWindowController_->getPreferencesWindow(), &PreferencesWindow::PreferencesWindowItem::importLocationNamesClick, this, &MainWindow::onPreferencesImportLocationNamesClick);
     connect(mainWindowController_->getPreferencesWindow(), &PreferencesWindow::PreferencesWindowItem::resetLocationNamesClick, this, &MainWindow::onPreferencesResetLocationNamesClick);
+    connect(mainWindowController_->getPreferencesWindow(), &PreferencesWindow::PreferencesWindowItem::clearWifiHistoryClick, this, &MainWindow::onPreferencesClearWifiHistoryClick);
 
     // emergency window signals
     connect(mainWindowController_->getEmergencyConnectWindow(), &EmergencyConnectWindow::EmergencyConnectWindowItem::escapeClick, this, &MainWindow::onEscapeClick);
@@ -368,7 +370,7 @@ MainWindow::MainWindow() :
     connect(trayIcon_, &TrayIcon::connectClick, this, &MainWindow::onConnectWindowConnectClick);
     connect(trayIcon_, &TrayIcon::disconnectClick, this, &MainWindow::onConnectWindowConnectClick);
     connect(trayIcon_, &TrayIcon::preferencesClick, this, &MainWindow::onTrayPreferences);
-    connect(trayIcon_, &TrayIcon::showHideClick, this, &MainWindow::onTrayShowHide);
+    connect(trayIcon_, &TrayIcon::showClick, this, &MainWindow::onTrayShow);
     connect(trayIcon_, &TrayIcon::helpMeClick, this, &MainWindow::onTrayHelpMe);
     connect(trayIcon_, &TrayIcon::quitClick, this, &MainWindow::onTrayQuit);
     connect(trayIcon_, &TrayIcon::locationSelected, this, &MainWindow::onLocationSelected);
@@ -984,7 +986,11 @@ void MainWindow::onLoginFirewallTurnOffClick()
 
 void MainWindow::onCaptchaBackClicked()
 {
-    mainWindowController_->changeWindow(MainWindowController::WINDOW_ID_LOGIN);
+    logoutReason_ = LOGOUT_GO_TO_LOGIN;
+    backend_->logout(false);
+    mainWindowController_->getLoggingInWindow()->hideCaptcha();
+    mainWindowController_->getLoginWindow()->transitionToUsernameScreen();
+    gotoLoginWindow();
 }
 
 void MainWindow::onCaptchaResolved(const QString &captchaSolution, const std::vector<float> &captchaTrailX, const std::vector<float> &captchaTrailY)
@@ -2736,6 +2742,11 @@ void MainWindow::onBackendIpRotateResult(bool success)
     }
 }
 
+void MainWindow::onBackendClearWifiHistoryFinished(bool bSuccess)
+{
+     mainWindowController_->getPreferencesWindow()->setClearWifiHistoryResult(bSuccess);
+}
+
 void MainWindow::onBackendProtocolStatusChanged(const QVector<types::ProtocolStatus> &status, bool isAutomaticMode)
 {
     if (isAutomaticMode) {
@@ -3301,15 +3312,10 @@ void MainWindow::onTrayPreferences()
     mainWindowController_->expandPreferences();
 }
 
-void MainWindow::onTrayShowHide()
+void MainWindow::onTrayShow()
 {
-    if (isMinimized() || !isVisible()) {
-        activateAndShow();
-        setBackendAppActiveState(true);
-    } else {
-        deactivateAndHide();
-        setBackendAppActiveState(false);
-    }
+    activateAndShow();
+    setBackendAppActiveState(true);
 }
 
 void MainWindow::onTrayHelpMe()
@@ -3448,17 +3454,6 @@ void MainWindow::hideSupplementaryWidgets()
     shadowManager_->removeObject(ShadowManager::SHAPE_ID_UPDATE_WIDGET);
 
     invalidateShadow();*/
-}
-
-void MainWindow::backToLoginWithErrorMessage(LoginWindow::ERROR_MESSAGE_TYPE errorMessageType, const QString &errorMessage)
-{
-    QApplication::setOverrideCursor(Qt::WaitCursor);
-    setEnabled(false);
-    logoutMessageType_ = errorMessageType;
-    logoutReason_ = LOGOUT_WITH_MESSAGE;
-    logoutErrorMessage_ = errorMessage;
-    selectedLocation_->clear();
-    backend_->logout(false);
 }
 
 QString MainWindow::getConnectionTime()
@@ -4051,6 +4046,11 @@ void MainWindow::onPreferencesResetLocationNamesClick()
 {
     qCDebug(LOG_LOCATION_LIST) << "Reset location names";
     backend_->locationsModelManager()->resetRenamedLocations();
+}
+
+void MainWindow::onPreferencesClearWifiHistoryClick()
+{
+    backend_->clearWifiHistory();
 }
 
 void MainWindow::onLocalDnsServerNotAvailable()

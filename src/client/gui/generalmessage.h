@@ -14,6 +14,7 @@ public:
         kFromPreferences = 1,
         kShowBottomPanel = 2, // alert only
         kNoUsername = 4,      // credential prompt only
+        kPriority = 8,
     };
     enum Type {
         kAlert,
@@ -39,6 +40,7 @@ public:
         this->source = source;
         this->flags = flags;
         this->learnMoreUrl = learnMoreUrl;
+        this->isRedAcceptButton = false;
     }
 
     explicit GeneralMessage(const QString &icon, const QString &title, const QString &desc, const QString &username,
@@ -60,6 +62,7 @@ public:
         this->source = source;
         this->flags = flags;
         this->learnMoreUrl = "";
+        this->isRedAcceptButton = false;
     }
 
     Type type;
@@ -77,4 +80,5 @@ public:
     Flags flags;
     QString learnMoreUrl;
     QString username;
+    bool isRedAcceptButton;
 };

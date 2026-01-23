@@ -1342,6 +1342,22 @@ Nếu sự cố vẫn tiếp diễn sau khi khởi động lại, vui lòng gử
         <source>In this firewall mode, the Windscribe API will not be available while disconnected, this could have unintended consequences. Use at own risk.</source>
         <translation>Ở chế độ tường lửa này, API Windscribe sẽ không khả dụng khi ngắt kết nối, điều này có thể gây ra những hậu quả không mong muốn. Tự chịu rủi ro khi sử dụng.</translation>
     </message>
+    <message>
+        <source>Clear Wi-Fi History</source>
+        <translation>Xóa lịch sử Wi-Fi</translation>
+    </message>
+    <message>
+        <source>Remove Wi-Fi SSID and MAC information from your operating system to prevent location history tracking. Warning: this will also delete all Wi-Fi passwords except for the currently connected network. On some systems, this may temporarily disable Wi-Fi.</source>
+        <translation>Xóa thông tin Wi-Fi SSID và MAC khỏi hệ điều hành của bạn để ngăn theo dõi lịch sử vị trí. Cảnh báo: thao tác này cũng sẽ xóa tất cả mật khẩu Wi-Fi ngoại trừ mạng hiện được kết nối. Trên một số hệ thống, thao tác này có thể tạm thời vô hiệu hóa Wi-Fi.</translation>
+    </message>
+    <message>
+        <source>Are you sure?</source>
+        <translation>Bạn có chắc không?</translation>
+    </message>
+    <message>
+        <source>Are you sure you want to clear all your Wi-Fi history? This will also clear all Wi-Fi passwords except for the one you&apos;re currently connected to. This may also temporarily disable your Wi-Fi.</source>
+        <translation>Bạn có chắc chắn muốn xóa tất cả lịch sử Wi-Fi của mình không? Thao tác này cũng sẽ xóa tất cả mật khẩu Wi-Fi ngoại trừ mật khẩu bạn hiện đang kết nối. Thao tác này cũng có thể tạm thời vô hiệu hóa Wi-Fi của bạn.</translation>
+    </message>
 </context>
 <context>
     <name>PreferencesWindow::DecoyTrafficGroup</name>
@@ -1864,6 +1880,25 @@ Kết nối với mạng trước</translation>
     <message>
         <source>Look &amp; Feel</source>
         <translation>Giao diện</translation>
+    </message>
+</context>
+<context>
+    <name>PreferencesWindow::PreferencesWindowItem</name>
+    <message>
+        <source>Unsaved Changes</source>
+        <translation>Thay đổi chưa lưu</translation>
+    </message>
+    <message>
+        <source>Discard</source>
+        <translation>Loại bỏ</translation>
+    </message>
+    <message>
+        <source>You have unsaved changes in edit fields. Do you want to save them?</source>
+        <translation>Bạn có những thay đổi chưa được lưu trong các trường chỉnh sửa. Bạn có muốn cứu họ không?</translation>
+    </message>
+    <message>
+        <source>Save</source>
+        <translation>Lưu</translation>
     </message>
 </context>
 <context>
@@ -2553,10 +2588,6 @@ Nếu việc cài đặt lại không hiệu quả, vui lòng liên hệ với b
         <translation>Cấu hình tùy chỉnh</translation>
     </message>
     <message>
-        <source>Show/Hide</source>
-        <translation>Hiển thị / Ẩn</translation>
-    </message>
-    <message>
         <source>Preferences</source>
         <translation>Sở thích</translation>
     </message>
@@ -2571,6 +2602,10 @@ Nếu việc cài đặt lại không hiệu quả, vui lòng liên hệ với b
     <message>
         <source>Favourites</source>
         <translation>Yêu thích</translation>
+    </message>
+    <message>
+        <source>Show app</source>
+        <translation>Hiển thị ứng dụng</translation>
     </message>
 </context>
 <context>

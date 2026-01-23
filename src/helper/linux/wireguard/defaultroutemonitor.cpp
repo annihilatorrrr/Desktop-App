@@ -7,6 +7,7 @@
 #include <linux/netlink.h>
 #include <linux/rtnetlink.h>
 #include <poll.h>
+#include <unistd.h>
 #include <spdlog/spdlog.h>
 
 namespace
@@ -39,6 +40,7 @@ void RouteMonitorThread(void *callerContext)
             }
         }
     }
+    close(socket_fd);
     spdlog::debug("Default route monitoring finished");
 }
 }  // namespace
