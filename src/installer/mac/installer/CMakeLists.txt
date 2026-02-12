@@ -64,7 +64,7 @@ set_target_properties(installer
 )
 
 target_include_directories(installer PRIVATE
-                           ../../../client/common
+                           ../../../client/client-common
                            ../../../client/engine/engine/helper
                            ../../../common
                            ../../common

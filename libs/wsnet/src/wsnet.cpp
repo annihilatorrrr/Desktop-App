@@ -21,7 +21,7 @@
 #include "decoytraffic/decoytraffic.h"
 #include "advancedparameters.h"
 #include "connectstate.h"
-#include "../../../src/client/common/version/windscribe_version.h"
+#include "../../../src/client/client-common/version/windscribe_version.h"
 
 #if defined(__ANDROID__)
     #include <scapix/bridge/java/on_load.h>
@@ -34,10 +34,6 @@ class WSNet_impl : public WSNet
 public:
     WSNet_impl() : work_(boost::asio::make_work_guard(io_context_))
     {
-        // no logging by default
-        if (!g_logger) {
-            g_logger = spdlog::null_logger_mt("wsnet");
-        }
         thread_ = std::thread([this](){ io_context_.run(); });
     }
 
@@ -53,8 +49,25 @@ public:
 
     bool initializeImpl(const std::string &basePlatform,  const std::string &platformName, const std::string &appVersion, const std::string &deviceId,
                         const std::string &openVpnVersion, const std::string &sessionTypeId,
-                        bool isUseStagingDomains, const std::string &language, const std::string &persistentSettings)
+                        bool isUseStagingDomains, const std::string &language, const std::string &persistentSettings,
+                        WSNetLoggerFunction loggerFunction, bool debugLog)
     {
+        spdlog::drop("wsnet");
+        if (loggerFunction) {
+            logger_ = callback_logger_mt("wsnet", loggerFunction);
+            auto formatter = spdlog_utils::createJsonFormatter();
+            logger_->set_formatter(std::move(formatter));
+
+            if (debugLog)
+                logger_->set_level(spdlog::level::trace);
+            else
+                logger_->set_level(spdlog::level::info);
+        } else {
+            logger_ = spdlog::null_logger_mt("wsnet");
+        }
+        // Make the variable g_logger global as a raw pointer
+        g_logger = logger_.get();
+
         g_logger->info("wsnet version: {}.{}.{}", WINDSCRIBE_MAJOR_VERSION, WINDSCRIBE_MINOR_VERSION, WINDSCRIBE_BUILD_VERSION);
 
         dnsResolver_ = std::make_shared<DnsResolver_cares>();
@@ -130,6 +143,8 @@ public:
     std::shared_ptr<WSNetUtils> utils() override { return utils_; }
 
 private:
+    std::shared_ptr<spdlog::logger> logger_;
+
     std::thread thread_;
     boost::asio::io_context io_context_;
     boost::asio::executor_work_guard<boost::asio::io_context::executor_type> work_;
@@ -150,51 +165,44 @@ private:
 };
 
 // static methods of WSNet implementation
-std::shared_ptr<WSNet_impl> g_wsNet;
+
+// Note: Android kills the program without warning, but sometimes calls the destructors of global C++ objects like g_wsNet
+// that can trigger DeleteGlobalRef() when JVM is already shut down.
+// One solution is to not call the destructors of these objects at all. So we use raw pointer over std::shared_ptr.
+// This is an intentional leak pointer that is widely used in the Android world.
+std::shared_ptr<WSNet_impl> *g_wsNet = nullptr;
 std::mutex g_mutex;
-
-void WSNet::setLogger(WSNetLoggerFunction loggerFunction, bool debugLog)
-{
-    assert(g_logger == nullptr);
-    if (loggerFunction) {
-        g_logger = callback_logger_mt("wsnet", loggerFunction);
-        auto formatter = spdlog_utils::createJsonFormatter();
-        g_logger->set_formatter(std::move(formatter));
-
-        if (debugLog)
-            g_logger->set_level(spdlog::level::trace);
-        else
-            g_logger->set_level(spdlog::level::info);
-    } else {
-        g_logger = spdlog::null_logger_mt("wsnet");
-    }
-}
 
 bool WSNet::initialize(const std::string &basePlatform,  const std::string &platformName, const std::string &appVersion, const std::string &deviceId,
                        const std::string &openVpnVersion, const std::string &sessionTypeId,
-                       bool isUseStagingDomains, const std::string &language, const std::string &persistentSettings)
+                       bool isUseStagingDomains, const std::string &language, const std::string &persistentSettings,
+                       WSNetLoggerFunction loggerFunction, bool debugLog)
 {
     std::lock_guard locker(g_mutex);
     assert(g_wsNet == nullptr);
-    g_wsNet.reset(new WSNet_impl);
-    return g_wsNet->initializeImpl(basePlatform, platformName, appVersion, deviceId, openVpnVersion,
-                                   sessionTypeId, isUseStagingDomains, language, persistentSettings);
+    g_wsNet = new std::shared_ptr<WSNet_impl>();
+    g_wsNet->reset(new WSNet_impl);
+    return (*g_wsNet)->initializeImpl(basePlatform, platformName, appVersion, deviceId, openVpnVersion,
+                                   sessionTypeId, isUseStagingDomains, language, persistentSettings,
+                                   loggerFunction, debugLog);
 }
 
 std::shared_ptr<WSNet> WSNet::instance()
 {
     std::lock_guard locker(g_mutex);
     assert(g_wsNet);
-    return g_wsNet;
+    return *g_wsNet;
 }
 
 void WSNet::cleanup()
 {
+    assert(g_wsNet);
     // Added more logs to debug cleanup hangs. Later can be deleted
-    g_logger->info("wsnet cleanup started");
+    g_logger->info("wsnet cleanup");
     std::lock_guard locker(g_mutex);
-    g_wsNet.reset();
-    g_logger->info("wsnet cleanup finished");
+    g_wsNet->reset();
+    delete g_wsNet;
+    g_wsNet = nullptr;
 }
 
 bool WSNet::isValid()

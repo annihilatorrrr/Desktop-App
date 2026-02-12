@@ -7,7 +7,7 @@ DnsResolver::DnsResolver(std::function<void (std::map<std::string, HostInfo>)> r
     resolveDomainsCallback_(resolveDomainsCallback),
     work_(boost::asio::make_work_guard(io_context_))
 {
-    if (!WSNet::initialize("", "", "", "", "", "", false, "en", "")) {
+    if (!WSNet::initialize("", "", "", "", "", "", false, "en", "", nullptr, false)) {
         spdlog::error("WSNet::initialize failed");
     }
 

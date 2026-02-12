@@ -34,9 +34,9 @@ int main(int argc, const char *argv[])
         if (log_utils::isOldLogFormat(logPath)) {
             remove(logPath.c_str());
         }
-        // Create rotation logger with 2 file with unlimited size
+        // Create rotation logger with 2 file with max size 2MB each
         // rotate it on open, the first file is the current log, the 2nd is the previous log
-        auto logger = spdlog::rotating_logger_mt("service", logPath, SIZE_MAX, 1, true);
+        auto logger = spdlog::rotating_logger_mt("service", logPath, 2 * 1024 * 1024, 1, true);
         // this will trigger flush on every log message
         logger->flush_on(spdlog::level::trace);
         spdlog::set_level(spdlog::level::trace);

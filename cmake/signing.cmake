@@ -77,7 +77,7 @@ endif()
 if(APPLE)
     # Extract Development Team ID from executable_signature_defs.h
     if(NOT DEFINED DEVELOPMENT_TEAM OR DEVELOPMENT_TEAM STREQUAL "")
-        set(SIGNATURE_DEFS_FILE "${CMAKE_CURRENT_SOURCE_DIR}/src/client/common/utils/executable_signature/executable_signature_defs.h")
+        set(SIGNATURE_DEFS_FILE "${CMAKE_CURRENT_SOURCE_DIR}/src/client/client-common/utils/executable_signature/executable_signature_defs.h")
         if(EXISTS "${SIGNATURE_DEFS_FILE}")
             file(READ "${SIGNATURE_DEFS_FILE}" SIGNATURE_DEFS)
             if(SIGNATURE_DEFS MATCHES "MACOS_CERT_DEVELOPER_ID \"[^(]+\\(([A-Z0-9]+)\\)\"")

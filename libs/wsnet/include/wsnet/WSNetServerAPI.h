@@ -150,8 +150,8 @@ public:
                                                                        WSNetRequestFinishedCallback callback) = 0;
     virtual std::shared_ptr<WSNetCancelableCallback> sso(const std::string &provider, const std::string &token,
                                                                    WSNetRequestFinishedCallback callback) = 0;
-    virtual std::shared_ptr<WSNetCancelableCallback> authTokenLogin(bool useAsciiCaptcha, WSNetRequestFinishedCallback callback) = 0;
-    virtual std::shared_ptr<WSNetCancelableCallback> authTokenSignup(bool useAsciiCaptcha, WSNetRequestFinishedCallback callback) = 0;
+    virtual std::shared_ptr<WSNetCancelableCallback> authTokenLogin(const std::string &username, bool useAsciiCaptcha, WSNetRequestFinishedCallback callback) = 0;
+    virtual std::shared_ptr<WSNetCancelableCallback> authTokenSignup(const std::string &username, bool useAsciiCaptcha, WSNetRequestFinishedCallback callback) = 0;
     virtual std::shared_ptr<WSNetCancelableCallback> passwordRecovery(const std::string &email, WSNetRequestFinishedCallback callback) = 0;
 };
 

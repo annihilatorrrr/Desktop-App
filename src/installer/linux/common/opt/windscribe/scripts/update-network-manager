@@ -43,6 +43,7 @@ case "$script_type" in
             RESOLV_TARGET=$(readlink -f /etc/resolv.conf)
             mv /tmp/resolv.conf "$RESOLV_TARGET"
             command -v restorecon >/dev/null 2>&1 && restorecon -F "$RESOLV_TARGET" 2>/dev/null || true
+            chattr +i "$RESOLV_TARGET"
 
             servers+=(${dns})
         fi
@@ -63,9 +64,9 @@ case "$script_type" in
             echo "Removing $ns from /etc/resolv.conf"
             cat /etc/resolv.conf | grep -v "nameserver $ns" > /tmp/resolv.conf
             RESOLV_TARGET=$(readlink -f /etc/resolv.conf)
+            chattr -i "$RESOLV_TARGET"
             mv /tmp/resolv.conf "$RESOLV_TARGET"
             command -v restorecon >/dev/null 2>&1 && restorecon -F "$RESOLV_TARGET" 2>/dev/null || true
-
         done
     fi
 

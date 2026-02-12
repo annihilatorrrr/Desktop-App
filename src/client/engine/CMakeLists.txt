@@ -25,7 +25,7 @@ target_compile_definitions(engine PRIVATE CMAKE_LIBRARY_LIBRARY
 
 
 target_include_directories(engine PRIVATE
-    ${CMAKE_CURRENT_SOURCE_DIR}/../common
+    ${CMAKE_CURRENT_SOURCE_DIR}/../client-common
 )
 
 add_subdirectory(engine)

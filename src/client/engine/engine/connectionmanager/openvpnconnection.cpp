@@ -509,6 +509,15 @@ void OpenVPNConnection::handleRead(const boost::system::error_code &err, size_t 
             {
                 emit error(CONNECT_ERROR::TCP_ERROR);
             }
+            else if (serverReply.contains("connect to [AF_INET]127.0.0.1", Qt::CaseInsensitive) &&
+                     serverReply.contains("Connection refused", Qt::CaseInsensitive))
+            {
+                qCInfo(LOG_CONNECTION) << "Localhost proxy (stunnel/wstunnel) connection refused, force-killing OpenVPN immediately";
+                killControllerTimer_.stop();
+                helper_->executeTaskKill(kTargetOpenVpn);
+                setCurrentStateAndEmitDisconnected(STATUS_DISCONNECTED);
+                return;
+            }
             else if (serverReply.contains("Initialization Sequence Completed With Errors", Qt::CaseInsensitive))
             {
                 emit error(CONNECT_ERROR::INITIALIZATION_SEQUENCE_COMPLETED_WITH_ERRORS);

@@ -5,10 +5,10 @@ set(TEST_SOURCES
 )
 
 add_executable (pingmultiplehosts.test ${TEST_SOURCES})
-target_link_libraries(pingmultiplehosts.test PRIVATE Qt6::Test Qt6::Network engine common ${OS_SPECIFIC_LIBRARIES})
+target_link_libraries(pingmultiplehosts.test PRIVATE Qt6::Test Qt6::Network engine client-common ${OS_SPECIFIC_LIBRARIES})
 target_include_directories(pingmultiplehosts.test PRIVATE
     ${PROJECT_DIRECTORY}/engine
-    ${PROJECT_DIRECTORY}/common
+    ${PROJECT_DIRECTORY}/client-common
     ${WINDSCRIBE_BUILD_LIBS_PATH}/curl/include
     ${WINDSCRIBE_BUILD_LIBS_PATH}/openssl/include
 )

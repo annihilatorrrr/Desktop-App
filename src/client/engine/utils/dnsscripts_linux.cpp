@@ -28,6 +28,7 @@ DnsScripts_linux::SCRIPT_TYPE DnsScripts_linux::detectScript()
 {
     // collecting information about DNS settings
     bool isResolvConfInstalled = false;
+    QString resolvConfSymlink;
     bool isSystemdResolvedServiceRunning = false;
     QString resolvConfFileSymlink;
     QString resolvConfFileHeader;
@@ -38,6 +39,9 @@ DnsScripts_linux::SCRIPT_TYPE DnsScripts_linux::detectScript()
         process.start("resolvconf");
         process.waitForFinished();
         isResolvConfInstalled = (process.error() == QProcess::UnknownError);
+        if (isResolvConfInstalled) {
+            resolvConfSymlink = getSymlink("/usr/bin/resolvconf");
+        }
     }
 
     // check if the systemd-resolved service is running.
@@ -54,29 +58,25 @@ DnsScripts_linux::SCRIPT_TYPE DnsScripts_linux::detectScript()
     // read a header of /etc/resolv.conf file
     {
         QFile file("/etc/resolv.conf");
-        if (file.open(QIODevice::ReadOnly))
-        {
+        if (file.open(QIODevice::ReadOnly)) {
             QTextStream in(&file);
-            while (!in.atEnd())
-            {
+            while (!in.atEnd()) {
                 QString line = in.readLine();
-                if (line.startsWith("#"))
-                {
+                if (line.startsWith("#")) {
                     resolvConfFileHeader += line;
                 }
             }
-        }
-        else
-        {
+        } else {
             qCDebug(LOG_BASIC) << "Can't open /etc/resolv.conf file";
         }
     }
 
-    qCDebug(LOG_BASIC) << "DNS-manager configuration: isResolvConfInstalled =" << isResolvConfInstalled << "; isSystemdResolvedServiceRunning =" << isSystemdResolvedServiceRunning << "; resolvConfFileSymlink =" << resolvConfFileSymlink;
+    qCDebug(LOG_BASIC) << "DNS-manager configuration: isResolvConfInstalled =" << isResolvConfInstalled << "; resolvConfSymlink =" << resolvConfSymlink <<
+                          "; isSystemdResolvedServiceRunning =" << isSystemdResolvedServiceRunning << "; resolvConfFileSymlink =" << resolvConfFileSymlink;
     qCDebug(LOG_BASIC) << "/etc/resolv.conf header:" << resolvConfFileHeader;
 
     // choosing a DNS-manager method based on the collected information
-
+    //
     // first method: we check if the resolv.conf file is symlinked to determine what is being used
     // and if its symlinked to: /run/systemd/resolve/resolv.conf then we know its systemd-resolved, regardless of which package is installed.
     // also, the systemd-resolved service must be running
@@ -85,8 +85,10 @@ DnsScripts_linux::SCRIPT_TYPE DnsScripts_linux::detectScript()
         return SYSTEMD_RESOLVED;
     }
 
-    // second method: based on check that the resolvconf utility is installed
-    if (isResolvConfInstalled) {
+    // second method: based on check that the resolvconf utility is installed and either:
+    // it's a symlink to resolvectl AND /etc/resolv.conf is a symlink to /run/systemd/... (systemd resolvconf) or,
+    // it's not a symlink (e.g. openresolv)
+    if (isResolvConfInstalled && (!resolvConfSymlink.endsWith("resolvectl") || resolvConfFileSymlink.contains("/run/systemd", Qt::CaseInsensitive))) {
         qCInfo(LOG_BASIC) << "The DNS installation method -> resolvconf";
         return RESOLV_CONF;
     }

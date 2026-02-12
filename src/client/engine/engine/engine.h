@@ -455,7 +455,7 @@ private:
     QString createConnectionId();
 
     void updateFirewallOnBoot();
-    void callAuthTokenLogin();
+    void callAuthTokenLogin(const QString &username);
     void updateApiResolutionSettingsInWsnet();
 
     BridgeApiManager *bridgeApiManager_;

@@ -65,11 +65,11 @@ set(SOURCES
     wireguard/wireguardcontroller.cpp
     wmi_utils.cpp
     version.rc
-    ../../client/common/utils/crashdump.cpp
-    ../../client/common/utils/crashhandler.cpp
-    ../../client/common/utils/executable_signature/executable_signature.cpp
-    ../../client/common/utils/executable_signature/executable_signature_win.cpp
-    ../../client/common/utils/servicecontrolmanager.cpp
+    ../../client/client-common/utils/crashdump.cpp
+    ../../client/client-common/utils/crashhandler.cpp
+    ../../client/client-common/utils/executable_signature/executable_signature.cpp
+    ../../client/client-common/utils/executable_signature/executable_signature_win.cpp
+    ../../client/client-common/utils/servicecontrolmanager.cpp
 )
 
 if(CI_MODE)
@@ -101,7 +101,7 @@ target_link_libraries(WindscribeService
 
 target_include_directories(WindscribeService PRIVATE
                            ${WINDSCRIBE_BUILD_LIBS_PATH}/wintun/include
-                           ../../client/common
+                           ../../client/client-common
                            ${WINREG_INCLUDE_DIRS}
 )
 

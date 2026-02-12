@@ -23,19 +23,17 @@ class EXPORTED WSNet : public scapix_object<WSNet>
 public:
     virtual ~WSNet() {}
 
-    // set debugLog to true for more verbose log output
-    // call this function only once before initialize the library
-    static void setLogger(WSNetLoggerFunction loggerFunction, bool debugLog);
-
     // basePlatform value can be "windows", "mac", "linux", "android", "ios"
     // platformName and appVersion values are added to each request.
     // difference between basePlatform and platformName is that platformName is more specific (for example windows_arm64/windows).
     // deviceId - unique device identifier, in particular used for the API StaticIps
     // must supply sessionTypeId, where 3 = DESKTOP, 4 = MOBILE (ios and android) to get an appropriate session type token
+    // set debugLog to true for more verbose log output
 
     static bool initialize(const std::string &basePlatform,  const std::string &platformName, const std::string &appVersion,
                            const std::string &deviceId, const std::string &openVpnVersion, const std::string &sessionTypeId,
-                           bool isUseStagingDomains, const std::string &language, const std::string &persistentSettings);
+                           bool isUseStagingDomains, const std::string &language, const std::string &persistentSettings,
+                           WSNetLoggerFunction loggerFunction, bool debugLog);
     static std::shared_ptr<WSNet> instance();
     static void cleanup();
     static bool isValid();

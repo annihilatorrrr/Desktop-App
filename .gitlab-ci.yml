@@ -152,7 +152,7 @@ variables:
     - $env:VCPKG_ROOT = $env:VCPKG_ROOT_WINDOWS
     - $env:VCPKG_DEFAULT_BINARY_CACHE = $env:VCPKG_DEFAULT_BINARY_CACHE_WINDOWS
     - tools/build_all ${BUILD_FLAG} ${ARCH_FLAG} --ci-mode
-    - $Diff = git diff src/client/gui/translations
+    - $Diff = git diff src/client/frontend/gui/translations
     - if ( $Diff.Count -ne 0 ) { echo "You have changed desktop strings which are not in ts files.  Update your ts files by building locally, run the translation script on them, and add them to the commit."; exit 1 }
     - $Diff = git diff src/installer/common/translations
     - if ( $Diff.Count -ne 0 ) { echo "You have changed installer strings which are not in ts files.  Update your ts files by building locally, run the translation script on them, and add them to the commit."; exit 1 }
@@ -875,9 +875,9 @@ test:translations:
   variables:
     GIT_STRATEGY: clone
   script:
-    - $Unfinished = Select-String -Path src\client\gui\translations\*,src\installer\common\translations\*,src\installer\windows\uninstaller\translations\* -Pattern 'type="unfinished"'
+    - $Unfinished = Select-String -Path src\client\frontend\gui\translations\*,src\installer\common\translations\*,src\installer\windows\uninstaller\translations\* -Pattern 'type="unfinished"'
     - if ( $Unfinished.Matches.Count -ne 0 ) { echo "You have untranslated strings in your ts files.  Run the translation script on the ts files and add them to the commit."; exit 1 }
-    - $Vanished = Select-String -Path src\client\gui\translations\*,src\installer\common\translations\*,src\installer\windows\uninstaller\translations\* -Pattern 'type="vanished"'
+    - $Vanished = Select-String -Path src\client\frontend\gui\translations\*,src\installer\common\translations\*,src\installer\windows\uninstaller\translations\* -Pattern 'type="vanished"'
     - if ( $Vanished.Matches.Count -ne 0 ) { echo "You have vanished strings in your ts files.  Run the translation script on the ts files with --remove-vanished and add them to the commit."; exit 1 }
   dependencies: []
   rules:

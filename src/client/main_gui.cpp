@@ -1,4 +1,4 @@
-#include "gui/mainwindow.h"
+#include "frontend/gui/mainwindow.h"
 
 #include <QApplication>
 #include <QFileInfo>
@@ -7,15 +7,15 @@
 #include <QSocketNotifier>
 #include <QWindow>
 
-#include "gui/dpiscalemanager.h"
+#include "frontend/gui/dpiscalemanager.h"
 #include "utils/log/logger.h"
 #include "utils/log/paths.h"
 #include "utils/utils.h"
 #include "utils/extraconfig.h"
 #include "version/appversion.h"
 #include "engine/openvpnversioncontroller.h"
-#include "gui/application/windscribeapplication.h"
-#include "gui/application/singleappinstance.h"
+#include "frontend/gui/application/windscribeapplication.h"
+#include "frontend/gui/application/singleappinstance.h"
 
 #ifdef Q_OS_WIN
     #include "types/global_consts.h"

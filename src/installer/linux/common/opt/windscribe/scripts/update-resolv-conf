@@ -66,6 +66,7 @@ case "$script_type" in
         servers+=(${NS})
     done
 
+    [[ "$(readlink -f "$(command -v resolvconf)")" != *resolvectl ]] && resolvconf -u
     if [[ -z "${is_wireguard}" ]]; then
         echo -n "$R" | resolvconf -a "${dev}.openvpn"
     else

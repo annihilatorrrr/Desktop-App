@@ -14,10 +14,10 @@
 #include <sstream>
 #include <spdlog/spdlog.h>
 
-#include "../../../client/common/types/global_consts.h"
-#include "../../../client/common/utils/servicecontrolmanager.h"
-#include "../../../client/common/utils/win32handle.h"
-#include "../../../client/common/utils/wsscopeguard.h"
+#include "../../../client/client-common/types/global_consts.h"
+#include "../../../client/client-common/utils/servicecontrolmanager.h"
+#include "../../../client/client-common/utils/win32handle.h"
+#include "../../../client/client-common/utils/wsscopeguard.h"
 #include "../../common/helper_commands.h"
 #include "../executecmd.h"
 #include "../utils.h"

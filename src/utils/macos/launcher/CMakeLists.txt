@@ -26,7 +26,7 @@ set_target_properties(WindscribeLauncher
                       MACOSX_BUNDLE_INFO_PLIST ${CMAKE_CURRENT_SOURCE_DIR}/info.plist
 )
 target_include_directories(WindscribeLauncher PRIVATE
-                           ../../../client/common
+                           ../../../client/client-common
 )
 
 # Sign launcher immediately after building

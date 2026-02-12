@@ -106,7 +106,7 @@ if(BUILD_APP)
         # Copy common files (licenses, etc.)
         COMMAND ${CMAKE_COMMAND} -E echo "Copying common files..."
         COMMAND ${CMAKE_COMMAND} -E copy_if_different
-                "${CMAKE_CURRENT_SOURCE_DIR}/src/client/common/licenses/open_source_licenses.txt"
+                "${CMAKE_CURRENT_SOURCE_DIR}/src/client/client-common/licenses/open_source_licenses.txt"
                 "${BUILD_INSTALLER_FILES}/open_source_licenses.txt"
     )
 

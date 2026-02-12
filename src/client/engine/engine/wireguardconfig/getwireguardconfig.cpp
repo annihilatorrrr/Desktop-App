@@ -12,6 +12,10 @@
 
 const QString GetWireGuardConfig::KEY_WIREGUARD_CONFIG = "wireguardConfig";
 
+// After each program launch we must force call wgConfigsInit
+// This static variable serves this purpose
+bool GetWireGuardConfig::isInitConfigWasCallAtleastOnce_ = false;
+
 using namespace wsnet;
 
 GetWireGuardConfig::GetWireGuardConfig(QObject *parent) : QObject(parent),
@@ -24,18 +28,18 @@ GetWireGuardConfig::~GetWireGuardConfig()
     SAFE_CANCEL_AND_DELETE_WSNET_REQUEST(request_);
 }
 
-void GetWireGuardConfig::getWireGuardConfig(const QString &serverName, bool deleteOldestKey, const QString &deviceId)
+void GetWireGuardConfig::getWireGuardConfig(const QString &serverName, bool deleteOldestKey)
 {
     WS_ASSERT(request_ == nullptr);
 
     serverName_ = serverName;
     deleteOldestKey_ = deleteOldestKey;
-    deviceId_ = deviceId;
     isRetryInitRequest_ = false;
 
     wireGuardConfig_.reset();
     WireGuardConfig storedConfig = readWireGuardConfigFromSettings();
-    if (storedConfig.haveKeyPair() && storedConfig.haveServerGeneratedPeerParams() && !storedConfig.clientIpAddress().isEmpty()) {
+    if (isInitConfigWasCallAtleastOnce_ && storedConfig.haveKeyPair() &&
+        storedConfig.haveServerGeneratedPeerParams() && !storedConfig.clientIpAddress().isEmpty()) {
         wireGuardConfig_ = storedConfig;
         emit getWireGuardConfigAnswer(WireGuardConfigRetCode::kSuccess, wireGuardConfig_);
     } else if (storedConfig.haveKeyPair()) {
@@ -46,7 +50,7 @@ void GetWireGuardConfig::getWireGuardConfig(const QString &serverName, bool dele
     }
 }
 
-void GetWireGuardConfig::onWgConfigsInitAnswer(wsnet::ServerApiRetCode serverApiRetCode, const std::string &jsonData)
+void GetWireGuardConfig::onWgConfigsInitAnswer(wsnet::ApiRetCode serverApiRetCode, const std::string &jsonData)
 {
     request_.reset();
 
@@ -92,7 +96,7 @@ void GetWireGuardConfig::onWgConfigsInitAnswer(wsnet::ServerApiRetCode serverApi
         return;
     }
 
-    QString cidr = res.hashedCIDR().first();
+    QString cidr = res.hashedCIDR().at(0);
     QString clientAddress = generateClientAddress(cidr);
     if (clientAddress.isEmpty()) {
         qCDebug(LOG_WIREGUARD) << "Failed to generate client address from CIDR:" << cidr;
@@ -104,6 +108,7 @@ void GetWireGuardConfig::onWgConfigsInitAnswer(wsnet::ServerApiRetCode serverApi
     wireGuardConfig_.setClientDnsAddress("10.255.255.1");
 
     writeWireGuardConfigToSettings(wireGuardConfig_);
+    isInitConfigWasCallAtleastOnce_ = true;
 
     emit getWireGuardConfigAnswer(WireGuardConfigRetCode::kSuccess, wireGuardConfig_);
 }

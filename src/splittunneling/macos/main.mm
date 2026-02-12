@@ -14,9 +14,9 @@ int main(int argc, char *argv[]) {
         std::string logPath = path + "/splittunnelextension.log";
 
         try {
-            // Create rotation logger with 2 files with unlimited size
+            // Create rotation logger with 2 files with max size 2MB each
             // rotate it on open, the first file is the current log, the 2nd is the previous log
-            auto logger = spdlog::rotating_logger_mt("splittunnelextension", logPath, SIZE_MAX, 1, true);
+            auto logger = spdlog::rotating_logger_mt("splittunnelextension", logPath, 2 * 1024 * 1024, 1, true);
             // this will trigger flush on every log message
             logger->flush_on(spdlog::level::err);
             spdlog::set_level(spdlog::level::err);

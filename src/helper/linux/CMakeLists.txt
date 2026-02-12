@@ -63,7 +63,7 @@ target_link_libraries(helper
 
 target_include_directories(helper PRIVATE
                            ../../posix_common
-                           ../../client/common
+                           ../../client/client-common
 )
 
 install(TARGETS helper

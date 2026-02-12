@@ -31,11 +31,11 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
 
 # Read version from header file
-file(STRINGS "${CMAKE_CURRENT_SOURCE_DIR}/src/client/common/version/windscribe_version.h"
+file(STRINGS "${CMAKE_CURRENT_SOURCE_DIR}/src/client/client-common/version/windscribe_version.h"
      VERSION_MAJOR_LINE REGEX "^#define WINDSCRIBE_MAJOR_VERSION")
-file(STRINGS "${CMAKE_CURRENT_SOURCE_DIR}/src/client/common/version/windscribe_version.h"
+file(STRINGS "${CMAKE_CURRENT_SOURCE_DIR}/src/client/client-common/version/windscribe_version.h"
      VERSION_MINOR_LINE REGEX "^#define WINDSCRIBE_MINOR_VERSION")
-file(STRINGS "${CMAKE_CURRENT_SOURCE_DIR}/src/client/common/version/windscribe_version.h"
+file(STRINGS "${CMAKE_CURRENT_SOURCE_DIR}/src/client/client-common/version/windscribe_version.h"
      VERSION_BUILD_LINE REGEX "^#define WINDSCRIBE_BUILD_VERSION")
 
 string(REGEX REPLACE "^#define WINDSCRIBE_MAJOR_VERSION ([0-9]+).*" "\\1"
@@ -46,7 +46,7 @@ string(REGEX REPLACE "^#define WINDSCRIBE_BUILD_VERSION ([0-9]+).*" "\\1"
        WINDSCRIBE_VERSION_BUILD "${VERSION_BUILD_LINE}")
 
 # Detect build type (guinea pig, beta, or stable)
-file(READ "${CMAKE_CURRENT_SOURCE_DIR}/src/client/common/version/windscribe_version.h" VERSION_FILE_CONTENTS)
+file(READ "${CMAKE_CURRENT_SOURCE_DIR}/src/client/client-common/version/windscribe_version.h" VERSION_FILE_CONTENTS)
 if(VERSION_FILE_CONTENTS MATCHES "^[^/]*#define WINDSCRIBE_IS_GUINEA_PIG" OR
    VERSION_FILE_CONTENTS MATCHES "\n[^/]*#define WINDSCRIBE_IS_GUINEA_PIG")
     set(WINDSCRIBE_BUILD_TYPE "guinea_pig")

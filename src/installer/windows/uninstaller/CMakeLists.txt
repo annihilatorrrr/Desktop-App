@@ -18,7 +18,7 @@ set(SOURCES
     registry.cpp
     remove_directory.cpp
     uninstall.cpp
-    ../../../client/common/utils/servicecontrolmanager.cpp
+    ../../../client/client-common/utils/servicecontrolmanager.cpp
     ../utils/applicationinfo.cpp
     ../utils/path.cpp
     ../utils/utils.cpp
@@ -31,9 +31,9 @@ set_property(TARGET uninstall PROPERTY LINK_FLAGS "/MANIFESTUAC:\"level='require
 
 target_include_directories(uninstall
     PRIVATE
-    ../../../client/common
-    ../../../client/common/types
-    ../../../client/common/utils
+    ../../../client/client-common
+    ../../../client/client-common/types
+    ../../../client/client-common/utils
 )
 
 target_link_libraries(uninstall

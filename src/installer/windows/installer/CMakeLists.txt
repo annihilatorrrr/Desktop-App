@@ -18,9 +18,9 @@ qt_standard_project_setup(REQUIRES 6.5)
 add_definitions(-DUNICODE -D_UNICODE /wd4090 -D_CRT_SECURE_NO_WARNINGS -D_SILENCE_CXX17_CODECVT_HEADER_DEPRECATION_WARNING)
 
 set(SOURCES
-    ../../../client/common/utils/languagesutil.cpp
-    ../../../client/common/utils/servicecontrolmanager.cpp
-    ../../../client/common/utils/wincryptutils.cpp
+    ../../../client/client-common/utils/languagesutil.cpp
+    ../../../client/client-common/utils/servicecontrolmanager.cpp
+    ../../../client/client-common/utils/wincryptutils.cpp
     ../utils/applicationinfo.cpp
     ../utils/path.cpp
     ../utils/utils.cpp
@@ -74,9 +74,9 @@ target_link_libraries(installer
 
 target_include_directories(installer
     PRIVATE
-    ../../../client/common
-    ../../../client/common/types
-    ../../../client/common/utils
+    ../../../client/client-common
+    ../../../client/client-common/types
+    ../../../client/client-common/utils
     ../../common
 )
 

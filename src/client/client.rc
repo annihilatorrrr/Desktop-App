@@ -1,7 +1,7 @@
 #include <windows.h>
-#include "../common/version/windscribe_version.h"
+#include "../client-common/version/windscribe_version.h"
 
-IDI_ICON1 ICON DISCARDABLE "gui/resources/icons/win/windscribe.ico"
+IDI_ICON1 ICON DISCARDABLE "frontend/gui/resources/icons/win/windscribe.ico"
 
 VS_VERSION_INFO VERSIONINFO
     FILEVERSION WINDSCRIBE_MAJOR_VERSION, WINDSCRIBE_MINOR_VERSION, WINDSCRIBE_BUILD_VERSION, 0

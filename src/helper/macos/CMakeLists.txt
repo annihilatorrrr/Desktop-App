@@ -9,10 +9,10 @@ if(DEFINE_USE_SIGNATURE_CHECK_MACRO)
 endif(DEFINE_USE_SIGNATURE_CHECK_MACRO)
 
 set(SOURCES
-    ../../client/common/utils/executable_signature/executable_signature.cpp
-    ../../client/common/utils/executable_signature/executable_signature.h
-    ../../client/common/utils/executable_signature/executable_signature_mac.mm
-    ../../client/common/utils/executable_signature/executable_signature.h
+    ../../client/client-common/utils/executable_signature/executable_signature.cpp
+    ../../client/client-common/utils/executable_signature/executable_signature.h
+    ../../client/client-common/utils/executable_signature/executable_signature_mac.mm
+    ../../client/client-common/utils/executable_signature/executable_signature.h
     3rdparty/pstream.h
     clear_wifi_history/clear_wifi_history.mm
     execute_cmd.cpp
@@ -100,5 +100,5 @@ add_custom_command(TARGET com.windscribe.helper.macos POST_BUILD
 )
 
 target_include_directories(com.windscribe.helper.macos PRIVATE
-                           ../../client/common
+                           ../../client/client-common
 )

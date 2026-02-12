@@ -46,8 +46,7 @@ namespace serverapi_requests_factory
     BaseRequest *setRobertFilter(const std::string &authHash, const std::string &id,  std::int32_t status, RequestFinishedCallback callback);
     BaseRequest *syncRobert(const std::string &authHash, RequestFinishedCallback callback);
 
-    BaseRequest *wgConfigsInit(const std::string &authHash, const std::string &clientPublicKey,
-                                                           bool deleteOldestKey, RequestFinishedCallback callback);
+    BaseRequest *wgConfigsInit(const std::string &authHash, const std::string &clientPublicKey, bool deleteOldestKey, const std::string &deviceId, RequestFinishedCallback callback);
     BaseRequest *wgConfigsConnect(const std::string &authHash, const std::string &clientPublicKey,
                                                               const std::string &hostname, const std::string &deviceId, const std::string &wgTtl,
                                                               RequestFinishedCallback callback);
@@ -89,8 +88,8 @@ namespace serverapi_requests_factory
     BaseRequest *verifyTvLoginCode(const std::string &authHash, const std::string &xpressCode, RequestFinishedCallback callback);
     BaseRequest *cancelAccount(const std::string &authHash, const std::string &password, RequestFinishedCallback callback);
     BaseRequest *sso(const std::string &provider, const std::string &token, RequestFinishedCallback callback);
-    BaseRequest *authTokenLogin(bool useAsciiCaptcha, RequestFinishedCallback callback);
-    BaseRequest *authTokenSignup(bool useAsciiCaptcha, RequestFinishedCallback callback);
+    BaseRequest *authTokenLogin(const std::string &username, bool useAsciiCaptcha, RequestFinishedCallback callback);
+    BaseRequest *authTokenSignup(const std::string &username, bool useAsciiCaptcha, RequestFinishedCallback callback);
     BaseRequest *passwordRecovery(const std::string &email, RequestFinishedCallback callback);
 }
 

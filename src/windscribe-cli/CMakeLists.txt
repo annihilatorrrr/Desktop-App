@@ -40,23 +40,23 @@ set(SOURCES
     main.cpp
     strings.cpp
     utils.cpp
-    ../client/common/utils/ipvalidation.cpp
-    ../client/common/ipc/commandfactory.cpp
-    ../client/common/ipc/connection.cpp
-    ../client/common/ipc/server.cpp
-    ../client/common/types/locationid.cpp
-    ../client/common/types/protocol.cpp
-    ../client/common/utils/extraconfig.cpp
-    ../client/common/utils/languagesutil.cpp
-    ../client/common/utils/log/clean_sensitive_info.cpp
-    ../client/common/utils/log/categories.cpp
-    ../client/common/utils/log/logger.cpp
-    ../client/common/utils/log/paths.cpp
-    ../client/common/utils/utils.cpp
-    ../client/common/utils/hardcodedsettings.cpp
-    ../client/common/utils/simplecrypt.cpp
-    ../client/common/version/appversion.cpp
-    ../client/common/utils/executable_signature/executable_signature.cpp
+    ../client/client-common/utils/ipvalidation.cpp
+    ../client/client-common/ipc/commandfactory.cpp
+    ../client/client-common/ipc/connection.cpp
+    ../client/client-common/ipc/server.cpp
+    ../client/client-common/types/locationid.cpp
+    ../client/client-common/types/protocol.cpp
+    ../client/client-common/utils/extraconfig.cpp
+    ../client/client-common/utils/languagesutil.cpp
+    ../client/client-common/utils/log/clean_sensitive_info.cpp
+    ../client/client-common/utils/log/categories.cpp
+    ../client/client-common/utils/log/logger.cpp
+    ../client/client-common/utils/log/paths.cpp
+    ../client/client-common/utils/utils.cpp
+    ../client/client-common/utils/hardcodedsettings.cpp
+    ../client/client-common/utils/simplecrypt.cpp
+    ../client/client-common/version/appversion.cpp
+    ../client/client-common/utils/executable_signature/executable_signature.cpp
 )
 
 if(WIN32)
@@ -67,9 +67,9 @@ if(WIN32)
         Iphlpapi
         Version)
     list(APPEND SOURCES
-         ../client/common/utils/executable_signature/executable_signature_win.cpp
-         ../client/common/utils/servicecontrolmanager.cpp
-         ../client/common/utils/winutils.cpp
+         ../client/client-common/utils/executable_signature/executable_signature_win.cpp
+         ../client/client-common/utils/servicecontrolmanager.cpp
+         ../client/client-common/utils/winutils.cpp
          cli.rc)
     if(CI_MODE)
         add_compile_options("$<$<CONFIG:Release>:/Zi>")
@@ -89,17 +89,17 @@ elseif(APPLE)
         "-framework SystemConfiguration"
         )
     list(APPEND SOURCES
-         ../client/common/utils/network_utils/network_utils_mac.mm
-         ../client/common/utils/executable_signature/executable_signature_mac.mm
-         ../client/common/utils/macutils.mm)
+         ../client/client-common/utils/network_utils/network_utils_mac.mm
+         ../client/client-common/utils/executable_signature/executable_signature_mac.mm
+         ../client/client-common/utils/macutils.mm)
 else()
     set(CMAKE_FIND_LIBRARY_SUFFIXES ".a")
     set(OS_SPECIFIC_LIBS
         OpenSSL::Crypto
     )
     list(APPEND SOURCES
-         ../client/common/utils/executable_signature/executablesignature_linux.cpp
-         ../client/common/utils/linuxutils.cpp)
+         ../client/client-common/utils/executable_signature/executablesignature_linux.cpp
+         ../client/client-common/utils/linuxutils.cpp)
 endif()
 
 add_executable(windscribe-cli ${SOURCES})
@@ -152,7 +152,7 @@ target_link_libraries(windscribe-cli
 )
 
 target_include_directories(windscribe-cli PRIVATE
-                           ../client/common
+                           ../client/client-common
                            ../../libs/wsnet/include
 )
 

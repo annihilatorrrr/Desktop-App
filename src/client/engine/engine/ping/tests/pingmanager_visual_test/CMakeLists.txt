@@ -9,11 +9,11 @@ set(PROJECT_SOURCES
 )
 
 add_executable(pingmanager_visual_test ${PROJECT_SOURCES} )
-target_link_libraries(pingmanager_visual_test PRIVATE Qt${QT_VERSION_MAJOR}::Widgets Qt${QT_VERSION_MAJOR}::Network Qt${QT_VERSION_MAJOR}::Test engine common ${OS_SPECIFIC_LIBRARIES})
+target_link_libraries(pingmanager_visual_test PRIVATE Qt${QT_VERSION_MAJOR}::Widgets Qt${QT_VERSION_MAJOR}::Network Qt${QT_VERSION_MAJOR}::Test engine client-common ${OS_SPECIFIC_LIBRARIES})
 
 target_include_directories(pingmanager_visual_test PRIVATE
     ${PROJECT_DIRECTORY}/engine
-    ${PROJECT_DIRECTORY}/common
+    ${PROJECT_DIRECTORY}/client-common
     ${WINDSCRIBE_BUILD_LIBS_PATH}/curl/include
     ${WINDSCRIBE_BUILD_LIBS_PATH}/openssl/include
 )

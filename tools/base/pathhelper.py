@@ -22,7 +22,7 @@ import os
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))  # tools/base
 TOOLS_DIR = os.path.dirname(BASE_DIR)
 ROOT_DIR = os.path.dirname(TOOLS_DIR)
-COMMON_DIR = os.path.join(ROOT_DIR, "src/client/common")
+COMMON_DIR = os.path.join(ROOT_DIR, "src/client/client-common")
 TEMP_DIR = os.path.join(ROOT_DIR, "temp")
 
 # some filenames

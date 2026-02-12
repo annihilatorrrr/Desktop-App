@@ -20,7 +20,7 @@ find_package(spdlog CONFIG REQUIRED)
 set(SOURCES
     ServiceMain.cpp
     wireguard_service.rc
-    ../../../client/common/utils/servicecontrolmanager.cpp
+    ../../../client/client-common/utils/servicecontrolmanager.cpp
 )
 
 if(CI_MODE)
@@ -31,7 +31,7 @@ endif()
 add_executable(WireguardService ${SOURCES})
 
 target_include_directories(WireguardService PRIVATE
-                           ../../../client/common
+                           ../../../client/client-common
 )
 
 target_link_libraries(WireguardService PRIVATE

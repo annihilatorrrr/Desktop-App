@@ -3,7 +3,7 @@
 #include <arpa/inet.h>
 #include <spdlog/spdlog.h>
 #import <Security/Security.h>
-#include "../../client/common/utils/wsscopeguard.h"
+#include "../../client/client-common/utils/wsscopeguard.h"
 
 @implementation Settings
 

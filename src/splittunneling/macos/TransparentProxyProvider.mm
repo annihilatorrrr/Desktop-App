@@ -2,7 +2,7 @@
 
 #include <spdlog/spdlog.h>
 #import <Security/Security.h>
-#include "../../client/common/utils/wsscopeguard.h"
+#include "../../client/client-common/utils/wsscopeguard.h"
 
 #import "FlowTCP.h"
 #import "FlowUDP.h"

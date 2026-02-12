@@ -48,7 +48,8 @@ using wsnet_callback_sink_mt = wsnet_callback_sink<std::mutex>;
 template<typename Factory = spdlog::synchronous_factory>
 inline std::shared_ptr<spdlog::logger> callback_logger_mt(const std::string &logger_name, const wsnet_log_callback &callback)
 {
-    return Factory::template create<wsnet_callback_sink_mt>(logger_name, callback);
+    auto sink = std::make_shared<wsnet_callback_sink_mt>(callback);
+    return std::make_shared<spdlog::logger>(std::move(logger_name), std::move(sink));
 }
 
 } // namespace wsnet

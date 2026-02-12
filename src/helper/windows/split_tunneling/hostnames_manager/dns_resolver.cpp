@@ -6,12 +6,9 @@ using namespace wsnet;
 DnsResolver::DnsResolver(std::function<void (std::map<std::string, HostInfo>)> resolveDomainsCallback) :
     resolveDomainsCallback_(resolveDomainsCallback),
     work_(boost::asio::make_work_guard(io_context_))
-{
+{    
     // will not log the output from the library, too much unnecessary information
-     WSNet::setLogger([](const std::string &logStr) {
-    }, false);
-
-    if (!WSNet::initialize("", "", "", "", "", "", false, "en", "")) {
+    if (!WSNet::initialize("", "", "", "", "", "", false, "en", "", nullptr, false)) {
         spdlog::error("WSNet::initialize failed");
     }
 

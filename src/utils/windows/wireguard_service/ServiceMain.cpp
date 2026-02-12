@@ -169,9 +169,9 @@ int wmain(int argc, wchar_t *argv[])
         if (log_utils::isOldLogFormat(logPath)) {
             std::filesystem::remove(logPath);
         }
-        // Create rotation logger with 2 file with unlimited size
+        // Create rotation logger with 2 file with max size 2MB each
         // rotate it on open, the first file is the current log, the 2nd is the previous log
-        auto logger = spdlog::rotating_logger_mt("wg_service", logPath, SIZE_MAX, 1, true);
+        auto logger = spdlog::rotating_logger_mt("wg_service", logPath, 2 * 1024 * 1024, 1, true);
 
         // this will trigger flush on every log message
         logger->flush_on(spdlog::level::trace);

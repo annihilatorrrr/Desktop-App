@@ -101,13 +101,14 @@ Engine::Engine() : QObject(nullptr),
     connectionSettingsOverride_(types::Protocol(types::Protocol::TYPE::UNINITIALIZED), 0, true),
     loginWaitForNetworkConnectivity_(nullptr)
 {
-    WSNet::setLogger([](const std::string &logStr) {
+
+    auto wsnetLoggerCallback = [](const std::string &logStr) {
         // log wsnet outputs without formatting
         auto logger = spdlog::get("raw");
         if (logger) {
             logger->info(logStr);
         }
-    }, false);
+    };
 
     QSettings settings;
     std::string wsnetSettings = settings.value("wsnetSettings").toString().toStdString();
@@ -116,7 +117,8 @@ Engine::Engine() : QObject(nullptr),
                                            GetDeviceId::instance().getDeviceId().toStdString(),
                                            OpenVpnVersionController::instance().getOpenVpnVersion().toStdString(),
                                            "3", // must supply session_type_id where 3 = DESKTOP
-                                           AppVersion::instance().isStaging(), LanguagesUtil::systemLanguage().toStdString(), wsnetSettings);
+                                           AppVersion::instance().isStaging(), LanguagesUtil::systemLanguage().toStdString(), wsnetSettings,
+                                           wsnetLoggerCallback, false);
     WS_ASSERT(bWsnetSuccess);
 
     WSNet::instance()->apiResourcersManager()->setCallback([this](ApiResourcesManagerNotification notification, LoginResult loginResult, const std::string &errorMessage) {
@@ -2728,7 +2730,13 @@ void Engine::loginImpl(bool isUseAuthHash, const QString &username, const QStrin
 
     if (isUseAuthHash) {
         if (WSNet::instance()->apiResourcersManager()->isExist()) {
-            onApiResourcesManagerReadyForLogin(true);
+            // Check that portmap is valid. There was a case when invalid data was saved there.
+            api_responses::PortMap portMap(WSNet::instance()->apiResourcersManager()->portMap());
+            if (portMap.isValid()) {
+                onApiResourcesManagerReadyForLogin(true);
+            } else {
+                qCWarning(LOG_BASIC) << "Engine::loginImpl, Port map is invalid:" << WSNet::instance()->apiResourcersManager()->portMap();
+            }
         }
 
         if (isOnline) {
@@ -2745,7 +2753,7 @@ void Engine::loginImpl(bool isUseAuthHash, const QString &username, const QStrin
         loginCredentials_->code2fa = code2fa;
 
         if (isOnline) {
-            callAuthTokenLogin();
+            callAuthTokenLogin(loginCredentials_->username);
         } else {
             // wait for network connectivity maximum 10 sec
             WS_ASSERT(loginWaitForNetworkConnectivity_ == nullptr);
@@ -2758,7 +2766,7 @@ void Engine::loginImpl(bool isUseAuthHash, const QString &username, const QStrin
 
             connect(loginWaitForNetworkConnectivity_, &WaitForNetworkConnectivity::connectivityOnline, [this]() {
                 SAFE_DELETE_LATER(loginWaitForNetworkConnectivity_);
-                callAuthTokenLogin();
+                callAuthTokenLogin(loginCredentials_->username);
             });
 
             loginWaitForNetworkConnectivity_->wait(kLoginWaitTimeForNoNetwork);
@@ -2820,12 +2828,12 @@ void Engine::updateFirewallOnBoot()
     }
 }
 
-void Engine::callAuthTokenLogin()
+void Engine::callAuthTokenLogin(const QString &username)
 {
 #ifdef CLI_ONLY
-    WSNet::instance()->apiResourcersManager()->authTokenLogin(true);
+    WSNet::instance()->apiResourcersManager()->authTokenLogin(username.toStdString(), true);
 #else
-    WSNet::instance()->apiResourcersManager()->authTokenLogin(false);
+    WSNet::instance()->apiResourcersManager()->authTokenLogin(username.toStdString(), false);
 #endif
 }
 
@@ -2886,7 +2894,7 @@ void Engine::fetchControldDevices(const QString &apiKey)
 
 void Engine::clearWifiHistory()
 {
-    QMetaObject::invokeMethod(this, [this] {
+    QMetaObject::invokeMethod(this, [this] { // NOLINT: false positive for memory leak
         bool result = helper_->clearWifiHistoryData();
         emit clearWifiHistoryFinished(result);
     });

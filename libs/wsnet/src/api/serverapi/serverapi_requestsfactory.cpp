@@ -253,10 +253,11 @@ BaseRequest *serverapi_requests_factory::syncRobert(const std::string &authHash,
     return request;
 }
 
-BaseRequest *serverapi_requests_factory::wgConfigsInit(const std::string &authHash, const std::string &clientPublicKey, bool deleteOldestKey, RequestFinishedCallback callback)
+BaseRequest *serverapi_requests_factory::wgConfigsInit(const std::string &authHash, const std::string &clientPublicKey, bool deleteOldestKey, const std::string &deviceId, RequestFinishedCallback callback)
 {
     std::map<std::string, std::string> extraParams;
     extraParams["wg_pubkey"] = clientPublicKey;
+    extraParams["device_id"] = deviceId;
     if (deleteOldestKey)
         extraParams["force_init"] = "1";
 
@@ -457,9 +458,10 @@ BaseRequest *serverapi_requests_factory::sso(const std::string& provider, const 
     request->setContentTypeHeader("Content-type: text/html; charset=utf-8");
     return request;
 }
-BaseRequest *serverapi_requests_factory::authTokenLogin(bool useAsciiCaptcha, RequestFinishedCallback callback)
+BaseRequest *serverapi_requests_factory::authTokenLogin(const std::string &username, bool useAsciiCaptcha, RequestFinishedCallback callback)
 {
     std::map<std::string, std::string> extraParams;
+    extraParams["username"] = username;
     if (useAsciiCaptcha) {
         extraParams["captcha_type"] = "ascii";
     }
@@ -467,9 +469,10 @@ BaseRequest *serverapi_requests_factory::authTokenLogin(bool useAsciiCaptcha, Re
     request->setContentTypeHeader("Content-type: text/html; charset=utf-8");
     return request;
 }
-BaseRequest *serverapi_requests_factory::authTokenSignup(bool useAsciiCaptcha, RequestFinishedCallback callback)
+BaseRequest *serverapi_requests_factory::authTokenSignup(const std::string &username, bool useAsciiCaptcha, RequestFinishedCallback callback)
 {
     std::map<std::string, std::string> extraParams;
+    extraParams["username"] = username;
     if (useAsciiCaptcha) {
         extraParams["captcha_type"] = "ascii";
     }

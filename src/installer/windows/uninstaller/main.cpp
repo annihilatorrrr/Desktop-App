@@ -9,7 +9,7 @@
 
 #include "../utils/applicationinfo.h"
 #include "../utils/path.h"
-#include "../../../client/common/utils/log/spdlog_utils.h"
+#include "../../../client/client-common/utils/log/spdlog_utils.h"
 
 #include "../../../libs/wssecure/wssecure_globals.h"
 

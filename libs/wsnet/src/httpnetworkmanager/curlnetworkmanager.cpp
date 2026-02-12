@@ -107,12 +107,6 @@ void CurlNetworkManager::setProxySettings(const std::string &address, const std:
     proxySettings_.password = password;
 }
 
-void CurlNetworkManager::setWhitelistSocketsCallback(std::shared_ptr<CancelableCallback<WSNetHttpNetworkManagerWhitelistSocketsCallback> > callback)
-{
-    std::lock_guard locker(mutexForWhiteListSockets_);
-    whitelistSocketsCallback_ = callback;
-}
-
 void CurlNetworkManager::run()
 {
     // To reduce the frequency of logs, only once per domain unless errors happen
@@ -268,41 +262,6 @@ int CurlNetworkManager::progressCallback(void *ri, curl_off_t dltotal, curl_off_
     return 0;
 }
 
-int CurlNetworkManager::curlSocketCallback(void *clientp, curl_socket_t curlfd, curlsocktype purpose)
-{
-    CurlNetworkManager *this_ = (CurlNetworkManager *)clientp;
-
-    std::lock_guard locker(this_->mutexForWhiteListSockets_);
-    // whitelist the new socket descriptor
-    if (this_->whitelistSockets_.find(curlfd) == this_->whitelistSockets_.end()) {
-        this_->whitelistSockets_.insert(curlfd);
-        if (this_->whitelistSocketsCallback_) {
-            this_->whitelistSocketsCallback_->call(this_->whitelistSockets_);
-        }
-    }
-    return CURL_SOCKOPT_OK;
-}
-
-int CurlNetworkManager::curlCloseSocketCallback(void *clientp, curl_socket_t curlfd)
-{
-    CurlNetworkManager *this_ = (CurlNetworkManager *)clientp;
-#ifdef _WIN32
-    closesocket(curlfd);
-#else
-    close(curlfd);
-#endif
-    std::lock_guard locker(this_->mutexForWhiteListSockets_);
-    // whitelist the deleted socket descriptor
-    if (this_->whitelistSockets_.find(curlfd) != this_->whitelistSockets_.end()) {
-        this_->whitelistSockets_.erase(curlfd);
-        if (this_->whitelistSocketsCallback_) {
-            this_->whitelistSocketsCallback_->call(this_->whitelistSockets_);
-        }
-    }
-
-    return CURL_SOCKOPT_OK;
-}
-
 int CurlNetworkManager::curlTrace(CURL *handle, curl_infotype type, char *data, size_t size, void *clientp)
 {
     RequestInfo *requestInfo = static_cast<RequestInfo *>(clientp);
@@ -331,9 +290,7 @@ bool CurlNetworkManager::setupOptions(RequestInfo *requestInfo, const std::share
     if (curl_easy_setopt(requestInfo->curlEasyHandle, CURLOPT_ACCEPT_ENCODING, "") != CURLE_OK) return false;
     if (curl_easy_setopt(requestInfo->curlEasyHandle, CURLOPT_URL, request->url().c_str()) != CURLE_OK) return false;
 
-    if (curl_easy_setopt(requestInfo->curlEasyHandle, CURLOPT_SOCKOPTFUNCTION, curlSocketCallback) != CURLE_OK) return false;
     if (curl_easy_setopt(requestInfo->curlEasyHandle, CURLOPT_SOCKOPTDATA, this) != CURLE_OK) return false;
-    if (curl_easy_setopt(requestInfo->curlEasyHandle, CURLOPT_CLOSESOCKETFUNCTION, curlCloseSocketCallback) != CURLE_OK) return false;
     if (curl_easy_setopt(requestInfo->curlEasyHandle, CURLOPT_CLOSESOCKETDATA, this) != CURLE_OK) return false;
 
     g_logger->debug("New curl request : {}", request->url().c_str());
@@ -428,7 +385,15 @@ bool CurlNetworkManager::setupResolveHosts(RequestInfo *requestInfo, const std::
         if (port == 0) //  use 443 by default
             port = 443;
 
-        std::string strResolve = request->hostname() + ":" + std::to_string(port) + ":" + utils::join(ips, ",");
+        // take into account that a SNI domain can be specified
+        std::string hostname;
+        if (!request->sniDomain().empty()) {
+            hostname = request->sniDomain();
+        } else {
+            hostname = request->hostname();
+        }
+
+        std::string strResolve = hostname + ":" + std::to_string(port) + ":" + utils::join(ips, ",");
         struct curl_slist *hosts = curl_slist_append(NULL, strResolve.c_str());
         if (hosts == NULL) return false;
         requestInfo->curlLists.push_back(hosts);

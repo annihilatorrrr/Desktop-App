@@ -57,7 +57,7 @@ macro(linux_copy_files DEST_DIR TARGET_NAME)
     # Copy open source licenses
     add_custom_command(TARGET ${TARGET_NAME} POST_BUILD
         COMMAND ${CMAKE_COMMAND} -E copy_if_different
-                "${CMAKE_CURRENT_SOURCE_DIR}/src/client/common/licenses/open_source_licenses.txt"
+                "${CMAKE_CURRENT_SOURCE_DIR}/src/client/client-common/licenses/open_source_licenses.txt"
                 "${DEST_DIR}/opt/windscribe/"
     )
 

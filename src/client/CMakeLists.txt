@@ -61,10 +61,10 @@ set(PROJECT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
 
 if(DEFINE_CLI_ONLY_MACRO)
     set(PROJECT_SOURCES main_cli.cpp)
-    set(PROJECT_INCLUDE_DIRS ${CMAKE_CURRENT_SOURCE_DIR}/cli)
+    set(PROJECT_INCLUDE_DIRS ${CMAKE_CURRENT_SOURCE_DIR}/frontend/cli)
 else()
     set(PROJECT_SOURCES main_gui.cpp)
-    set(PROJECT_INCLUDE_DIRS ${CMAKE_CURRENT_SOURCE_DIR}/gui)
+    set(PROJECT_INCLUDE_DIRS ${CMAKE_CURRENT_SOURCE_DIR}/frontend/gui)
 endif()
 
 if (WIN32)
@@ -102,7 +102,7 @@ elseif (APPLE)
     )
 
     # add Mac icon to Resources bundle subfolder
-    set(MAC_APP_ICON ${CMAKE_CURRENT_SOURCE_DIR}/gui/resources/icons/Mac/windscribe.icns)
+    set(MAC_APP_ICON ${CMAKE_CURRENT_SOURCE_DIR}/frontend/gui/resources/icons/Mac/windscribe.icns)
     set_source_files_properties(${MAC_APP_ICON} PROPERTIES MACOSX_PACKAGE_LOCATION "Resources")
     list(APPEND PROJECT_SOURCES ${MAC_APP_ICON})
 
@@ -192,7 +192,7 @@ elseif (APPLE)
     add_custom_command(TARGET Windscribe POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_if_different
                        ${CMAKE_CURRENT_SOURCE_DIR}/../../build/src/windscribe-cli/windscribe-cli $<TARGET_FILE_DIR:Windscribe>/windscribe-cli)
     add_custom_command(TARGET Windscribe POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_if_different
-                       ${CMAKE_CURRENT_SOURCE_DIR}/common/licenses/open_source_licenses.txt $<TARGET_FILE_DIR:Windscribe>/../Resources/open_source_licenses.txt)
+                       ${CMAKE_CURRENT_SOURCE_DIR}/client-common/licenses/open_source_licenses.txt $<TARGET_FILE_DIR:Windscribe>/../Resources/open_source_licenses.txt)
 endif()
 
 if (WIN32)
@@ -202,12 +202,12 @@ elseif (APPLE)
 endif()
 
 if(UNIX AND (NOT APPLE) AND DEFINE_CLI_ONLY_MACRO)
-    set(CLIENT_LIBS cli base)
+    set(CLIENT_LIBS cli frontend-common)
 else()
-    set(CLIENT_LIBS gui base Qt6::Widgets)
+    set(CLIENT_LIBS gui frontend-common Qt6::Widgets)
 endif()
 
-target_link_libraries(Windscribe PRIVATE ${CLIENT_LIBS} engine common wsnet::wsnet spdlog::spdlog Qt6::Network ${OS_SPECIFIC_LIBRARIES})
+target_link_libraries(Windscribe PRIVATE ${CLIENT_LIBS} engine client-common wsnet::wsnet spdlog::spdlog Qt6::Network ${OS_SPECIFIC_LIBRARIES})
 
 if (UNIX AND (NOT APPLE))
     qt_import_plugins(Windscribe INCLUDE Qt6::QWaylandIntegrationPlugin Qt6::QXcbIntegrationPlugin)
@@ -215,8 +215,8 @@ endif()
 
 target_include_directories(Windscribe PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/engine
-    ${CMAKE_CURRENT_SOURCE_DIR}/common
-    ${CMAKE_CURRENT_SOURCE_DIR}/base
+    ${CMAKE_CURRENT_SOURCE_DIR}/client-common
+    ${CMAKE_CURRENT_SOURCE_DIR}/frontend/frontend-common
     ${PROJECT_INCLUDE_DIRS}
 )
 
@@ -255,13 +255,8 @@ if(APPLE)
 endif()
 
 add_subdirectory(engine)
-add_subdirectory(common)
-add_subdirectory(base)
-if(UNIX AND (NOT APPLE) AND DEFINE_CLI_ONLY_MACRO)
-    add_subdirectory(cli)
-else()
-    add_subdirectory(gui)
-endif()
+add_subdirectory(client-common)
+add_subdirectory(frontend)
 
 qt_finalize_executable(Windscribe)
 

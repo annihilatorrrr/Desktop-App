@@ -1,6 +1,6 @@
 #include "installhelper_mac.h"
 
-#include "../../../common/version/windscribe_version.h"
+#include "version/windscribe_version.h"
 #include "names.h"
 
 #import <Foundation/Foundation.h>

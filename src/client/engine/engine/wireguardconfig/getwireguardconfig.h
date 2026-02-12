@@ -23,22 +23,22 @@ public:
     GetWireGuardConfig(QObject *parent);
     ~GetWireGuardConfig();
 
-    void getWireGuardConfig(const QString &serverName, bool deleteOldestKey, const QString &deviceId);
+    void getWireGuardConfig(const QString &serverName, bool deleteOldestKey);
     static void removeWireGuardSettings();
 
 signals:
     void getWireGuardConfigAnswer(WireGuardConfigRetCode retCode, const WireGuardConfig &config);
 
 private slots:
-    void onWgConfigsInitAnswer(wsnet::ServerApiRetCode serverApiRetCode, const std::string &jsonData);
+    void onWgConfigsInitAnswer(wsnet::ApiRetCode serverApiRetCode, const std::string &jsonData);
 
 private:
     static const QString KEY_WIREGUARD_CONFIG;
     WireGuardConfig wireGuardConfig_;
     QString serverName_;
     bool deleteOldestKey_;
-    QString deviceId_;
     bool isRetryInitRequest_;
+    static bool isInitConfigWasCallAtleastOnce_;
     std::shared_ptr<wsnet::WSNetCancelableCallback> request_;
     SimpleCrypt simpleCrypt_;
 

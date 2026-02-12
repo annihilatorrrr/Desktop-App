@@ -3,7 +3,7 @@
 #include <system_error>
 #include <spdlog/spdlog.h>
 
-#include "../../../client/common/utils/servicecontrolmanager.h"
+#include "../../../client/client-common/utils/servicecontrolmanager.h"
 
 
 static const wchar_t* kServiceName = L"WindscribeSplitTunnel";

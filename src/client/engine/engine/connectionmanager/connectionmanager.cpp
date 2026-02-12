@@ -1055,8 +1055,7 @@ void ConnectionManager::doConnectPart2()
                 emit errorDuringConnection(WIREGUARD_COULD_NOT_RETRIEVE_CONFIG);
             } else {
                 qCInfo(LOG_CONNECTION) << "Requesting WireGuard config for hostname =" << currentConnectionDescr_.hostname;
-                QString deviceId = (isStaticIpsLocation() ? GetDeviceId::instance().getDeviceId() : QString());
-                getWireGuardConfig(currentConnectionDescr_.hostname, false, deviceId);
+                getWireGuardConfig(currentConnectionDescr_.hostname, false);
             }
             return;
         }
@@ -1452,8 +1451,7 @@ void ConnectionManager::onWireGuardKeyLimitUserResponse(bool deleteOldestKey)
 {
     if (deleteOldestKey)
     {
-        QString deviceId = (isStaticIpsLocation() ? GetDeviceId::instance().getDeviceId() : QString());
-        getWireGuardConfig(currentConnectionDescr_.hostname, true, deviceId);
+        getWireGuardConfig(currentConnectionDescr_.hostname, true);
         // restart connecting timeout
         connectingTimer_.start(kConnectingTimeoutWireGuard);
     }
@@ -1572,12 +1570,12 @@ void ConnectionManager::connectOrStartConnectTimer()
     }
 }
 
-void ConnectionManager::getWireGuardConfig(const QString &serverName, bool deleteOldestKey, const QString &deviceId)
+void ConnectionManager::getWireGuardConfig(const QString &serverName, bool deleteOldestKey)
 {
     SAFE_DELETE(getWireGuardConfig_);
     getWireGuardConfig_ = new GetWireGuardConfig(this);
     connect(getWireGuardConfig_, &GetWireGuardConfig::getWireGuardConfigAnswer, this, &ConnectionManager::onGetWireGuardConfigAnswer);
-    getWireGuardConfig_->getWireGuardConfig(serverName, deleteOldestKey, deviceId);
+    getWireGuardConfig_->getWireGuardConfig(serverName, deleteOldestKey);
 }
 
 QString ConnectionManager::dnsServersFromConnectedDnsInfo() const

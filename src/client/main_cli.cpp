@@ -3,7 +3,7 @@
 
 #include "application/singleappinstance.h"
 #include "application/windscribeapplication.h"
-#include "cli/mainservice.h"
+#include "frontend/cli/mainservice.h"
 #include "utils/log/logger.h"
 #include "utils/log/paths.h"
 #include "utils/log/categories.h"

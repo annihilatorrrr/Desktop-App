@@ -36,7 +36,6 @@ public:
                           const std::string &password = std::string()) override;
 
     std::shared_ptr<WSNetCancelableCallback> setWhitelistIpsCallback(WSNetHttpNetworkManagerWhitelistIpsCallback whitelistIpsCallback) override;
-    std::shared_ptr<WSNetCancelableCallback> setWhitelistSocketsCallback(WSNetHttpNetworkManagerWhitelistSocketsCallback whitelistSocketsCallback) override;
 
     void clearDnsCache();
 

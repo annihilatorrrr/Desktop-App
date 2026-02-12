@@ -47,8 +47,8 @@ target_link_libraries(bootstrap
 target_include_directories(bootstrap
     PRIVATE
     ../../utils
-    ../../../client/common/types
-    ../../../client/common/utils
+    ../../../client/client-common/types
+    ../../../client/client-common/utils
 )
 
 install(TARGETS bootstrap

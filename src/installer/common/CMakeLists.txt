@@ -38,7 +38,7 @@ qt_add_resources(installer qm_files
 )
 
 target_sources(installer PRIVATE
-    ../../client/common/utils/languagesutil.cpp
+    ../../client/client-common/utils/languagesutil.cpp
     alertwindow.cpp
     alertwindowcontents.cpp
     hoverbutton.cpp

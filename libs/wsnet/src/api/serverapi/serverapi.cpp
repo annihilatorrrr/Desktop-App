@@ -239,7 +239,7 @@ std::shared_ptr<WSNetCancelableCallback> ServerAPI::syncRobert(const std::string
 std::shared_ptr<WSNetCancelableCallback> ServerAPI::wgConfigsInit(const std::string &authHash, const std::string &clientPublicKey, bool deleteOldestKey, WSNetRequestFinishedCallback callback)
 {
     auto cancelableCallback = std::make_shared<CancelableCallback<WSNetRequestFinishedCallback>>(callback);
-    BaseRequest *request = serverapi_requests_factory::wgConfigsInit(authHash, clientPublicKey, deleteOldestKey, cancelableCallback);
+    BaseRequest *request = serverapi_requests_factory::wgConfigsInit(authHash, clientPublicKey, deleteOldestKey, Settings::instance().deviceId(), cancelableCallback);
     boost::asio::post(io_context_, [this, request] { impl_->executeRequest(std::unique_ptr<BaseRequest>(request)); });
     return cancelableCallback;
 }
@@ -388,17 +388,17 @@ std::shared_ptr<WSNetCancelableCallback> ServerAPI::sso(const std::string &provi
     boost::asio::post(io_context_, [this, request] { impl_->executeRequest(std::unique_ptr<BaseRequest>(request)); });
     return cancelableCallback;
 }
-std::shared_ptr<WSNetCancelableCallback> ServerAPI::authTokenLogin(bool useAsciiCaptcha, WSNetRequestFinishedCallback callback)
+std::shared_ptr<WSNetCancelableCallback> ServerAPI::authTokenLogin(const std::string &username, bool useAsciiCaptcha, WSNetRequestFinishedCallback callback)
 {
     auto cancelableCallback = std::make_shared<CancelableCallback<WSNetRequestFinishedCallback>>(callback);
-    BaseRequest *request = serverapi_requests_factory::authTokenLogin(useAsciiCaptcha, cancelableCallback);
+    BaseRequest *request = serverapi_requests_factory::authTokenLogin(username, useAsciiCaptcha, cancelableCallback);
     boost::asio::post(io_context_, [this, request] { impl_->executeRequest(std::unique_ptr<BaseRequest>(request)); });
     return cancelableCallback;
 }
-std::shared_ptr<WSNetCancelableCallback> ServerAPI::authTokenSignup(bool useAsciiCaptcha, WSNetRequestFinishedCallback callback)
+std::shared_ptr<WSNetCancelableCallback> ServerAPI::authTokenSignup(const std::string &username, bool useAsciiCaptcha, WSNetRequestFinishedCallback callback)
 {
     auto cancelableCallback = std::make_shared<CancelableCallback<WSNetRequestFinishedCallback>>(callback);
-    BaseRequest *request = serverapi_requests_factory::authTokenSignup(useAsciiCaptcha, cancelableCallback);
+    BaseRequest *request = serverapi_requests_factory::authTokenSignup(username, useAsciiCaptcha, cancelableCallback);
     boost::asio::post(io_context_, [this, request] { impl_->executeRequest(std::unique_ptr<BaseRequest>(request)); });
     return cancelableCallback;
 }

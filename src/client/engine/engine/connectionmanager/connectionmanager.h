@@ -241,7 +241,7 @@ private:
         const api_responses::PortMap &portMap,
         const types::ProxySettings &proxySettings);
     void connectOrStartConnectTimer();
-    void getWireGuardConfig(const QString &serverName, bool deleteOldestKey, const QString &deviceId);
+    void getWireGuardConfig(const QString &serverName, bool deleteOldestKey);
     QString dnsServersFromConnectedDnsInfo() const;
 
     void disconnect();

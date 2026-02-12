@@ -15,7 +15,7 @@ set(SOURCES
     logger.cpp
     windscribe_install_helper.cpp
     windscribe_install_helper.rc
-    ../../../client/common/utils/servicecontrolmanager.cpp
+    ../../../client/client-common/utils/servicecontrolmanager.cpp
 )
 
 if(CI_MODE)
@@ -28,7 +28,7 @@ set_property(TARGET WindscribeInstallHelper PROPERTY LINK_FLAGS "/MANIFESTUAC:\"
 
 target_include_directories(WindscribeInstallHelper
     PRIVATE
-    ../../../client/common/utils
+    ../../../client/client-common/utils
 )
 
 install(TARGETS WindscribeInstallHelper
