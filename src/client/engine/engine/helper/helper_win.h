@@ -32,7 +32,7 @@ public:
 
     bool executeTaskKill(CmdKillTarget target);
 
-    bool startWireGuard();
+    bool startWireGuard(bool useAmneziaWG);
     bool stopWireGuard();
     bool configureWireGuard(const WireGuardConfig &config);
     bool getWireGuardStatus(types::WireGuardStatus *status);

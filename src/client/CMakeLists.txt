@@ -38,6 +38,11 @@ if(DEFINE_USE_BUILD_ID_MACRO)
     add_definitions(-DUSE_BUILD_ID="${DEFINE_USE_BUILD_ID_MACRO}")
 endif(DEFINE_USE_BUILD_ID_MACRO)
 
+option(DEFINE_QT_CREATOR_DEV_BUILD_MACRO "Add define QT_CREATOR_DEV_BUILD to project" OFF)
+if(DEFINE_QT_CREATOR_DEV_BUILD_MACRO)
+    add_definitions(-DQT_CREATOR_DEV_BUILD)
+endif(DEFINE_QT_CREATOR_DEV_BUILD_MACRO)
+
 if(UNIX AND (NOT APPLE))
     option(DEFINE_CLI_ONLY_MACRO "Build GUI-less client" OFF)
     # if build requested a headless client, set the necessary definitions
@@ -118,81 +123,84 @@ qt_add_executable(Windscribe
 )
 
 if (WIN32)
-    #postbuild copy commands for Windows
-    add_custom_command(TARGET Windscribe POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_if_different
-                      ${VCPKG_INSTALLED_DIR}/${VCPKG_TARGET_TRIPLET}/tools/openvpn/openvpn.exe $<TARGET_FILE_DIR:Windscribe>/windscribeopenvpn.exe)
+    if (NOT DEFINE_QT_CREATOR_DEV_BUILD_MACRO)
+        #postbuild copy commands for Windows
+        add_custom_command(TARGET Windscribe POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_if_different
+                          ${VCPKG_INSTALLED_DIR}/${VCPKG_TARGET_TRIPLET}/tools/openvpn/openvpn.exe $<TARGET_FILE_DIR:Windscribe>/windscribeopenvpn.exe)
 
-    add_custom_command(TARGET Windscribe POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_if_different
-                                    ${VCPKG_INSTALLED_DIR}/${VCPKG_TARGET_TRIPLET}/tools/ctrld/ctrld.exe $<TARGET_FILE_DIR:Windscribe>/windscribectrld.exe)
-
+        add_custom_command(TARGET Windscribe POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_if_different
+                                        ${VCPKG_INSTALLED_DIR}/${VCPKG_TARGET_TRIPLET}/tools/ctrld/ctrld.exe $<TARGET_FILE_DIR:Windscribe>/windscribectrld.exe)
+    endif()
 elseif (APPLE)
     #postbuild copy commands for Mac
-    set(WINDSCRIBE_BUILD_LIBS_PATH ${CMAKE_CURRENT_SOURCE_DIR}/../../build-libs)
+    if (NOT DEFINE_QT_CREATOR_DEV_BUILD_MACRO)
+        set(WINDSCRIBE_BUILD_LIBS_PATH ${CMAKE_CURRENT_SOURCE_DIR}/../../build-libs)
 
-    # Ensure launcher is built before Windscribe
-    add_dependencies(Windscribe WindscribeLauncher)
-    add_dependencies(Windscribe com.windscribe.client.splittunnelextension)
+        # Ensure launcher is built before Windscribe
+        add_dependencies(Windscribe WindscribeLauncher)
+        add_dependencies(Windscribe com.windscribe.client.splittunnelextension)
 
-    # Copy launcher bundle
-    add_custom_command(TARGET Windscribe POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_directory
-                       $<TARGET_BUNDLE_DIR:WindscribeLauncher> $<TARGET_FILE_DIR:Windscribe>/../Library/LoginItems/WindscribeLauncher.app)
+        # Copy launcher bundle
+        add_custom_command(TARGET Windscribe POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_directory
+                           $<TARGET_BUNDLE_DIR:WindscribeLauncher> $<TARGET_FILE_DIR:Windscribe>/../Library/LoginItems/WindscribeLauncher.app)
 
-    # Copy helper executable
-    add_custom_command(TARGET Windscribe POST_BUILD COMMAND ${CMAKE_COMMAND} -E make_directory
-                       $<TARGET_FILE_DIR:Windscribe>/../Library/LaunchServices)
-    add_custom_command(TARGET Windscribe POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_if_different
-                       $<TARGET_FILE:com.windscribe.helper.macos> $<TARGET_FILE_DIR:Windscribe>/../Library/LaunchServices/)
-
-    # Copy openssl, wsnet, and post-quantum libs to Frameworks
-    add_custom_command(TARGET Windscribe POST_BUILD
-        COMMAND ${CMAKE_COMMAND} -E echo "Copying dependency libraries to Frameworks..."
-        COMMAND ${CMAKE_COMMAND} -E copy_if_different
-                ${VCPKG_INSTALLED_DIR}/${VCPKG_TARGET_TRIPLET}/lib/libcrypto.3.dylib
-                $<TARGET_FILE_DIR:Windscribe>/../Frameworks/libcrypto.3.dylib
-        COMMAND ${CMAKE_COMMAND} -E copy_if_different
-                ${VCPKG_INSTALLED_DIR}/${VCPKG_TARGET_TRIPLET}/lib/libssl.3.dylib
-                $<TARGET_FILE_DIR:Windscribe>/../Frameworks/libssl.3.dylib
-        COMMAND ${CMAKE_COMMAND} -E copy_if_different
-                $<TARGET_FILE:wsnet::wsnet>
-                $<TARGET_FILE_DIR:Windscribe>/../Frameworks/
-        COMMAND ${CMAKE_COMMAND} -E echo "Fixing RPATH on wsnet..."
-        COMMAND install_name_tool -add_rpath "@loader_path" $<TARGET_FILE_DIR:Windscribe>/../Frameworks/libwsnet.dylib
-    )
-
-    add_custom_command(TARGET Windscribe POST_BUILD COMMAND ${CMAKE_COMMAND} -E make_directory $<TARGET_FILE_DIR:Windscribe>/../Helpers)
-
-    add_custom_command(TARGET Windscribe POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_if_different
-                       ${VCPKG_INSTALLED_DIR}/${VCPKG_TARGET_TRIPLET}/tools/openvpn/sbin/openvpn $<TARGET_FILE_DIR:Windscribe>/../Helpers/windscribeopenvpn)
-
-    # Copy split tunnel extension
-    add_custom_command(TARGET Windscribe POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_directory
-                       $<TARGET_BUNDLE_DIR:com.windscribe.client.splittunnelextension> $<TARGET_FILE_DIR:Windscribe>/../Library/SystemExtensions/com.windscribe.client.splittunnelextension.systemextension)
-
-    # apply install_name_tool commands for the windscribeopenvpn binary, fix for the openssl libs
-    add_custom_command(TARGET Windscribe POST_BUILD
-        COMMAND bash -c [[OLD=$(otool -L ${0} | grep ${1} | uniq | sed s/.dylib.*/.dylib/ | awk '{$1=$1;print}'); install_name_tool -change ${OLD} @executable_path/../Frameworks/${1}.3.dylib ${0}]] $<TARGET_FILE_DIR:Windscribe>/../Helpers/windscribeopenvpn libssl
-        COMMAND bash -c [[OLD=$(otool -L ${0} | grep ${1} | uniq | sed s/.dylib.*/.dylib/ | awk '{$1=$1;print}'); install_name_tool -change ${OLD} @executable_path/../Frameworks/${1}.3.dylib ${0}]] $<TARGET_FILE_DIR:Windscribe>/../Helpers/windscribeopenvpn libcrypto
-        VERBATIM
-    )
-
-    add_custom_command(TARGET Windscribe POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_if_different
-                       ${WINDSCRIBE_BUILD_LIBS_PATH}/wireguard/windscribewireguard $<TARGET_FILE_DIR:Windscribe>/../Helpers/windscribewireguard)
-
-    add_custom_command(TARGET Windscribe POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_if_different
-                      ${VCPKG_INSTALLED_DIR}/${VCPKG_TARGET_TRIPLET}/tools/ctrld/ctrld $<TARGET_FILE_DIR:Windscribe>/../Helpers/windscribectrld)
-
-    add_custom_command(TARGET Windscribe POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_if_different
-                      ${WINDSCRIBE_BUILD_LIBS_PATH}/wstunnel/windscribewstunnel $<TARGET_FILE_DIR:Windscribe>/../Helpers/windscribewstunnel)
-
-    if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/../../data/provisioning_profile/embedded.provisionprofile")
+        # Copy helper executable
+        add_custom_command(TARGET Windscribe POST_BUILD COMMAND ${CMAKE_COMMAND} -E make_directory
+                           $<TARGET_FILE_DIR:Windscribe>/../Library/LaunchServices)
         add_custom_command(TARGET Windscribe POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_if_different
-                           "${CMAKE_CURRENT_SOURCE_DIR}/../../data/provisioning_profile/embedded.provisionprofile" $<TARGET_FILE_DIR:Windscribe>/../embedded.provisionprofile)
-    endif()
+                           $<TARGET_FILE:com.windscribe.helper.macos> $<TARGET_FILE_DIR:Windscribe>/../Library/LaunchServices/)
 
-    add_custom_command(TARGET Windscribe POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_if_different
-                       ${CMAKE_CURRENT_SOURCE_DIR}/../../build/src/windscribe-cli/windscribe-cli $<TARGET_FILE_DIR:Windscribe>/windscribe-cli)
-    add_custom_command(TARGET Windscribe POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_if_different
-                       ${CMAKE_CURRENT_SOURCE_DIR}/client-common/licenses/open_source_licenses.txt $<TARGET_FILE_DIR:Windscribe>/../Resources/open_source_licenses.txt)
+        # Copy openssl, wsnet, and post-quantum libs to Frameworks
+        add_custom_command(TARGET Windscribe POST_BUILD
+            COMMAND ${CMAKE_COMMAND} -E echo "Copying dependency libraries to Frameworks..."
+            COMMAND ${CMAKE_COMMAND} -E copy_if_different
+                    ${VCPKG_INSTALLED_DIR}/${VCPKG_TARGET_TRIPLET}/lib/libcrypto.3.dylib
+                    $<TARGET_FILE_DIR:Windscribe>/../Frameworks/libcrypto.3.dylib
+            COMMAND ${CMAKE_COMMAND} -E copy_if_different
+                    ${VCPKG_INSTALLED_DIR}/${VCPKG_TARGET_TRIPLET}/lib/libssl.3.dylib
+                    $<TARGET_FILE_DIR:Windscribe>/../Frameworks/libssl.3.dylib
+            COMMAND ${CMAKE_COMMAND} -E copy_if_different
+                    $<TARGET_FILE:wsnet::wsnet>
+                    $<TARGET_FILE_DIR:Windscribe>/../Frameworks/
+            COMMAND ${CMAKE_COMMAND} -E echo "Fixing RPATH on wsnet..."
+            COMMAND install_name_tool -add_rpath "@loader_path" $<TARGET_FILE_DIR:Windscribe>/../Frameworks/libwsnet.dylib
+        )
+
+        add_custom_command(TARGET Windscribe POST_BUILD COMMAND ${CMAKE_COMMAND} -E make_directory $<TARGET_FILE_DIR:Windscribe>/../Helpers)
+
+        add_custom_command(TARGET Windscribe POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_if_different
+                           ${VCPKG_INSTALLED_DIR}/${VCPKG_TARGET_TRIPLET}/tools/openvpn/sbin/openvpn $<TARGET_FILE_DIR:Windscribe>/../Helpers/windscribeopenvpn)
+
+        # Copy split tunnel extension
+        add_custom_command(TARGET Windscribe POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_directory
+                           $<TARGET_BUNDLE_DIR:com.windscribe.client.splittunnelextension> $<TARGET_FILE_DIR:Windscribe>/../Library/SystemExtensions/com.windscribe.client.splittunnelextension.systemextension)
+
+        # apply install_name_tool commands for the windscribeopenvpn binary, fix for the openssl libs
+        add_custom_command(TARGET Windscribe POST_BUILD
+            COMMAND bash -c [[OLD=$(otool -L ${0} | grep ${1} | uniq | sed s/.dylib.*/.dylib/ | awk '{$1=$1;print}'); install_name_tool -change ${OLD} @executable_path/../Frameworks/${1}.3.dylib ${0}]] $<TARGET_FILE_DIR:Windscribe>/../Helpers/windscribeopenvpn libssl
+            COMMAND bash -c [[OLD=$(otool -L ${0} | grep ${1} | uniq | sed s/.dylib.*/.dylib/ | awk '{$1=$1;print}'); install_name_tool -change ${OLD} @executable_path/../Frameworks/${1}.3.dylib ${0}]] $<TARGET_FILE_DIR:Windscribe>/../Helpers/windscribeopenvpn libcrypto
+            VERBATIM
+        )
+
+        add_custom_command(TARGET Windscribe POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_if_different
+                           ${WINDSCRIBE_BUILD_LIBS_PATH}/wireguard/windscribeamneziawg $<TARGET_FILE_DIR:Windscribe>/../Helpers/windscribeamneziawg)
+
+        add_custom_command(TARGET Windscribe POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_if_different
+                          ${VCPKG_INSTALLED_DIR}/${VCPKG_TARGET_TRIPLET}/tools/ctrld/ctrld $<TARGET_FILE_DIR:Windscribe>/../Helpers/windscribectrld)
+
+        add_custom_command(TARGET Windscribe POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_if_different
+                          ${WINDSCRIBE_BUILD_LIBS_PATH}/wstunnel/windscribewstunnel $<TARGET_FILE_DIR:Windscribe>/../Helpers/windscribewstunnel)
+
+        if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/../../data/provisioning_profile/embedded.provisionprofile")
+            add_custom_command(TARGET Windscribe POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_if_different
+                               "${CMAKE_CURRENT_SOURCE_DIR}/../../data/provisioning_profile/embedded.provisionprofile" $<TARGET_FILE_DIR:Windscribe>/../embedded.provisionprofile)
+        endif()
+
+        add_custom_command(TARGET Windscribe POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_if_different
+                           ${CMAKE_CURRENT_SOURCE_DIR}/../../build/src/windscribe-cli/windscribe-cli $<TARGET_FILE_DIR:Windscribe>/windscribe-cli)
+        add_custom_command(TARGET Windscribe POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_if_different
+                           ${CMAKE_CURRENT_SOURCE_DIR}/client-common/licenses/open_source_licenses.txt $<TARGET_FILE_DIR:Windscribe>/../Resources/open_source_licenses.txt)
+    endif()
 endif()
 
 if (WIN32)

@@ -18,15 +18,16 @@ public:
         return wgc;
     }
 
-    bool start();
+    bool start(bool verboseLogging);
     bool stop();
 
     bool configureAdapter(const std::string &ipAddress, const std::string &dnsAddressList,
-        const std::string &dnsScriptName, const std::vector<std::string> &allowedIps);
+                          const std::string &dnsScriptName, const std::vector<std::string> &allowedIps);
     bool configureDefaultRouteMonitor(const std::string &peerEndpoint);
     bool configure(const std::string &clientPrivateKey, const std::string &peerPublicKey,
-        const std::string &peerPresharedKey, const std::string &peerEndpoint,
-        const std::vector<std::string> &allowedIps, uint16_t listenPort);
+                   const std::string &peerPresharedKey, const std::string &peerEndpoint,
+                   const std::vector<std::string> &allowedIps, uint16_t listenPort,
+                   const AmneziawgConfig &amneziawgConfig);
     bool isInitialized() const { return is_initialized_; }
     unsigned long getStatus(unsigned int *errorCode, unsigned long long *bytesReceived,
                             unsigned long long *bytesTransmitted) const;

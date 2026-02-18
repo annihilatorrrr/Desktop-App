@@ -25,6 +25,7 @@
 #include "connectstatecontroller/connectstatecontroller.h"
 #include "crossplatformobjectfactory.h"
 #include "types/global_consts.h"
+#include "api_responses/amneziawgunblockparams.h"
 #include "api_responses/websession.h"
 #include "api_responses/debuglog.h"
 #include "api_responses/authtoken.h"
@@ -110,6 +111,8 @@ Engine::Engine() : QObject(nullptr),
         }
     };
 
+    // Design Note:
+    // Hardcoding the AmneziaWG protocol version since we cannot retrieve it from the AmneziaWG binary.
     QSettings settings;
     std::string wsnetSettings = settings.value("wsnetSettings").toString().toStdString();
     bool bWsnetSuccess = WSNet::initialize(Utils::getBasePlatformName().toStdString(), Utils::getPlatformNameSafe().toStdString(),
@@ -118,7 +121,7 @@ Engine::Engine() : QObject(nullptr),
                                            OpenVpnVersionController::instance().getOpenVpnVersion().toStdString(),
                                            "3", // must supply session_type_id where 3 = DESKTOP
                                            AppVersion::instance().isStaging(), LanguagesUtil::systemLanguage().toStdString(), wsnetSettings,
-                                           wsnetLoggerCallback, false);
+                                           wsnetLoggerCallback, false, "2.0.0");
     WS_ASSERT(bWsnetSuccess);
 
     WSNet::instance()->apiResourcersManager()->setCallback([this](ApiResourcesManagerNotification notification, LoginResult loginResult, const std::string &errorMessage) {
@@ -742,6 +745,8 @@ void Engine::initPart2()
 
     updateProxySettings();
     updateAdvancedParams();
+
+    QMetaObject::invokeMethod(this, "onApiResourcesManagerAmneziaWGUnblockParamsFetched");
 }
 
 void Engine::onLostConnectionToHelper()
@@ -2281,6 +2286,8 @@ void Engine::onApiResourceManagerCallback(ApiResourcesManagerNotification notifi
         emit sessionDeleted();
     } else if (notification == ApiResourcesManagerNotification::kServerCredentialsUpdated) {
         onApiResourcesManagerServerCredentialsFetched();
+    } else if (notification == ApiResourcesManagerNotification::kAmneziawgUnblockParamsFinished) {
+        onApiResourcesManagerAmneziawgUnblockParamsFetched();
     } else {
         WS_ASSERT(false);
     }
@@ -2544,7 +2551,7 @@ void Engine::doConnect(bool bEmitAuthError)
         connectionManager_->clickConnect(ovpnConfig, ovpnCredentials, ikev2Credentials, bli,
             connectionSettings, portMap, ProxyServerController::instance().getCurrentProxySettings(),
             bEmitAuthError, engineSettings_.customOvpnConfigsPath(), engineSettings_.isAntiCensorship(),
-            pinnedNode_.first);
+            engineSettings_.amneziawgPreset(), pinnedNode_.first);
     }
     // for custom configs without login
     else
@@ -2552,8 +2559,8 @@ void Engine::doConnect(bool bEmitAuthError)
         qCInfo(LOG_CONNECTION) << "Connecting to" << locationName_;
         connectionManager_->clickConnect("", api_responses::ServerCredentials(), api_responses::ServerCredentials(), bli,
             engineSettings_.connectionSettingsForNetworkInterface(networkInterface.networkOrSsid), api_responses::PortMap(),
-            ProxyServerController::instance().getCurrentProxySettings(), bEmitAuthError, engineSettings_.customOvpnConfigsPath(), engineSettings_.isAntiCensorship(),
-            pinnedNode_.first);
+            ProxyServerController::instance().getCurrentProxySettings(), bEmitAuthError, engineSettings_.customOvpnConfigsPath(),
+            engineSettings_.isAntiCensorship(), engineSettings_.amneziawgPreset(), pinnedNode_.first);
     }
 }
 
@@ -2922,3 +2929,11 @@ void Engine::fetchControldDevicesImpl(const QString &apiKey)
     WSNet::instance()->httpNetworkManager()->executeRequest(httpRequest, 0, callback);
 }
 
+void Engine::onApiResourcesManagerAmneziawgUnblockParamsFetched()
+{
+    // If we have unblock params, either stored from a previous fetch, or from a new fetch, send the updated list to the UI.
+    api_responses::AmneziawgUnblockParams unblockParams(WSNet::instance()->apiResourcersManager()->amneziawgUnblockParams());
+    if (unblockParams.isValid()) {
+        emit amneziawgUnblockParamsUpdated(engineSettings_.amneziawgPreset(), unblockParams.presets());
+    }
+}

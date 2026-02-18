@@ -1131,6 +1131,17 @@ Si le problème persiste après un redémarrage, envoyez un journal de débogage
     </message>
 </context>
 <context>
+    <name>PreferencesWindow::AntiCensorshipGroup</name>
+    <message>
+        <source>Circumvent Censorship</source>
+        <translation>Contourner la censure</translation>
+    </message>
+    <message>
+        <source>Configuration</source>
+        <translation>Configuration</translation>
+    </message>
+</context>
+<context>
     <name>PreferencesWindow::AppBackgroundGroup</name>
     <message>
         <source>App Background</source>
@@ -1247,10 +1258,6 @@ Si le problème persiste après un redémarrage, envoyez un journal de débogage
         <translation>Terminaison des sockets</translation>
     </message>
     <message>
-        <source>Circumvent Censorship</source>
-        <translation>Contourner la censure</translation>
-    </message>
-    <message>
         <source>Connection</source>
         <translation>Connexion</translation>
     </message>
@@ -1315,10 +1322,6 @@ Si le problème persiste après un redémarrage, envoyez un journal de débogage
         <translation>Configurez votre téléviseur, votre console de jeu ou d’autres appareils prenant en charge les serveurs proxy.</translation>
     </message>
     <message>
-        <source>Connect to the VPN even in hostile environment.</source>
-        <translation>Connectez-vous au VPN même dans un environnement hostile.</translation>
-    </message>
-    <message>
         <source>Settings Conflict</source>
         <translation>Conflit de paramètres</translation>
     </message>
@@ -1369,6 +1372,10 @@ Si le problème persiste après un redémarrage, envoyez un journal de débogage
     <message>
         <source>Remove Wi-Fi SSID and MAC information from your operating system to prevent location history tracking.</source>
         <translation>Supprimez les informations SSID Wi-Fi et MAC de votre système d’exploitation pour empêcher le suivi de l’historique de localisation.</translation>
+    </message>
+    <message>
+        <source>Connect to the VPN with WireGuard even in a hostile environment.</source>
+        <translation>Connectez-vous au VPN avec WireGuard même dans un environnement hostile.</translation>
     </message>
 </context>
 <context>

@@ -8,9 +8,9 @@
 
 #include <QDateTime>
 #include <QScopeGuard>
+#include <QTimeZone>
 
 #include "utils/extraconfig.h"
-#include "utils/log/logger.h"
 #include "utils/ws_assert.h"
 
 
@@ -38,8 +38,9 @@ constexpr uint32_t kWGLogFileSize =
     kWGLogHeaderSize + ((kWGLogMessageSize + kWGLogTimestampSize) * kWGLogMessageRingSize);
 
 
-WireguardRingLogger::WireguardRingLogger(const QString& filename)
-    : verboseLogging_(ExtraConfig::instance().getWireGuardVerboseLogging()),
+WireguardRingLogger::WireguardRingLogger(const QString& filename, bool isAmneziaWG)
+    : isAmneziaWG_(isAmneziaWG),
+      verboseLogging_(ExtraConfig::instance().getWireGuardVerboseLogging()),
       wireguardLogFile_(filename)
 {
     startTime_ = QDateTime::currentMSecsSinceEpoch() * 1000000;
@@ -142,10 +143,10 @@ void WireguardRingLogger::process(int index)
                     return;
                 }
 
-                if (message.contains("Sending handshake initiation to peer") ||
-                    message.contains("Receiving handshake response from peer") ||
-                    message.contains("Sending keepalive packet to peer") ||
-                    message.contains("Receiving keepalive packet from peer") ||
+                if (message.contains("Sending handshake initiation") ||
+                    message.contains("Receiving handshake response") ||
+                    message.contains("Sending keepalive packet") ||
+                    message.contains("Receiving keepalive packet") ||
                     message.contains("Receiving handshake initiation from peer") ||
                     message.contains("Sending handshake response to peer") ||
                     message.contains("Retrying handshake with peer") ||
@@ -156,7 +157,10 @@ void WireguardRingLogger::process(int index)
             }
         }
         else {
-            if (message.contains("Keypair 1 created for peer 1")) {
+            if (!isAmneziaWG_ && message.contains("Keypair 1 created for peer 1")) {
+                tunnelRunning_ = true;
+            }
+            else if (isAmneziaWG_ && message.contains("Received handshake response")) {
                 tunnelRunning_ = true;
             }
             else if (message.contains("Failed to setup adapter")) {
@@ -167,7 +171,12 @@ void WireguardRingLogger::process(int index)
             }
         }
 
-        QDateTime dt = QDateTime::fromMSecsSinceEpoch(timestamp / 1000000, Qt::UTC);
+        // Ignore this message created by amneziawg-windows when it is starting/stopping the tunnel.
+        if (isAmneziaWG_ && message.contains("Routine:") && message.contains("worker")) {
+            return;
+        }
+
+        QDateTime dt = QDateTime::fromMSecsSinceEpoch(timestamp / 1000000, QTimeZone(Qt::UTC));
         qCDebug(LOG_WIREGUARD) << dt.toString("ddMMyy hh:mm:ss:zzz") << message;
     }
 }

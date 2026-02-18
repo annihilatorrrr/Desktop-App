@@ -51,6 +51,8 @@ PersistentSettings::PersistentSettings(const std::string &settings)
             staticIps_ = jsonObject["staticIps"].GetString();
         if (jsonObject.HasMember("notifications"))
             notifications_ = jsonObject["notifications"].GetString();
+        if (jsonObject.HasMember("amneziawgUnblockParams"))
+            amneziawgUnblockParams_ = jsonObject["amneziawgUnblockParams"].GetString();
         if (jsonObject.HasMember("sessionToken")) {
             if (jsonObject["sessionToken"].IsObject()) {
                 auto now = std::chrono::system_clock::now();
@@ -213,6 +215,18 @@ std::string PersistentSettings::notifications() const
     return notifications_;
 }
 
+void PersistentSettings::setAmneziawgUnblockParams(const std::string &amneziawgUnblockParams)
+{
+    std::lock_guard locker(mutex_);
+    amneziawgUnblockParams_ = amneziawgUnblockParams;
+}
+
+std::string PersistentSettings::amneziawgUnblockParams() const
+{
+    std::lock_guard locker(mutex_);
+    return amneziawgUnblockParams_;
+}
+
 void PersistentSettings::setSessionTokens(const std::map<std::string, std::pair<std::string, std::int64_t>> &sessionTokens)
 {
     std::lock_guard locker(mutex_);
@@ -256,6 +270,8 @@ std::string PersistentSettings::getAsString() const
         doc.AddMember("staticIps", StringRef(staticIps_.c_str()), doc.GetAllocator());
     if (!notifications_.empty())
         doc.AddMember("notifications", StringRef(notifications_.c_str()), doc.GetAllocator());
+    if (!amneziawgUnblockParams_.empty())
+        doc.AddMember("amneziawgUnblockParams", StringRef(amneziawgUnblockParams_.c_str()), doc.GetAllocator());
     if (!sessionTokens_.empty()) {
         Value tokenObj(kObjectType);
         for (const auto& [key, tokenPair] : sessionTokens_) {

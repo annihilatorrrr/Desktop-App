@@ -1,4 +1,6 @@
 target_sources(client-common PRIVATE
+    amneziawgunblockparams.cpp
+    amneziawgunblockparams.h
     authtoken.cpp
     authtoken.h
     checkupdate.cpp

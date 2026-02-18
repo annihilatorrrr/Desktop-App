@@ -54,6 +54,9 @@ QSharedPointer<WireGuardConfig> WireguardCustomConfig::getWireGuardConfig(const 
 {
     auto *config = new WireGuardConfig(privateKey_, ipAddress_, dnsAddress_, publicKey_,
                                        presharedKey_, endpointIp + endpointPort_, allowedIps_);
+    if (obfuscationParams_.isValid()) {
+        config->setAmneziawgParam(obfuscationParams_);
+    }
     return QSharedPointer<WireGuardConfig>(config);
 }
 
@@ -96,6 +99,41 @@ void WireguardCustomConfig::loadFromFile(const QString &filepath)
     privateKey_ = file.value("PrivateKey").toString();
     ipAddress_ = WireGuardConfig::stripIpv6Address(file.value("Address").toStringList());
     dnsAddress_ = WireGuardConfig::stripIpv6Address(file.value("DNS").toStringList());
+
+    obfuscationParams_ = api_responses::AmneziawgUnblockParam();
+    if (file.contains("Jc"))
+        obfuscationParams_.jc = file.value("Jc").toInt();
+    if (file.contains("Jmin"))
+        obfuscationParams_.jmin = file.value("Jmin").toInt();
+    if (file.contains("Jmax"))
+        obfuscationParams_.jmax = file.value("Jmax").toInt();
+    if (file.contains("S1"))
+        obfuscationParams_.s1 = file.value("S1").toInt();
+    if (file.contains("S2"))
+        obfuscationParams_.s2 = file.value("S2").toInt();
+    if (file.contains("S3"))
+        obfuscationParams_.s3 = file.value("S3").toInt();
+    if (file.contains("S4"))
+        obfuscationParams_.s4 = file.value("S4").toInt();
+    if (file.contains("H1"))
+        obfuscationParams_.h1 = file.value("H1").toString();
+    if (file.contains("H2"))
+        obfuscationParams_.h2 = file.value("H2").toString();
+    if (file.contains("H3"))
+        obfuscationParams_.h3 = file.value("H3").toString();
+    if (file.contains("H4"))
+        obfuscationParams_.h4 = file.value("H4").toString();
+    if (file.contains("I1"))
+        obfuscationParams_.iValues.append(file.value("I1").toString());
+    if (file.contains("I2"))
+        obfuscationParams_.iValues.append(file.value("I2").toString());
+    if (file.contains("I3"))
+        obfuscationParams_.iValues.append(file.value("I3").toString());
+    if (file.contains("I4"))
+        obfuscationParams_.iValues.append(file.value("I4").toString());
+    if (file.contains("I5"))
+        obfuscationParams_.iValues.append(file.value("I5").toString());
+
     file.endGroup();
 
     if (groups.indexOf("Peer") < 0) {

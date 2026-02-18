@@ -7,6 +7,7 @@
 #include <QUdpSocket>
 #include <QRandomGenerator>
 
+#include "api_responses/amneziawgunblockparams.h"
 #include "connsettingspolicy/autoconnsettingspolicy.h"
 #include "connsettingspolicy/manualconnsettingspolicy.h"
 #include "connsettingspolicy/customconfigconnsettingspolicy.h"
@@ -25,6 +26,7 @@
 #include "utils/utils.h"
 #include "utils/extraconfig.h"
 #include "utils/ipvalidation.h"
+#include <wsnet/WSNet.h>
 
 // Had to move this here to prevent a compile error with boost already including winsock.h
 #include "connectionmanager.h"
@@ -111,37 +113,6 @@ ConnectionManager::~ConnectionManager()
     SAFE_DELETE(getWireGuardConfig_);
 }
 
-QString ConnectionManager::udpStuffingWithNtp(const QString &ip, const quint16 port)
-{
-    // Special secret sause for Russia ;)
-    char simpleBuf[8] = {0};
-    simpleBuf[0] = 1;
-    simpleBuf[4] = 1;
-
-    char ntpBuf[48] = {0};
-    // NTP client behavior as seen in Linux with chrony
-    ntpBuf[0] = 0x23; // ntp ver=4, mode=client
-    ntpBuf[2] = 0x09; // polling interval=9
-    ntpBuf[3] = 0x20; // clock precision
-    quint64 *ntpRand = (quint64*)&ntpBuf[40];
-
-    QUdpSocket udpSocket = QUdpSocket();
-    udpSocket.bind(QHostAddress::Any, 0);
-    const QString localPort = QString::number(udpSocket.localPort());
-
-    // Send "secret" packet first
-    udpSocket.writeDatagram(simpleBuf, sizeof(simpleBuf), QHostAddress(ip), port);
-
-    // Send NTP packet, repeat up to 40 times. Bounded argument is exclusive.
-    for (int i=0; i<=20+QRandomGenerator::global()->bounded(20); i++) {
-        *ntpRand = QRandomGenerator::global()->generate64();
-        udpSocket.writeDatagram(ntpBuf, sizeof(ntpBuf), QHostAddress(ip), port);
-    }
-
-    udpSocket.close();
-    return localPort;
-}
-
 void ConnectionManager::clickConnect(const QString &ovpnConfig,
                                      const api_responses::ServerCredentials &serverCredentialsOpenVpn,
                                      const api_responses::ServerCredentials &serverCredentialsIkev2,
@@ -149,7 +120,7 @@ void ConnectionManager::clickConnect(const QString &ovpnConfig,
                                      const types::ConnectionSettings &connectionSettings,
                                      const api_responses::PortMap &portMap, const types::ProxySettings &proxySettings,
                                      bool bEmitAuthError, const QString &customConfigPath, bool isAntiCensorship,
-                                     const QString &preferredNodeHostname)
+                                     const QString &amneziawgPreset, const QString &preferredNodeHostname)
 {
     WS_ASSERT(state_ == STATE_DISCONNECTED);
 
@@ -160,6 +131,7 @@ void ConnectionManager::clickConnect(const QString &ovpnConfig,
     bEmitAuthError_ = bEmitAuthError;
     customConfigPath_ = customConfigPath;
     isAntiCensorship_ = isAntiCensorship;
+    amneziawgPreset_ = amneziawgPreset;
     bli_ = bli;
     preferredNodeHostname_ = preferredNodeHostname;
 
@@ -1188,9 +1160,11 @@ void ConnectionManager::doConnectPart3()
             wireGuardConfig_.setPeerPublicKey(currentConnectionDescr_.wgPeerPublicKey);
             wireGuardConfig_.setPeerEndpoint(endpointAndPort);
 
-            if (ExtraConfig::instance().getWireGuardUdpStuffing() || isAntiCensorship_) {
-                QString localPort = udpStuffingWithNtp(currentConnectionDescr_.ip, currentConnectionDescr_.port);
-                wireGuardConfig_.setClientListenPort(localPort);
+            if (isAntiCensorship_) {
+                api_responses::AmneziawgUnblockParams unblockParams(wsnet::WSNet::instance()->apiResourcersManager()->amneziawgUnblockParams());
+                wireGuardConfig_.setAmneziawgParam(unblockParams.getUnblockParamForPreset(amneziawgPreset_));
+            } else {
+                wireGuardConfig_.setAmneziawgParam(api_responses::AmneziawgUnblockParam());
             }
 
             recreateConnector(types::Protocol::WIREGUARD);

@@ -1131,6 +1131,17 @@ If the problem persists after a restart, please send a debug log and open a supp
     </message>
 </context>
 <context>
+    <name>PreferencesWindow::AntiCensorshipGroup</name>
+    <message>
+        <source>Circumvent Censorship</source>
+        <translation>Παράκαμψη της λογοκρισίας</translation>
+    </message>
+    <message>
+        <source>Configuration</source>
+        <translation>Διαμόρφωση</translation>
+    </message>
+</context>
+<context>
     <name>PreferencesWindow::AppBackgroundGroup</name>
     <message>
         <source>App Background</source>
@@ -1247,10 +1258,6 @@ If the problem persists after a restart, please send a debug log and open a supp
         <translation>Τερματισμός υποδοχών</translation>
     </message>
     <message>
-        <source>Circumvent Censorship</source>
-        <translation>Παράκαμψη της λογοκρισίας</translation>
-    </message>
-    <message>
         <source>Connection</source>
         <translation>Σύνδεση</translation>
     </message>
@@ -1335,10 +1342,6 @@ If the problem persists after a restart, please send a debug log and open a supp
         <translation>Διαμορφώστε την τηλεόραση, την κονσόλα παιχνιδιών ή άλλες συσκευές που υποστηρίζουν διακομιστές μεσολάβησης.</translation>
     </message>
     <message>
-        <source>Connect to the VPN even in hostile environment.</source>
-        <translation>Συνδεθείτε στο VPN ακόμα και σε εχθρικό περιβάλλον.</translation>
-    </message>
-    <message>
         <source>Settings Conflict</source>
         <translation>Διένεξη ρυθμίσεων</translation>
     </message>
@@ -1369,6 +1372,10 @@ If the problem persists after a restart, please send a debug log and open a supp
     <message>
         <source>Remove Wi-Fi SSID and MAC information from your operating system to prevent location history tracking.</source>
         <translation>Καταργήστε τις πληροφορίες SSID και MAC Wi-Fi από το λειτουργικό σας σύστημα για να αποτρέψετε την παρακολούθηση του ιστορικού τοποθεσίας.</translation>
+    </message>
+    <message>
+        <source>Connect to the VPN with WireGuard even in a hostile environment.</source>
+        <translation>Συνδεθείτε στο VPN με το WireGuard ακόμα και σε εχθρικό περιβάλλον.</translation>
     </message>
 </context>
 <context>

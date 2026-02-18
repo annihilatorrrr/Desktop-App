@@ -33,7 +33,7 @@ void EngineSettings::saveToSettings()
               d->firewallSettings << d->connectionSettings << apiResolutionSettingsNotUsed << d->proxySettings << d->packetSize <<
               d->macAddrSpoofing << d->dnsPolicy << d->tapAdapter << d->customOvpnConfigsPath << d->isKeepAliveEnabled <<
               d->connectedDnsInfo << d->dnsManager << d->networkPreferredProtocols <<
-            d->isAntiCensorship << d->decoyTrafficSettings;
+            d->isAntiCensorship << d->decoyTrafficSettings << d->amneziawgPreset;
     }
 
     QSettings settings;
@@ -78,6 +78,9 @@ bool EngineSettings::loadFromSettings()
             if (version >= 6) {
                 ds >> d->decoyTrafficSettings;
             }
+            if (version >= 8) {
+                ds >> d->amneziawgPreset;
+            }
 
             if (ds.status() == QDataStream::Ok) {
                 bLoaded = true;
@@ -117,6 +120,16 @@ QString EngineSettings::language() const
 void EngineSettings::setLanguage(const QString &lang)
 {
     d->language = lang;
+}
+
+QString EngineSettings::amneziawgPreset() const
+{
+    return d->amneziawgPreset;
+}
+
+void EngineSettings::setAmneziawgPreset(const QString &preset)
+{
+    d->amneziawgPreset = preset;
 }
 
 bool EngineSettings::isIgnoreSslErrors() const
@@ -321,7 +334,8 @@ bool EngineSettings::operator==(const EngineSettings &other) const
             other.d->connectedDnsInfo == d->connectedDnsInfo &&
             other.d->dnsManager == d->dnsManager &&
             other.d->decoyTrafficSettings == d->decoyTrafficSettings &&
-            other.d->networkPreferredProtocols == d->networkPreferredProtocols;
+            other.d->networkPreferredProtocols == d->networkPreferredProtocols &&
+            other.d->amneziawgPreset == d->amneziawgPreset;
 }
 
 bool EngineSettings::operator!=(const EngineSettings &other) const
@@ -412,6 +426,10 @@ void EngineSettingsData::fromJson(const QJsonObject &json)
         }
     }
 
+    if (json.contains(kJsonAmneziawgPresetProp) && json[kJsonAmneziawgPresetProp].isString()) {
+        amneziawgPreset = json[kJsonAmneziawgPresetProp].toString();
+    }
+
     if (json.contains(kJsonMacAddrSpoofingProp) && json[kJsonMacAddrSpoofingProp].isObject()) {
         macAddrSpoofing = types::MacAddrSpoofing(json[kJsonMacAddrSpoofingProp].toObject());
     }
@@ -456,6 +474,7 @@ QJsonObject EngineSettingsData::toJson(bool isForDebugLog) const
     json[kJsonIsKeepAliveEnabledProp] = isKeepAliveEnabled;
     json[kJsonIsTerminateSocketsProp] = isTerminateSockets;
     json[kJsonLanguageProp] = language;
+    json[kJsonAmneziawgPresetProp] = amneziawgPreset;
     json[kJsonMacAddrSpoofingProp] = macAddrSpoofing.toJson(isForDebugLog);
 
     QJsonObject networkPreferredProtocolsObj;
@@ -508,6 +527,7 @@ void EngineSettingsData::fromIni(QSettings &settings)
     isAllowLanTraffic = settings.value(kIniIsAllowLanTrafficProp, isAllowLanTraffic).toBool();
     decoyTrafficSettings.fromIni(settings);
     isAntiCensorship = settings.value(kIniIsAntiCensorshipProp, isAntiCensorship).toBool();
+    amneziawgPreset = settings.value(kIniAmneziawgPresetProp, amneziawgPreset).toString();
     settings.endGroup();
 
     settings.beginGroup(QString("Advanced"));
@@ -540,6 +560,7 @@ void EngineSettingsData::toIni(QSettings &settings) const
     settings.setValue(kIniIsAllowLanTrafficProp, isAllowLanTraffic);
     decoyTrafficSettings.toIni(settings);
     settings.setValue(kIniIsAntiCensorshipProp, isAntiCensorship);
+    settings.setValue(kIniAmneziawgPresetProp, amneziawgPreset);
     settings.endGroup();
 
     settings.beginGroup(QString("Advanced"));

@@ -11,7 +11,7 @@
 
 namespace wsnet {
 
-enum class RequestType { kSessionStatus, kAuthTokenLogin, kLocations, kServerCredentialsOpenVPN, kServerCredentialsIkev2, kServerConfigs, kPortMap, kStaticIps, kNotifications, kCheckUpdate };
+enum class RequestType { kSessionStatus, kAuthTokenLogin, kLocations, kServerCredentialsOpenVPN, kServerCredentialsIkev2, kServerConfigs, kPortMap, kStaticIps, kNotifications, kCheckUpdate, kAmneziawgUnblockParams };
 
 class ApiResourcesManager : public WSNetApiResourcesManager
 {
@@ -24,8 +24,6 @@ public:
     void setAuthHash(const std::string &authHash) override;
 
     bool isExist() const override;
-
-
 
     bool loginWithAuthHash() override;
     void authTokenLogin(const std::string &username, bool useAsciiCaptcha) override;
@@ -60,10 +58,11 @@ public:
     std::string notifications() const override;
     std::string checkUpdate() const override;
     std::string authTokenLoginResult() const override;
+    std::string amneziawgUnblockParams() const override;
 
     void setUpdateIntervals(int sessionInDisconnectedStateMs, int sessionInConnectedStateMs,
                             int locationsMs, int staticIpsMs, int serverConfigsAndCredentialsMs,
-                            int portMapMs, int notificationsMs, int checkUpdateMs) override;
+                            int portMapMs, int notificationsMs, int checkUpdateMs, int amneziawgUnblockParamsMs) override;
 
 private:
     mutable std::mutex mutex_;
@@ -101,6 +100,7 @@ private:
     int portMapMs_ = k24Hours;
     int notificationsMs_ = kHour;
     int checkUpdateMs_ = k24Hours;
+    int amneziawgUnblockParamsMs_ = k24Hours;
 
     struct UpdateInfo {
         std::chrono::time_point<std::chrono::steady_clock> updateTime;
@@ -143,6 +143,7 @@ private:
     void fetchPortMap(const std::string &authHash);
     void fetchNotifications(const std::string &authHash);
     void fetchCheckUpdate();
+    void fetchAmneziawgUnblockParams(const std::string &authHash);
 
     void updateSessionStatus();
 
@@ -163,6 +164,7 @@ private:
     void onPortMapAnswer(wsnet::ServerApiRetCode serverApiRetCode, const std::string &jsonData);
     void onNotificationsAnswer(wsnet::ServerApiRetCode serverApiRetCode, const std::string &jsonData);
     void onCheckUpdateAnswer(wsnet::ServerApiRetCode serverApiRetCode, const std::string &jsonData);
+    void onAmneziawgUnblockParamsAnswer(wsnet::ServerApiRetCode serverApiRetCode, const std::string &jsonData);
     void onDeleteSessionAnswer(wsnet::ServerApiRetCode serverApiRetCode, const std::string &jsonData);
 
     bool isTimeoutForRequest(RequestType requestType, int timeout);

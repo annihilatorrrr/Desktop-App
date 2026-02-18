@@ -12,18 +12,23 @@ public:
         return wc;
     }
 
-    bool installService();
+    bool installService(bool isAmneziaWG);
     bool configure(const std::wstring &config);
     bool deleteService();
 
     UINT getStatus(ULONG64 &lastHandshake, ULONG64 &txBytes, ULONG64 &rxBytes) const;
 
 private:
-    bool is_initialized_ = false;
+    bool isInitialized_ = false;
+    bool isAmneziaWG_ = false;
     std::wstring exeName_;
 
 private:
     explicit WireGuardController();
-    HANDLE getKernelInterfaceHandle() const;
     std::wstring configFile() const;
+
+    void getKernelDriverStatus(ULONG64& lastHandshake, ULONG64& txBytes, ULONG64& rxBytes) const;
+    HANDLE getKernelInterfaceHandle() const;
+
+    void getAmneziaWGStatus(ULONG64& lastHandshake, ULONG64& txBytes, ULONG64& rxBytes) const;
 };

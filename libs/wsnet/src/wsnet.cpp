@@ -50,7 +50,7 @@ public:
     bool initializeImpl(const std::string &basePlatform,  const std::string &platformName, const std::string &appVersion, const std::string &deviceId,
                         const std::string &openVpnVersion, const std::string &sessionTypeId,
                         bool isUseStagingDomains, const std::string &language, const std::string &persistentSettings,
-                        WSNetLoggerFunction loggerFunction, bool debugLog)
+                        WSNetLoggerFunction loggerFunction, bool debugLog, const std::string &amneziawgVersion)
     {
         spdlog::drop("wsnet");
         if (loggerFunction) {
@@ -97,6 +97,7 @@ public:
         Settings::instance().setOpenVpnVersion(openVpnVersion);
         Settings::instance().setLanguage(language);
         Settings::instance().setSessionTypeId(sessionTypeId);
+        Settings::instance().setAmneziaWGVersion(amneziawgVersion);
 
         persistentSettings_.reset(new PersistentSettings(persistentSettings));
 
@@ -176,7 +177,7 @@ std::mutex g_mutex;
 bool WSNet::initialize(const std::string &basePlatform,  const std::string &platformName, const std::string &appVersion, const std::string &deviceId,
                        const std::string &openVpnVersion, const std::string &sessionTypeId,
                        bool isUseStagingDomains, const std::string &language, const std::string &persistentSettings,
-                       WSNetLoggerFunction loggerFunction, bool debugLog)
+                       WSNetLoggerFunction loggerFunction, bool debugLog, const std::string &amneziawgVersion)
 {
     std::lock_guard locker(g_mutex);
     assert(g_wsNet == nullptr);
@@ -184,7 +185,7 @@ bool WSNet::initialize(const std::string &basePlatform,  const std::string &plat
     g_wsNet->reset(new WSNet_impl);
     return (*g_wsNet)->initializeImpl(basePlatform, platformName, appVersion, deviceId, openVpnVersion,
                                    sessionTypeId, isUseStagingDomains, language, persistentSettings,
-                                   loggerFunction, debugLog);
+                                   loggerFunction, debugLog, amneziawgVersion);
 }
 
 std::shared_ptr<WSNet> WSNet::instance()

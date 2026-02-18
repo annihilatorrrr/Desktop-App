@@ -428,6 +428,21 @@ void Preferences::setAntiCensorship(bool bEnabled)
     }
 }
 
+QString Preferences::amneziawgPreset() const
+{
+    return engineSettings_.amneziawgPreset();
+}
+
+void Preferences::setAmneziawgPreset(const QString &preset)
+{
+    if (engineSettings_.amneziawgPreset() != preset)
+    {
+        engineSettings_.setAmneziawgPreset(preset);
+        emitEngineSettingsChanged();
+        emit amneziawgPresetChanged(preset);
+    }
+}
+
 const types::ShareSecureHotspot &Preferences::shareSecureHotspot() const
 {
     return guiSettings_.shareSecureHotspot;

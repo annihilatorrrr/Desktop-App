@@ -8,7 +8,7 @@
     },
     {
         "name": "curl",
-        "features": [ "openssl" ]
+        "features": [ "openssl", "ech" ]
     },
     "rapidjson",
     "boost-config",

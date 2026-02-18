@@ -1131,6 +1131,17 @@ If the problem persists after a restart, please send a debug log and open a supp
     </message>
 </context>
 <context>
+    <name>PreferencesWindow::AntiCensorshipGroup</name>
+    <message>
+        <source>Circumvent Censorship</source>
+        <translation>검열 우회</translation>
+    </message>
+    <message>
+        <source>Configuration</source>
+        <translation>구성</translation>
+    </message>
+</context>
+<context>
     <name>PreferencesWindow::AppBackgroundGroup</name>
     <message>
         <source>App Background</source>
@@ -1247,10 +1258,6 @@ If the problem persists after a restart, please send a debug log and open a supp
         <translation>소켓 종료</translation>
     </message>
     <message>
-        <source>Circumvent Censorship</source>
-        <translation>검열 우회</translation>
-    </message>
-    <message>
         <source>Connection</source>
         <translation>연결</translation>
     </message>
@@ -1319,10 +1326,6 @@ If the problem persists after a restart, please send a debug log and open a supp
         <translation>TV, 게임 콘솔 또는 프록시 서버를 지원하는 기타 장치를 구성합니다.</translation>
     </message>
     <message>
-        <source>Connect to the VPN even in hostile environment.</source>
-        <translation>적대적인 환경에서도 VPN에 연결하십시오.</translation>
-    </message>
-    <message>
         <source>Settings Conflict</source>
         <translation>설정 충돌</translation>
     </message>
@@ -1369,6 +1372,10 @@ If the problem persists after a restart, please send a debug log and open a supp
     <message>
         <source>Remove Wi-Fi SSID and MAC information from your operating system to prevent location history tracking.</source>
         <translation>위치 추적을 막기 위해 운영체제에서 Wi-Fi SSID와 MAC 정보를 제거하세요.</translation>
+    </message>
+    <message>
+        <source>Connect to the VPN with WireGuard even in a hostile environment.</source>
+        <translation>적대적인 환경에서도 WireGuard로 VPN에 연결하세요.</translation>
     </message>
 </context>
 <context>

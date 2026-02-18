@@ -104,9 +104,9 @@ bool Helper_win::executeOpenVPN(const QString &config, unsigned int port, const 
     return success;
 }
 
-bool Helper_win::startWireGuard()
+bool Helper_win::startWireGuard(bool useAmneziaWG)
 {
-    auto result = sendCommand(HelperCommand::startWireGuard);
+    auto result = sendCommand(HelperCommand::startWireGuard, useAmneziaWG);
     bool success = false;
     deserializeAnswer(result, success);
     return success;

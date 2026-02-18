@@ -2,6 +2,9 @@
 
 #include <QString>
 
+#include "api_responses/amneziawgunblockparams.h"
+#include "../../helper/common/helper_commands.h"
+
 class WireGuardConfig
 {
 public:
@@ -28,7 +31,6 @@ public:
     void setPeerAllowedIPs(const QString &allowedIPs) { peer_.allowedIps = allowedIPs; }
     void setClientIpAddress(const QString &ip) { client_.ipAddress = ip; }
     void setClientDnsAddress(const QString &dns) { client_.dnsAddress = dns; }
-    void setClientListenPort(const QString &listenPort) { client_.listenPort = listenPort; }
     bool haveServerGeneratedPeerParams() const;
 
     QString generateConfigFile() const;
@@ -43,6 +45,10 @@ public:
     friend QDataStream& operator <<(QDataStream &stream, const WireGuardConfig &c);
     friend QDataStream& operator >>(QDataStream &stream, WireGuardConfig &c);
 
+    bool haveAmneziawgParam() const { return client_.amneziawgParam.isValid(); }
+    void setAmneziawgParam(const api_responses::AmneziawgUnblockParam &param) { client_.amneziawgParam = param; }
+    AmneziawgConfig amneziawgParamToHelperConfig() const;
+
 private:
     struct {
         QString privateKey;
@@ -50,6 +56,7 @@ private:
         QString ipAddress;
         QString dnsAddress;
         QString listenPort;
+        api_responses::AmneziawgUnblockParam amneziawgParam;
     } client_;
     struct {
         QString publicKey;

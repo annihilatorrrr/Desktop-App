@@ -748,4 +748,9 @@ void PreferencesWindowItem::onWindowCollapsed()
     robertWindowItem_->setLoading(false);
 }
 
+void PreferencesWindowItem::setAmneziawgUnblockParams(const QString &activePreset, QStringList presets)
+{
+    connectionWindowItem_->setAmneziawgUnblockParams(activePreset, presets);
+}
+
 } // namespace PreferencesWindow

@@ -91,6 +91,7 @@ namespace serverapi_requests_factory
     BaseRequest *authTokenLogin(const std::string &username, bool useAsciiCaptcha, RequestFinishedCallback callback);
     BaseRequest *authTokenSignup(const std::string &username, bool useAsciiCaptcha, RequestFinishedCallback callback);
     BaseRequest *passwordRecovery(const std::string &email, RequestFinishedCallback callback);
+    BaseRequest *amneziawgUnblockParams(const std::string &authHash, const std::string &amneziawgVersion, WSNetAdvancedParameters *advancedParameters, RequestFinishedCallback callback);
 }
 
 } // namespace wsnet

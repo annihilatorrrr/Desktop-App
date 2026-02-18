@@ -1,6 +1,5 @@
 #include "process_command.h"
 
-#include <codecvt>
 #include <fcntl.h>
 #include <filesystem>
 #include <grp.h>
@@ -123,7 +122,7 @@ std::string executeTaskKill(const std::string &pars)
     } else if (target == kTargetOpenVpn) {
         spdlog::info("Killing OpenVPN processes");
         const std::vector<std::string> exes = Utils::getOpenVpnExeNames();
-        for (auto exe : exes) {
+        for (const auto &exe : exes) {
             Utils::executeCommand("pkill", {"-f", exe.c_str()});
         }
         success = true;
@@ -152,7 +151,9 @@ std::string executeTaskKill(const std::string &pars)
 
 std::string startWireGuard(const std::string &pars)
 {
-    bool success = WireGuardController::instance().start();
+    bool verboseLogging = false;
+    deserializePars(pars, verboseLogging);
+    bool success = WireGuardController::instance().start(verboseLogging);
     return serializeResult(success);
 }
 
@@ -168,8 +169,9 @@ std::string configureWireGuard(const std::string &pars)
                 peerPresharedKey, peerEndpoint, allowedIps;
     uint16_t listenPort;
     CmdDnsManager dnsManager;
+    AmneziawgConfig amneziawgConfig;
     deserializePars(pars, clientPrivateKey, clientIpAddress, clientDnsAddressList, peerPublicKey,
-                    peerPresharedKey, peerEndpoint, allowedIps, listenPort, dnsManager);
+                    peerPresharedKey, peerEndpoint, allowedIps, listenPort, dnsManager, amneziawgConfig);
 
     bool success = false;
     if (WireGuardController::instance().isInitialized()) {
@@ -195,7 +197,7 @@ std::string configureWireGuard(const std::string &pars)
             if (!WireGuardController::instance().configure(clientPrivateKey,
                                                            peerPublicKey, peerPresharedKey,
                                                            peerEndpoint, allowed_ips_vector,
-                                                           listenPort)) {
+                                                           listenPort, amneziawgConfig)) {
                 spdlog::error("WireGuard: configureDaemon() failed");
                 break;
             }

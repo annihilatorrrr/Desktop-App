@@ -152,6 +152,26 @@ struct ConnectStatus {
 
 };
 
+struct AmneziawgConfig
+{
+    std::string title;
+    int jc = 0;
+    int jmin = 0;
+    int jmax = 0;
+    int s1 = 0;
+    int s2 = 0;
+    int s3 = 0;
+    int s4 = 0;
+    std::string h1;
+    std::string h2;
+    std::string h3;
+    std::string h4;
+    // I1, I2, I3, I4, I5 (in order).  Only I1 is mandatory, the others may not exist.
+    std::vector<std::string> iValues;
+
+    bool isValid() const { return !title.empty() && !iValues.empty(); }
+};
+
 namespace boost {
 namespace serialization {
 template<class Archive>
@@ -162,6 +182,24 @@ void serialize(Archive &ar, ADAPTER_GATEWAY_INFO &a, const unsigned int /*versio
     ar & a.gatewayIp;
     ar & a.dnsServers;
     ar & a.ifIndex;
+}
+
+template<class Archive>
+void serialize(Archive &ar, AmneziawgConfig &a, const unsigned int /*version*/)
+{
+    ar & a.title;
+    ar & a.jc;
+    ar & a.jmin;
+    ar & a.jmax;
+    ar & a.s1;
+    ar & a.s2;
+    ar & a.s3;
+    ar & a.s4;
+    ar & a.h1;
+    ar & a.h2;
+    ar & a.h3;
+    ar & a.h4;
+    ar & a.iValues;
 }
 }
 }

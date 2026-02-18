@@ -49,14 +49,12 @@ public:
                       const types::ConnectionSettings &connectionSettings,
                       const api_responses::PortMap &portMap, const types::ProxySettings &proxySettings,
                       bool bEmitAuthError, const QString &customConfigPath, bool isAntiCensorship,
-                      const QString &preferredNodeHostname = QString());
+                      const QString &amneziawgPreset, const QString &preferredNodeHostname = QString());
 
     void clickDisconnect(DISCONNECT_REASON reason = DISCONNECTED_BY_USER);
     void reconnect();
     void blockingDisconnect(bool isSleepEvent);
     bool isDisconnected();
-
-    QString udpStuffingWithNtp(const QString &ip, const quint16 port);
 
     QString getLastConnectedIp();
     const AdapterGatewayInfo &getDefaultAdapterInfo() const;
@@ -172,6 +170,7 @@ private:
     api_responses::ServerCredentials lastServerCredentialsIkev2_;
     types::ProxySettings lastProxySettings_;
     bool isAntiCensorship_ = false;
+    QString amneziawgPreset_;
     bool bEmitAuthError_;
 
     QString customConfigPath_;

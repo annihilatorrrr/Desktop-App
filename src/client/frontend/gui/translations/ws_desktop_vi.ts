@@ -1131,6 +1131,17 @@ Nếu sự cố vẫn tiếp diễn sau khi khởi động lại, vui lòng gử
     </message>
 </context>
 <context>
+    <name>PreferencesWindow::AntiCensorshipGroup</name>
+    <message>
+        <source>Circumvent Censorship</source>
+        <translation>Vượt qua kiểm duyệt</translation>
+    </message>
+    <message>
+        <source>Configuration</source>
+        <translation>Cấu hình</translation>
+    </message>
+</context>
+<context>
     <name>PreferencesWindow::AppBackgroundGroup</name>
     <message>
         <source>App Background</source>
@@ -1247,10 +1258,6 @@ Nếu sự cố vẫn tiếp diễn sau khi khởi động lại, vui lòng gử
         <translation>Chấm dứt ổ cắm</translation>
     </message>
     <message>
-        <source>Circumvent Censorship</source>
-        <translation>Phá vỡ kiểm duyệt</translation>
-    </message>
-    <message>
         <source>Connection</source>
         <translation>Kết nối</translation>
     </message>
@@ -1319,10 +1326,6 @@ Nếu sự cố vẫn tiếp diễn sau khi khởi động lại, vui lòng gử
         <translation>Định cấu hình TV, máy chơi game hoặc các thiết bị khác hỗ trợ máy chủ proxy.</translation>
     </message>
     <message>
-        <source>Connect to the VPN even in hostile environment.</source>
-        <translation>Kết nối với VPN ngay cả trong môi trường thù địch.</translation>
-    </message>
-    <message>
         <source>Settings Conflict</source>
         <translation>Cài đặt xung đột</translation>
     </message>
@@ -1369,6 +1372,10 @@ Nếu sự cố vẫn tiếp diễn sau khi khởi động lại, vui lòng gử
     <message>
         <source>Remove Wi-Fi SSID and MAC information from your operating system to prevent location history tracking.</source>
         <translation>Xóa thông tin Wi-Fi SSID và MAC khỏi hệ điều hành của bạn để ngăn theo dõi lịch sử vị trí.</translation>
+    </message>
+    <message>
+        <source>Connect to the VPN with WireGuard even in a hostile environment.</source>
+        <translation>Kết nối với VPN với WireGuard ngay cả trong môi trường thù địch.</translation>
     </message>
 </context>
 <context>

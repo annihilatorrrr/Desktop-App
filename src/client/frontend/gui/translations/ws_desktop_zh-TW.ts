@@ -1131,6 +1131,17 @@ If the problem persists after a restart, please send a debug log and open a supp
     </message>
 </context>
 <context>
+    <name>PreferencesWindow::AntiCensorshipGroup</name>
+    <message>
+        <source>Circumvent Censorship</source>
+        <translation>規避審查</translation>
+    </message>
+    <message>
+        <source>Configuration</source>
+        <translation>配置</translation>
+    </message>
+</context>
+<context>
     <name>PreferencesWindow::AppBackgroundGroup</name>
     <message>
         <source>App Background</source>
@@ -1247,10 +1258,6 @@ If the problem persists after a restart, please send a debug log and open a supp
         <translation>終止套接字</translation>
     </message>
     <message>
-        <source>Circumvent Censorship</source>
-        <translation>規避審查</translation>
-    </message>
-    <message>
         <source>Connection</source>
         <translation>連接</translation>
     </message>
@@ -1319,10 +1326,6 @@ If the problem persists after a restart, please send a debug log and open a supp
         <translation>配置電視、遊戲機或其他支援代理伺服器的設備。</translation>
     </message>
     <message>
-        <source>Connect to the VPN even in hostile environment.</source>
-        <translation>即使在惡劣的環境中也能連接到 VPN。</translation>
-    </message>
-    <message>
         <source>Settings Conflict</source>
         <translation>設置衝突</translation>
     </message>
@@ -1369,6 +1372,10 @@ If the problem persists after a restart, please send a debug log and open a supp
     <message>
         <source>Remove Wi-Fi SSID and MAC information from your operating system to prevent location history tracking.</source>
         <translation>請從作業系統中移除 Wi-Fi SSID 和 MAC 資訊，以防止位置歷史追蹤。</translation>
+    </message>
+    <message>
+        <source>Connect to the VPN with WireGuard even in a hostile environment.</source>
+        <translation>即使在敵對環境中，也要用 WireGuard 連接 VPN。</translation>
     </message>
 </context>
 <context>

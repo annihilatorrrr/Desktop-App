@@ -7,6 +7,7 @@
 #include <ndisguid.h>
 #include <SetupAPI.h>
 
+#include <algorithm>
 #include <codecvt>
 #include <filesystem>
 #include <fstream>
@@ -33,9 +34,10 @@ WireGuardController::WireGuardController()
 {
 }
 
-bool WireGuardController::installService()
+bool WireGuardController::installService(bool isAmneziaWG)
 {
-    is_initialized_ = false;
+    isAmneziaWG_ = isAmneziaWG;
+    isInitialized_ = false;
     try {
         exeName_ = L"WireguardService.exe";
         const std::wstring confFile = configFile();
@@ -47,6 +49,9 @@ bool WireGuardController::installService()
         {
             std::wostringstream stream;
             stream << L"\"" << Utils::getExePath() << L"\\" << exeName_ << "\" \"" << confFile << L"\"";
+            if (isAmneziaWG) {
+                stream << " --amneziawg";
+            }
             serviceCmdLine = stream.str();
         }
 
@@ -76,18 +81,38 @@ bool WireGuardController::installService()
 
         svcCtrl.setServiceSIDType(SERVICE_SID_TYPE_UNRESTRICTED);
 
-        is_initialized_ = true;
+        isInitialized_ = true;
     }
     catch (std::system_error& ex) {
         spdlog::error("WireGuardController::installService - {}", ex.what());
     }
 
-    return is_initialized_;
+    return isInitialized_;
+}
+
+bool WireGuardController::configure(const std::wstring &config)
+{
+    const std::wstring confFile = configFile();
+    if (confFile.empty()) {
+        return false;
+    }
+
+    std::wofstream file(confFile.c_str(), std::ios::out | std::ios::trunc);
+    if (!file) {
+        spdlog::error("WireGuardController::configure - could not open config file for writing");
+        return false;
+    }
+
+    file << config;
+    file.flush();
+    file.close();
+
+    return true;
 }
 
 bool WireGuardController::deleteService()
 {
-    is_initialized_ = false;
+    isInitialized_ = false;
 
     bool bServiceDeleted = false;
     try {
@@ -126,64 +151,20 @@ UINT WireGuardController::getStatus(ULONG64& lastHandshake, ULONG64& txBytes, UL
 {
     UINT result = kWgStateActive;
 
+    lastHandshake = 0;
+    txBytes = 0;
+    rxBytes = 0;
+
     try {
-        if (!is_initialized_) {
+        if (!isInitialized_) {
             throw std::system_error(ERROR_INVALID_STATE, std::generic_category(),
                 "WireGuardController::getStatus - the WireGuard tunnel is not initialized");
         }
 
-        wsl::Win32Handle hDriver(getKernelInterfaceHandle());
-
-        // Look at kernel_get_device() in wireguard-windows-0.5.3\.deps\src\ipc-windows.h for
-        // sample code showing how to parse the structures returned from the wireguard-nt
-        // kernel driver when we send it the WG_IOCTL_GET io control command.
-
-        DWORD bufferSize = 4096;
-        std::unique_ptr< BYTE[] > buffer(new BYTE[bufferSize]);
-
-        // Only perform max 3 attempts, just in case we keep getting ERROR_MORE_DATA for some reason.
-        BOOL apiResult = FALSE;
-        for (int i = 0; !apiResult && i < 3; ++i) {
-            apiResult = ::DeviceIoControl(hDriver.getHandle(), WG_IOCTL_GET, NULL, 0, buffer.get(),
-                                          bufferSize, &bufferSize, NULL);
-            if (!apiResult) {
-                if (::GetLastError() != ERROR_MORE_DATA) {
-                    throw std::system_error(::GetLastError(), std::generic_category(),
-                        "WireGuardController::getStatus - DeviceIoControl failed");
-                }
-
-                buffer.reset(new BYTE[bufferSize]);
-            }
-        }
-
-        if (!apiResult) {
-            throw std::system_error(ERROR_UNIDENTIFIED_ERROR, std::generic_category(),
-                "WireGuardController::getStatus - DeviceIoControl failed repeatedly");
-        }
-
-        if (bufferSize < sizeof(WG_IOCTL_INTERFACE)) {
-            throw std::system_error(ERROR_INVALID_DATA, std::generic_category(),
-                std::string("WireGuardController::getStatus - DeviceIoControl returned ") + std::to_string(bufferSize) +
-                std::string(" bytes, expected ") + std::to_string(sizeof(WG_IOCTL_INTERFACE)));
-        }
-
-        WG_IOCTL_INTERFACE* wgInterface = (WG_IOCTL_INTERFACE*)buffer.get();
-        if (wgInterface->PeersCount > 0) {
-            if (bufferSize < sizeof(WG_IOCTL_INTERFACE) + sizeof(WG_IOCTL_PEER)) {
-                throw std::system_error(ERROR_INVALID_DATA, std::generic_category(),
-                    std::string("WireGuardController::getStatus - DeviceIoControl returned ") + std::to_string(bufferSize) +
-                    std::string(" bytes, expected ") + std::to_string(sizeof(WG_IOCTL_INTERFACE) + sizeof(WG_IOCTL_PEER)));
-            }
-
-            WG_IOCTL_PEER* wgPeerInfo = (WG_IOCTL_PEER*)(buffer.get() + sizeof(WG_IOCTL_INTERFACE));
-            lastHandshake = wgPeerInfo->LastHandshake;
-            txBytes = wgPeerInfo->TxBytes;
-            rxBytes = wgPeerInfo->RxBytes;
-        }
-        else {
-            lastHandshake = 0;
-            txBytes = 0;
-            rxBytes = 0;
+        if (isAmneziaWG_) {
+            getAmneziaWGStatus(lastHandshake, txBytes, rxBytes);
+        } else {
+            getKernelDriverStatus(lastHandshake, txBytes, rxBytes);
         }
     }
     catch (std::system_error& ex) {
@@ -192,6 +173,58 @@ UINT WireGuardController::getStatus(ULONG64& lastHandshake, ULONG64& txBytes, UL
     }
 
     return result;
+}
+
+void WireGuardController::getKernelDriverStatus(ULONG64& lastHandshake, ULONG64& txBytes, ULONG64& rxBytes) const
+{
+    wsl::Win32Handle hDriver(getKernelInterfaceHandle());
+
+    // Look at kernel_get_device() in wireguard-windows-0.5.3\.deps\src\ipc-windows.h for
+    // sample code showing how to parse the structures returned from the wireguard-nt
+    // kernel driver when we send it the WG_IOCTL_GET io control command.
+
+    DWORD bufferSize = 4096;
+    std::unique_ptr< BYTE[] > buffer(new BYTE[bufferSize]);
+
+    // Only perform max 3 attempts, just in case we keep getting ERROR_MORE_DATA for some reason.
+    BOOL apiResult = FALSE;
+    for (int i = 0; !apiResult && i < 3; ++i) {
+        apiResult = ::DeviceIoControl(hDriver.getHandle(), WG_IOCTL_GET, NULL, 0, buffer.get(),
+                                      bufferSize, &bufferSize, NULL);
+        if (!apiResult) {
+            if (::GetLastError() != ERROR_MORE_DATA) {
+                throw std::system_error(::GetLastError(), std::generic_category(),
+                                        "WireGuardController::getStatus - DeviceIoControl failed");
+            }
+
+            buffer.reset(new BYTE[bufferSize]);
+        }
+    }
+
+    if (!apiResult) {
+        throw std::system_error(ERROR_UNIDENTIFIED_ERROR, std::generic_category(),
+                                "WireGuardController::getStatus - DeviceIoControl failed repeatedly");
+    }
+
+    if (bufferSize < sizeof(WG_IOCTL_INTERFACE)) {
+        throw std::system_error(ERROR_INVALID_DATA, std::generic_category(),
+                                std::string("WireGuardController::getStatus - DeviceIoControl returned ") + std::to_string(bufferSize) +
+                                    std::string(" bytes, expected ") + std::to_string(sizeof(WG_IOCTL_INTERFACE)));
+    }
+
+    WG_IOCTL_INTERFACE* wgInterface = (WG_IOCTL_INTERFACE*)buffer.get();
+    if (wgInterface->PeersCount > 0) {
+        if (bufferSize < sizeof(WG_IOCTL_INTERFACE) + sizeof(WG_IOCTL_PEER)) {
+            throw std::system_error(ERROR_INVALID_DATA, std::generic_category(),
+                                    std::string("WireGuardController::getStatus - DeviceIoControl returned ") + std::to_string(bufferSize) +
+                                        std::string(" bytes, expected ") + std::to_string(sizeof(WG_IOCTL_INTERFACE) + sizeof(WG_IOCTL_PEER)));
+        }
+
+        WG_IOCTL_PEER* wgPeerInfo = (WG_IOCTL_PEER*)(buffer.get() + sizeof(WG_IOCTL_INTERFACE));
+        lastHandshake = wgPeerInfo->LastHandshake;
+        txBytes = wgPeerInfo->TxBytes;
+        rxBytes = wgPeerInfo->RxBytes;
+    }
 }
 
 HANDLE WireGuardController::getKernelInterfaceHandle() const
@@ -293,26 +326,6 @@ HANDLE WireGuardController::getKernelInterfaceHandle() const
     return hKernelInterface;
 }
 
-bool WireGuardController::configure(const std::wstring &config)
-{
-    const std::wstring confFile = configFile();
-    if (confFile.empty()) {
-        return false;
-    }
-
-    std::wofstream file(confFile.c_str(), std::ios::out | std::ios::trunc);
-    if (!file) {
-        spdlog::error("WireGuardController::configure - could not open config file for writing");
-        return false;
-    }
-
-    file << config;
-    file.flush();
-    file.close();
-
-    return true;
-}
-
 std::wstring WireGuardController::configFile() const
 {
     std::wstring confFile = Utils::getConfigPath();
@@ -322,4 +335,93 @@ std::wstring WireGuardController::configFile() const
     }
     confFile += L"\\" + kWireGuardAdapterIdentifier + L".conf";
     return confFile;
+}
+
+void WireGuardController::getAmneziaWGStatus(ULONG64& lastHandshake, ULONG64& txBytes, ULONG64& rxBytes) const
+{
+    // Connect to the AmneziaWG UAPI named pipe
+    // The adapter name is "WindscribeWireguard" as defined in ServiceMain.cpp
+    std::wstring pipeName = L"\\\\.\\pipe\\ProtectedPrefix\\Administrators\\AmneziaWG\\" + kWireGuardAdapterIdentifier;
+
+    wsl::Win32Handle hPipe(::CreateFileW(pipeName.c_str(), GENERIC_READ | GENERIC_WRITE, 0, NULL, OPEN_EXISTING, 0, NULL));
+
+    if (!hPipe.isValid()) {
+        throw std::system_error(::GetLastError(), std::generic_category(),
+            "WireGuardController::getAmneziaWGStatus - CreateFileW failed to open named pipe");
+    }
+
+    const char* command = "get=1\n\n";
+    DWORD bytesWritten = 0;
+    if (!::WriteFile(hPipe.getHandle(), command, static_cast<DWORD>(strlen(command)), &bytesWritten, NULL)) {
+        throw std::system_error(::GetLastError(), std::generic_category(),
+            "WireGuardController::getAmneziaWGStatus - WriteFile failed");
+    }
+
+    const DWORD bufferSize = 4096;
+    char buffer[bufferSize];
+    DWORD bytesRead = 0;
+    std::string response;
+
+    while (true) {
+        // TODO: JDRM need to ruminate on if the thread could block here and prevent us from stopping the service.
+        BOOL result = ::ReadFile(hPipe.getHandle(), buffer, bufferSize - 1, &bytesRead, NULL);
+        if (!result) {
+            DWORD error = ::GetLastError();
+            if (error == ERROR_MORE_DATA) {
+                // More data available, continue reading
+                buffer[bytesRead] = '\0';
+                response += buffer;
+                continue;
+            }
+            throw std::system_error(error, std::generic_category(), "WireGuardController::getAmneziaWGStatus - ReadFile failed");
+        }
+
+        if (bytesRead > 0) {
+            buffer[bytesRead] = '\0';
+            response += buffer;
+        }
+        break;
+    }
+
+    // Parse the response for key=value pairs
+    // The response format is: key=value\n pairs, ending with \n\n
+    // We're looking for: rx_bytes, tx_bytes, last_handshake_time_sec
+    std::istringstream stream(response);
+    std::string line;
+
+    while (std::getline(stream, line)) {
+        if (line.empty()) {
+            break; // Double newline indicates end of response
+        }
+
+        size_t pos = line.find('=');
+        if (pos != std::string::npos) {
+            std::string key = line.substr(0, pos);
+            std::string value = line.substr(pos + 1);
+
+            // Trim whitespace and carriage returns
+            value.erase(std::remove(value.begin(), value.end(), '\r'), value.end());
+            value.erase(std::remove(value.begin(), value.end(), '\n'), value.end());
+
+            if (key == "rx_bytes") {
+                rxBytes = std::stoull(value);
+            } else if (key == "tx_bytes") {
+                txBytes = std::stoull(value);
+            } else if (key == "last_handshake_time_sec") {
+                // Convert Unix timestamp (seconds since 1970) to Windows FILETIME
+                // (100-nanosecond intervals since 1601)
+                ULONG64 unixTimestamp = std::stoull(value);
+                if (unixTimestamp > 0) {
+                    // Unix epoch (1970-01-01) to Windows epoch (1601-01-01) is 11644473600 seconds
+                    lastHandshake = (unixTimestamp + 11644473600ULL) * 10000000ULL;
+                }
+            } else if (key == "errno") {
+                int errorCode = std::stoi(value);
+                if (errorCode != 0) {
+                    throw std::system_error(errorCode, std::generic_category(),
+                        "WireGuardController::getAmneziaWGStatus - UAPI returned error");
+                }
+            }
+        }
+    }
 }

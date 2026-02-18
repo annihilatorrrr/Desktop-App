@@ -1131,6 +1131,17 @@ Si el problema persiste después de un reinicio, envía un registro de depuraci�
     </message>
 </context>
 <context>
+    <name>PreferencesWindow::AntiCensorshipGroup</name>
+    <message>
+        <source>Circumvent Censorship</source>
+        <translation>Eludir la censura</translation>
+    </message>
+    <message>
+        <source>Configuration</source>
+        <translation>Configuración</translation>
+    </message>
+</context>
+<context>
     <name>PreferencesWindow::AppBackgroundGroup</name>
     <message>
         <source>App Background</source>
@@ -1323,16 +1334,8 @@ Si el problema persiste después de un reinicio, envía un registro de depuraci�
         <translation>El tráfico LAN está actualmente bloqueado por el cortafuegos de Windscribe.  ¿Desea permitir que el tráfico LAN evite el cortafuegos para que esta función funcione?</translation>
     </message>
     <message>
-        <source>Circumvent Censorship</source>
-        <translation>Eludir la censura</translation>
-    </message>
-    <message>
         <source>Automatically choose the VPN protocol, or select one manually. NOTE: &quot;Preferred Protocol&quot; will override this setting.</source>
         <translation>Elija automáticamente el protocolo VPN o seleccione uno manualmente. NOTA: &quot;Protocolo preferido&quot; anulará esta configuración.</translation>
-    </message>
-    <message>
-        <source>Connect to the VPN even in hostile environment.</source>
-        <translation>Conéctese a la VPN incluso en un entorno hostil.</translation>
     </message>
     <message>
         <source>Disabling Allow LAN Traffic will cause your secure hotspot to stop working.  Do you want to disable the hotspot?</source>
@@ -1369,6 +1372,10 @@ Si el problema persiste después de un reinicio, envía un registro de depuraci�
     <message>
         <source>Remove Wi-Fi SSID and MAC information from your operating system to prevent location history tracking.</source>
         <translation>Elimina la información del SSID Wi-Fi y MAC de tu sistema operativo para evitar el rastreo del historial de ubicación.</translation>
+    </message>
+    <message>
+        <source>Connect to the VPN with WireGuard even in a hostile environment.</source>
+        <translation>Conéctate a la VPN con WireGuard incluso en un entorno hostil.</translation>
     </message>
 </context>
 <context>

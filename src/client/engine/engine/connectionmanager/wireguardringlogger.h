@@ -14,7 +14,7 @@ namespace wsl
 class WireguardRingLogger
 {
 public:
-    WireguardRingLogger(const QString& filename);
+    WireguardRingLogger(const QString& filename, bool isAmneziaWG);
     ~WireguardRingLogger();
 
     void getNewLogEntries();
@@ -26,6 +26,7 @@ public:
     bool isTunnelRunning() const { return tunnelRunning_; }
 
 private:
+    const bool isAmneziaWG_ = false;
     const bool verboseLogging_ = false;
     QFile wireguardLogFile_;
     uchar* logData_ = nullptr;

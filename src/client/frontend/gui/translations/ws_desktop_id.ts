@@ -1131,6 +1131,17 @@ Jika masalah berlanjut setelah restart, silakan kirim log debug dan buka tiket d
     </message>
 </context>
 <context>
+    <name>PreferencesWindow::AntiCensorshipGroup</name>
+    <message>
+        <source>Circumvent Censorship</source>
+        <translation>Menghindari Sensor</translation>
+    </message>
+    <message>
+        <source>Configuration</source>
+        <translation>Konfigurasi</translation>
+    </message>
+</context>
+<context>
     <name>PreferencesWindow::AppBackgroundGroup</name>
     <message>
         <source>App Background</source>
@@ -1247,10 +1258,6 @@ Jika masalah berlanjut setelah restart, silakan kirim log debug dan buka tiket d
         <translation>Hentikan Soket</translation>
     </message>
     <message>
-        <source>Circumvent Censorship</source>
-        <translation>Hindari Sensor</translation>
-    </message>
-    <message>
         <source>Connection</source>
         <translation>Sambungan</translation>
     </message>
@@ -1319,10 +1326,6 @@ Jika masalah berlanjut setelah restart, silakan kirim log debug dan buka tiket d
         <translation>Konfigurasikan TV, konsol game, atau perangkat lain yang mendukung server proxy.</translation>
     </message>
     <message>
-        <source>Connect to the VPN even in hostile environment.</source>
-        <translation>Hubungkan ke VPN bahkan di lingkungan yang tidak bersahabat.</translation>
-    </message>
-    <message>
         <source>Settings Conflict</source>
         <translation>Konflik Pengaturan</translation>
     </message>
@@ -1369,6 +1372,10 @@ Jika masalah berlanjut setelah restart, silakan kirim log debug dan buka tiket d
     <message>
         <source>Remove Wi-Fi SSID and MAC information from your operating system to prevent location history tracking.</source>
         <translation>Hapus informasi SSID dan MAC Wi-Fi dari sistem operasi Anda untuk mencegah pelacakan riwayat lokasi.</translation>
+    </message>
+    <message>
+        <source>Connect to the VPN with WireGuard even in a hostile environment.</source>
+        <translation>Hubungkan ke VPN dengan WireGuard bahkan di lingkungan yang tidak bersahabat.</translation>
     </message>
 </context>
 <context>

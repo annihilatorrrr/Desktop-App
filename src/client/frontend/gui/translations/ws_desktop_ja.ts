@@ -1131,6 +1131,17 @@ If the problem persists after a restart, please send a debug log and open a supp
     </message>
 </context>
 <context>
+    <name>PreferencesWindow::AntiCensorshipGroup</name>
+    <message>
+        <source>Circumvent Censorship</source>
+        <translation>検閲を回避する</translation>
+    </message>
+    <message>
+        <source>Configuration</source>
+        <translation>構成</translation>
+    </message>
+</context>
+<context>
     <name>PreferencesWindow::AppBackgroundGroup</name>
     <message>
         <source>App Background</source>
@@ -1247,10 +1258,6 @@ If the problem persists after a restart, please send a debug log and open a supp
         <translation>ソケットの終端</translation>
     </message>
     <message>
-        <source>Circumvent Censorship</source>
-        <translation>検閲の回避</translation>
-    </message>
-    <message>
         <source>Connection</source>
         <translation>接続</translation>
     </message>
@@ -1319,10 +1326,6 @@ If the problem persists after a restart, please send a debug log and open a supp
         <translation>テレビ、ゲーム機、またはプロキシサーバーをサポートするその他のデバイスを構成します。</translation>
     </message>
     <message>
-        <source>Connect to the VPN even in hostile environment.</source>
-        <translation>敵対的な環境でもVPNに接続します。</translation>
-    </message>
-    <message>
         <source>Settings Conflict</source>
         <translation>設定の競合</translation>
     </message>
@@ -1369,6 +1372,10 @@ If the problem persists after a restart, please send a debug log and open a supp
     <message>
         <source>Remove Wi-Fi SSID and MAC information from your operating system to prevent location history tracking.</source>
         <translation>位置履歴の追跡を防ぐために、Wi-Fi SSIDとMAC情報をOSから削除してください。</translation>
+    </message>
+    <message>
+        <source>Connect to the VPN with WireGuard even in a hostile environment.</source>
+        <translation>敵対的な環境でもWireGuardでVPNに接続してください。</translation>
     </message>
 </context>
 <context>

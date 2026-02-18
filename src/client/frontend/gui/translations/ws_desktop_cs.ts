@@ -1131,6 +1131,17 @@ Pokud problém přetrvává i po restartování, odešlete protokol ladění, ot
     </message>
 </context>
 <context>
+    <name>PreferencesWindow::AntiCensorshipGroup</name>
+    <message>
+        <source>Circumvent Censorship</source>
+        <translation>Obcházení cenzury</translation>
+    </message>
+    <message>
+        <source>Configuration</source>
+        <translation>Konfigurace</translation>
+    </message>
+</context>
+<context>
     <name>PreferencesWindow::AppBackgroundGroup</name>
     <message>
         <source>App Background</source>
@@ -1247,10 +1258,6 @@ Pokud problém přetrvává i po restartování, odešlete protokol ladění, ot
         <translation>Ukončení zásuvek</translation>
     </message>
     <message>
-        <source>Circumvent Censorship</source>
-        <translation>Obcházení cenzury</translation>
-    </message>
-    <message>
         <source>Connection</source>
         <translation>Připojení</translation>
     </message>
@@ -1315,10 +1322,6 @@ Pokud problém přetrvává i po restartování, odešlete protokol ladění, ot
         <translation>Nakonfigurujte televizor, herní konzoli nebo jiná zařízení, která podporují proxy servery.</translation>
     </message>
     <message>
-        <source>Connect to the VPN even in hostile environment.</source>
-        <translation>Připojte se k VPN i v nepřátelském prostředí.</translation>
-    </message>
-    <message>
         <source>Settings Conflict</source>
         <translation>Konflikt nastavení</translation>
     </message>
@@ -1369,6 +1372,10 @@ Pokud problém přetrvává i po restartování, odešlete protokol ladění, ot
     <message>
         <source>Remove Wi-Fi SSID and MAC information from your operating system to prevent location history tracking.</source>
         <translation>Odstraňte Wi-Fi SSID a MAC údaje z operačního systému, abyste zabránili sledování historie polohy.</translation>
+    </message>
+    <message>
+        <source>Connect to the VPN with WireGuard even in a hostile environment.</source>
+        <translation>Připojte se k VPN přes WireGuard i v nepřátelském prostředí.</translation>
     </message>
 </context>
 <context>

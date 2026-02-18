@@ -1131,6 +1131,17 @@ Se il problema persiste dopo un riavvio, inviare un registro di debug e aprire u
     </message>
 </context>
 <context>
+    <name>PreferencesWindow::AntiCensorshipGroup</name>
+    <message>
+        <source>Circumvent Censorship</source>
+        <translation>Aggirare la censura</translation>
+    </message>
+    <message>
+        <source>Configuration</source>
+        <translation>Configurazione</translation>
+    </message>
+</context>
+<context>
     <name>PreferencesWindow::AppBackgroundGroup</name>
     <message>
         <source>App Background</source>
@@ -1247,10 +1258,6 @@ Se il problema persiste dopo un riavvio, inviare un registro di debug e aprire u
         <translation>Terminare i socket</translation>
     </message>
     <message>
-        <source>Circumvent Censorship</source>
-        <translation>Eludere la censura</translation>
-    </message>
-    <message>
         <source>Connection</source>
         <translation>Connessione</translation>
     </message>
@@ -1319,10 +1326,6 @@ Se il problema persiste dopo un riavvio, inviare un registro di debug e aprire u
         <translation>Configurare la TV, la console di gioco o altri dispositivi che supportano i server proxy.</translation>
     </message>
     <message>
-        <source>Connect to the VPN even in hostile environment.</source>
-        <translation>Connettiti alla VPN anche in ambienti ostili.</translation>
-    </message>
-    <message>
         <source>Settings Conflict</source>
         <translation>Conflitto di impostazioni</translation>
     </message>
@@ -1369,6 +1372,10 @@ Se il problema persiste dopo un riavvio, inviare un registro di debug e aprire u
     <message>
         <source>Remove Wi-Fi SSID and MAC information from your operating system to prevent location history tracking.</source>
         <translation>Rimuovi le informazioni Wi-Fi SSID e MAC dal sistema operativo per impedire il tracciamento della cronologia della posizione.</translation>
+    </message>
+    <message>
+        <source>Connect to the VPN with WireGuard even in a hostile environment.</source>
+        <translation>Connettiti alla VPN con WireGuard anche in un ambiente ostile.</translation>
     </message>
 </context>
 <context>

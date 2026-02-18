@@ -121,6 +121,7 @@ void Backend::init()
     connect(engine_, &Engine::connectingHostnameChanged, this, &Backend::onEngineConnectingHostnameChanged);
     connect(engine_, &Engine::controldDevicesFetched, this, &Backend::controldDevicesFetched);
     connect(engine_, &Engine::clearWifiHistoryFinished, this, &Backend::clearWifiHistoryFinished);
+    connect(engine_, &Engine::amneziawgUnblockParamsUpdated, this, &Backend::amneziawgUnblockParamsUpdated);
     threadEngine_->start(QThread::LowPriority);
 }
 

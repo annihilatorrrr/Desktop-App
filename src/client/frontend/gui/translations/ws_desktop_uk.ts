@@ -1131,6 +1131,17 @@ If the problem persists after a restart, please send a debug log and open a supp
     </message>
 </context>
 <context>
+    <name>PreferencesWindow::AntiCensorshipGroup</name>
+    <message>
+        <source>Circumvent Censorship</source>
+        <translation>Обхід цензури</translation>
+    </message>
+    <message>
+        <source>Configuration</source>
+        <translation>Конфігурація</translation>
+    </message>
+</context>
+<context>
     <name>PreferencesWindow::AppBackgroundGroup</name>
     <message>
         <source>App Background</source>
@@ -1247,10 +1258,6 @@ If the problem persists after a restart, please send a debug log and open a supp
         <translation>Завершення сокетів</translation>
     </message>
     <message>
-        <source>Circumvent Censorship</source>
-        <translation>Обхід цензури</translation>
-    </message>
-    <message>
         <source>Connection</source>
         <translation>Підключення</translation>
     </message>
@@ -1319,10 +1326,6 @@ If the problem persists after a restart, please send a debug log and open a supp
         <translation>Налаштуйте телевізор, ігрову консоль або інші пристрої, які підтримують проксі-сервери.</translation>
     </message>
     <message>
-        <source>Connect to the VPN even in hostile environment.</source>
-        <translation>Підключитись до VPN навіть у ворожому середовищі.</translation>
-    </message>
-    <message>
         <source>Settings Conflict</source>
         <translation>Конфлікт налаштувань</translation>
     </message>
@@ -1369,6 +1372,10 @@ If the problem persists after a restart, please send a debug log and open a supp
     <message>
         <source>Remove Wi-Fi SSID and MAC information from your operating system to prevent location history tracking.</source>
         <translation>Видаліть інформацію про Wi-Fi SSID та MAC з операційної системи, щоб запобігти відстеженню історії місцезнаходження.</translation>
+    </message>
+    <message>
+        <source>Connect to the VPN with WireGuard even in a hostile environment.</source>
+        <translation>Підключайтеся до VPN через WireGuard навіть у ворожому середовищі.</translation>
     </message>
 </context>
 <context>

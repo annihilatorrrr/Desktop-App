@@ -213,6 +213,8 @@ signals:
 
     void clearWifiHistoryFinished(bool success);
 
+    void amneziawgUnblockParamsUpdated(const QString& activePreset, QStringList presets);
+
 private slots:
     void onLostConnectionToHelper();
     void onInitializeHelper(INIT_HELPER_RET ret);
@@ -258,6 +260,7 @@ private slots:
     void onApiResourcesManagerLocationsUpdated();
     void onApiResourcesManagerServerCredentialsFetched();
     void onApiResourcesManagerAuthTokenLoginFinished(wsnet::LoginResult loginResult);
+    void onApiResourcesManagerAmneziawgUnblockParamsFetched();
 
     void onApiResourceManagerCallback(wsnet::ApiResourcesManagerNotification notification, wsnet::LoginResult loginResult, const std::string &errorMessage);
 

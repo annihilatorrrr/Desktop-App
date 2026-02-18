@@ -217,10 +217,12 @@ int main(int argc, char *argv[])
     }
 #endif
 
+#if !defined(QT_CREATOR_DEV_BUILD)
     if (!QFileInfo::exists(OpenVpnVersionController::instance().getOpenVpnFilePath())) {
         qCCritical(LOG_BASIC) << "OpenVPN executable not found";
         return 0;
     }
+#endif
 
 #if defined Q_OS_MACOS
     if (!MacUtils::verifyAppBundleIntegrity())

@@ -1131,6 +1131,17 @@ If the problem persists after a restart, please send a debug log and open a supp
     </message>
 </context>
 <context>
+    <name>PreferencesWindow::AntiCensorshipGroup</name>
+    <message>
+        <source>Circumvent Censorship</source>
+        <translation>सेंसरशिप को दरकिनार करें</translation>
+    </message>
+    <message>
+        <source>Configuration</source>
+        <translation>कॉन्फ़िगरेशन</translation>
+    </message>
+</context>
+<context>
     <name>PreferencesWindow::AppBackgroundGroup</name>
     <message>
         <source>App Background</source>
@@ -1247,10 +1258,6 @@ If the problem persists after a restart, please send a debug log and open a supp
         <translation>सॉकेट समाप्त करें</translation>
     </message>
     <message>
-        <source>Circumvent Censorship</source>
-        <translation>सेंसरशिप को दरकिनार करें</translation>
-    </message>
-    <message>
         <source>Connection</source>
         <translation>नाता</translation>
     </message>
@@ -1315,10 +1322,6 @@ If the problem persists after a restart, please send a debug log and open a supp
         <translation>अपने टीवी, गेमिंग कंसोल, या प्रॉक्सी सर्वर का समर्थन करने वाले अन्य डिवाइस कॉन्फ़िगर करें।</translation>
     </message>
     <message>
-        <source>Connect to the VPN even in hostile environment.</source>
-        <translation>शत्रुतापूर्ण वातावरण में भी वीपीएन से कनेक्ट करें.</translation>
-    </message>
-    <message>
         <source>Settings Conflict</source>
         <translation>सेटिंग्स विरोध</translation>
     </message>
@@ -1369,6 +1372,10 @@ If the problem persists after a restart, please send a debug log and open a supp
     <message>
         <source>Remove Wi-Fi SSID and MAC information from your operating system to prevent location history tracking.</source>
         <translation>स्थान इतिहास ट्रैकिंग को रोकने के लिए अपने ऑपरेटिंग सिस्टम से वाई-फाई एसएसआईडी और मैक जानकारी निकालें।</translation>
+    </message>
+    <message>
+        <source>Connect to the VPN with WireGuard even in a hostile environment.</source>
+        <translation>शत्रुतापूर्ण वातावरण में भी वायरगार्ड के साथ वीपीएन से कनेक्ट करें।</translation>
     </message>
 </context>
 <context>

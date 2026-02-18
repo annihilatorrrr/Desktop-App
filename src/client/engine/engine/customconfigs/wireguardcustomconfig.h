@@ -1,8 +1,10 @@
 #pragma once
 
+#include <QSharedPointer>
+
 #include "icustomconfig.h"
 #include "engine/wireguardconfig/wireguardconfig.h"
-#include <QSharedPointer>
+#include "api_responses/amneziawgunblockparams.h"
 
 namespace customconfigs {
 
@@ -44,6 +46,7 @@ private:
     QString endpointPort_;
     uint endpointPortNumber_ = 0;
     bool isAllowFirewallAfterConnection_ = true;
+    api_responses::AmneziawgUnblockParam obfuscationParams_;
 };
 
 } //namespace customconfigs

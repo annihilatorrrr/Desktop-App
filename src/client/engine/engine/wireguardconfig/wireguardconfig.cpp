@@ -5,6 +5,7 @@
 #include <QStringList>
 #include <QTextStream>
 
+#include "utils/extraconfig.h"
 #include "utils/log/categories.h"
 #include "utils/openssl_utils.h"
 
@@ -59,6 +60,49 @@ QString WireGuardConfig::generateConfigFile() const
         ts << "ListenPort = " << client_.listenPort << '\n';
     }
 
+    if (client_.amneziawgParam.isValid()) {
+        if (client_.amneziawgParam.jc > 0) {
+            ts << "Jc = " << client_.amneziawgParam.jc << '\n';
+        }
+        if (client_.amneziawgParam.jmin > 0) {
+            ts << "Jmin = " << client_.amneziawgParam.jmin << '\n';
+        }
+        if (client_.amneziawgParam.jmax > 0) {
+            ts << "Jmax = " << client_.amneziawgParam.jmax << '\n';
+        }
+        if (client_.amneziawgParam.s1 != 0) {
+            ts << "S1 = " << client_.amneziawgParam.s1 << '\n';
+        }
+        if (client_.amneziawgParam.s2 != 0) {
+            ts << "S2 = " << client_.amneziawgParam.s2 << '\n';
+        }
+        if (client_.amneziawgParam.s3 != 0) {
+            ts << "S3 = " << client_.amneziawgParam.s3 << '\n';
+        }
+        if (client_.amneziawgParam.s4 != 0) {
+            ts << "S4 = " << client_.amneziawgParam.s4 << '\n';
+        }
+        if (!client_.amneziawgParam.h1.isEmpty()) {
+            ts << "H1 = " << client_.amneziawgParam.h1 << '\n';
+        }
+        if (!client_.amneziawgParam.h2.isEmpty()) {
+            ts << "H2 = " << client_.amneziawgParam.h2 << '\n';
+        }
+        if (!client_.amneziawgParam.h3.isEmpty()) {
+            ts << "H3 = " << client_.amneziawgParam.h3 << '\n';
+        }
+        if (!client_.amneziawgParam.h4.isEmpty()) {
+            ts << "H4 = " << client_.amneziawgParam.h4 << '\n';
+        }
+
+        // Send I1-I5 parameters (in order, only if they exist)
+        for (auto i = 0; i < client_.amneziawgParam.iValues.size() && i < 5; ++i) {
+            if (!client_.amneziawgParam.iValues[i].isEmpty()) {
+                ts << "I" << i + 1 << " = " << client_.amneziawgParam.iValues[i] << '\n';
+            }
+        }
+    }
+
     ts << '\n';
     ts << "[Peer]\n";
     ts << "PublicKey = " << peer_.publicKey << '\n';
@@ -93,6 +137,7 @@ void WireGuardConfig::reset()
     client_.ipAddress.clear();
     client_.dnsAddress.clear();
     client_.listenPort.clear();
+    client_.amneziawgParam = api_responses::AmneziawgUnblockParam();
     peer_.publicKey.clear();
     peer_.presharedKey.clear();
     peer_.endpoint.clear();
@@ -168,13 +213,43 @@ bool WireGuardConfig::haveServerGeneratedPeerParams() const
     return !peer_.presharedKey.isEmpty() && !peer_.allowedIps.isEmpty();
 }
 
+AmneziawgConfig WireGuardConfig::amneziawgParamToHelperConfig() const
+{
+    AmneziawgConfig config;
+    if (client_.amneziawgParam.isValid()) {
+        config.title = client_.amneziawgParam.title.toStdString();
+        config.jc = client_.amneziawgParam.jc;
+        config.jmin = client_.amneziawgParam.jmin;
+        config.jmax = client_.amneziawgParam.jmax;
+        config.s1 = client_.amneziawgParam.s1;
+        config.s2 = client_.amneziawgParam.s2;
+        config.s3 = client_.amneziawgParam.s3;
+        config.s4 = client_.amneziawgParam.s4;
+        config.h1 = client_.amneziawgParam.h1.toStdString();
+        config.h2 = client_.amneziawgParam.h2.toStdString();
+        config.h3 = client_.amneziawgParam.h3.toStdString();
+        config.h4 = client_.amneziawgParam.h4.toStdString();
+        for (const auto &iValue : client_.amneziawgParam.iValues) {
+            config.iValues.push_back(iValue.toStdString());
+        }
+        if (ExtraConfig::instance().getWireGuardVerboseLogging()) {
+            qCDebug(LOG_CONNECTION) << "WireGuardConfig::amneziawgParamToHelperConfig" << client_.amneziawgParam;
+        }
+    }
+    return config;
+}
+
 QDataStream& operator <<(QDataStream &stream, const WireGuardConfig &c)
 {
+    // There should be no need to serialize the amneziawgParam, as it contains information that is already persisted
+    // in wsnet (available configurations from the server) and EngineSettings (the config the user has selected).
+    // We only persist here data that is unique to this class.
     stream << c.versionForSerialization_;
     stream << c.client_.privateKey << c.client_.publicKey << c.client_.ipAddress << c.client_.dnsAddress << c.client_.listenPort;
     stream << c.peer_.publicKey << c.peer_.presharedKey << c.peer_.endpoint << c.peer_.allowedIps;
     return stream;
 }
+
 QDataStream& operator >>(QDataStream &stream, WireGuardConfig &c)
 {
     quint32 version;

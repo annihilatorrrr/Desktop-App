@@ -1,11 +1,18 @@
+2.21.1 (10/02/2026)
+Windows:
+   * Added AmneziaWG advanced anti-censorship support. #1572
+MacOS:
+   * Added AmneziaWG advanced anti-censorship support. #1572
+
+   
 2.20.6 (09/02/2026)
 All:
-   * Added link to website, and shortened description, for "Clear Wi-Fi History" feature. #1585
+   * Added link to website for "Clear Wi-Fi History" feature. Shortened description. #1585
    * Added link to website for "Decoy Traffic" feature. #1648
    * Fixed incorrect curl settings when SNI domain is specified, fixes in wsnet. #1639
    * Fixed connecting to a static IP location may fail on WireGuard. #1647
    * Fixed WireGuard connection failures when key limit is reached. #1645
-   * Fixed captcha compatibility issues for ScribeForce customers. #1649
+   * Fixed captcha compatibility issues for ScribeForce customers, fixes in wsnet. #1649
 
 
 2.20.5 (28/01/2026)

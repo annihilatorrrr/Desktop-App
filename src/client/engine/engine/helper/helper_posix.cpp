@@ -3,6 +3,7 @@
 #include "engine/connectionmanager/adaptergatewayinfo.h"
 #include "engine/wireguardconfig/wireguardconfig.h"
 #include "types/wireguardtypes.h"
+#include "utils/extraconfig.h"
 #include "utils/ws_assert.h"
 
 #ifdef Q_OS_LINUX
@@ -106,7 +107,7 @@ bool Helper_posix::executeTaskKill(CmdKillTarget target)
 
 bool Helper_posix::startWireGuard()
 {
-    auto result = sendCommand(HelperCommand::startWireGuard);
+    auto result = sendCommand(HelperCommand::startWireGuard, ExtraConfig::instance().getWireGuardVerboseLogging());
     bool success = false;
     deserializeAnswer(result, success);
     return success;
@@ -146,8 +147,11 @@ bool Helper_posix::configureWireGuard(const WireGuardConfig &config)
         break;
     }
 #endif
+
+    AmneziawgConfig amneziawgConfig = config.amneziawgParamToHelperConfig();
+
     auto result = sendCommand(HelperCommand::configureWireGuard, clientPrivateKey, clientIpAddress, clientDnsAddressList,
-                              peerPublicKey, peerPresharedKey, peerEndpoint, allowedIps, listenPort, dnsManager);
+                              peerPublicKey, peerPresharedKey, peerEndpoint, allowedIps, listenPort, dnsManager, amneziawgConfig);
     bool success = false;
     deserializeAnswer(result, success);
     return success;

@@ -13,6 +13,8 @@ target_sources(gui PRIVATE
     advancedwindow/advancedwindowitem.h
     comboboxitem.cpp
     comboboxitem.h
+    connectionwindow/anticensorshipgroup.cpp
+    connectionwindow/anticensorshipgroup.h
     connectionwindow/connecteddnsgroup.cpp
     connectionwindow/connecteddnsgroup.h
     connectionwindow/connectionwindowitem.cpp

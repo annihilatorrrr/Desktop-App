@@ -220,6 +220,11 @@ std::string ApiResourcesManager::checkUpdate() const
     return checkUpdate_;
 }
 
+std::string ApiResourcesManager::amneziawgUnblockParams() const
+{
+    return persistentSettings_.amneziawgUnblockParams();
+}
+
 std::string ApiResourcesManager::authTokenLoginResult() const
 {
     std::lock_guard locker(mutex_);
@@ -228,7 +233,7 @@ std::string ApiResourcesManager::authTokenLoginResult() const
 
 void ApiResourcesManager::setUpdateIntervals(int sessionInDisconnectedStateMs, int sessionInConnectedStateMs,
                                              int locationsMs, int staticIpsMs, int serverConfigsAndCredentialsMs,
-                                             int portMapMs, int notificationsMs, int checkUpdateMs)
+                                             int portMapMs, int notificationsMs, int checkUpdateMs, int amneziawgUnblockParamsMs)
 {
     std::lock_guard locker(mutex_);
     sessionInDisconnectedStateMs_ = sessionInDisconnectedStateMs;
@@ -239,6 +244,7 @@ void ApiResourcesManager::setUpdateIntervals(int sessionInDisconnectedStateMs, i
     portMapMs_ = portMapMs;
     notificationsMs_ = notificationsMs;
     checkUpdateMs_ = checkUpdateMs;
+    amneziawgUnblockParamsMs_ = amneziawgUnblockParamsMs;
 }
 
 void ApiResourcesManager::handleLoginOrSessionAnswer(ServerApiRetCode serverApiRetCode, const std::string &jsonData)
@@ -363,6 +369,10 @@ void ApiResourcesManager::fetchAll()
     if (isCheckUpdateDataSet_ && isTimeoutForRequest(RequestType::kCheckUpdate, checkUpdateMs_))
         fetchCheckUpdate();
 
+    // fetch amneziawg unblock params every 24 hours
+    if (isTimeoutForRequest(RequestType::kAmneziawgUnblockParams, amneziawgUnblockParamsMs_))
+        fetchAmneziawgUnblockParams(persistentSettings_.authHash());
+
 }
 
 void ApiResourcesManager::fetchSession(const std::string &authHash)
@@ -466,6 +476,16 @@ void ApiResourcesManager::fetchCheckUpdate()
     requestsInProgress_[RequestType::kCheckUpdate] = serverAPI_->checkUpdate(checkUpdateData_.channel, checkUpdateData_.appVersion, checkUpdateData_.appBuild,
                                                                                checkUpdateData_.osVersion, checkUpdateData_.osBuild,
                                                                                  std::bind(&ApiResourcesManager::onCheckUpdateAnswer, this, _1, _2));
+}
+
+void ApiResourcesManager::fetchAmneziawgUnblockParams(const std::string &authHash)
+{
+    if (requestsInProgress_.find(RequestType::kAmneziawgUnblockParams) != requestsInProgress_.end())
+        return;
+
+    using namespace std::placeholders;
+    requestsInProgress_[RequestType::kAmneziawgUnblockParams] =
+        serverAPI_->amneziawgUnblockParams(authHash, std::bind(&ApiResourcesManager::onAmneziawgUnblockParamsAnswer, this, _1, _2));
 }
 
 void ApiResourcesManager::updateSessionStatus()
@@ -741,6 +761,18 @@ void ApiResourcesManager::onCheckUpdateAnswer(ServerApiRetCode serverApiRetCode,
     }
     lastUpdateTimeMs_[RequestType::kCheckUpdate] = { steady_clock::now(), serverApiRetCode == ServerApiRetCode::kSuccess };
     requestsInProgress_.erase(RequestType::kCheckUpdate);
+}
+
+void ApiResourcesManager::onAmneziawgUnblockParamsAnswer(ServerApiRetCode serverApiRetCode, const std::string &jsonData)
+{
+    std::lock_guard locker(mutex_);
+
+    if (serverApiRetCode == ServerApiRetCode::kSuccess) {
+        persistentSettings_.setAmneziawgUnblockParams(jsonData);
+        callback_->call(ApiResourcesManagerNotification::kAmneziawgUnblockParamsFinished, LoginResult::kSuccess, std::string());
+    }
+    lastUpdateTimeMs_[RequestType::kAmneziawgUnblockParams] = { steady_clock::now(), serverApiRetCode == ServerApiRetCode::kSuccess };
+    requestsInProgress_.erase(RequestType::kAmneziawgUnblockParams);
 }
 
 void ApiResourcesManager::onDeleteSessionAnswer(ServerApiRetCode serverApiRetCode, const std::string &jsonData)

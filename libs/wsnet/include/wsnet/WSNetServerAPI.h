@@ -153,6 +153,8 @@ public:
     virtual std::shared_ptr<WSNetCancelableCallback> authTokenLogin(const std::string &username, bool useAsciiCaptcha, WSNetRequestFinishedCallback callback) = 0;
     virtual std::shared_ptr<WSNetCancelableCallback> authTokenSignup(const std::string &username, bool useAsciiCaptcha, WSNetRequestFinishedCallback callback) = 0;
     virtual std::shared_ptr<WSNetCancelableCallback> passwordRecovery(const std::string &email, WSNetRequestFinishedCallback callback) = 0;
+
+    virtual std::shared_ptr<WSNetCancelableCallback> amneziawgUnblockParams(const std::string &authHash, WSNetRequestFinishedCallback callback) = 0;
 };
 
 } // namespace wsnet

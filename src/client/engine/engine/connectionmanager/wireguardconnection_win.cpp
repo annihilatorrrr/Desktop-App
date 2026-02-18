@@ -106,8 +106,8 @@ void WireGuardConnection::run()
 
     qCDebug(LOG_CONNECTION) << "Starting WireGuardService";
 
-    // Installing the wireguard service requires admin privilege.
-    bool bSuccess = helper_->startWireGuard();
+    // This merely installs the wireguard service.  We start it with a call to startService below.
+    bool bSuccess = helper_->startWireGuard(wireGuardConfig_.haveAmneziawgParam());
     if (!bSuccess) {
         qCCritical(LOG_CONNECTION) << "Windscribe service could not install the WireGuard service";
         emit error(CONNECT_ERROR::WIREGUARD_CONNECTION_ERROR);
@@ -188,6 +188,11 @@ void WireGuardConnection::run()
 
     if (disableDNSLeakProtection) {
         helper_->disableDnsLeaksProtection();
+    }
+
+    if (wireGuardConfig_.haveAmneziawgParam()) {
+        // This prevents the wintun adapter/network number from increasing on each connection.
+        helper_->removeWindscribeNetworkProfiles();
     }
 
     // Delay emiting signals until we have cleaned up all our resources.
@@ -417,5 +422,5 @@ void WireGuardConnection::resetLogReader()
     ::CoTaskMemFree(programFilesPath);
 
     logFile += "\\Windscribe\\config\\log.bin";
-    wireguardLog_.reset(new wsl::WireguardRingLogger(logFile));
+    wireguardLog_.reset(new wsl::WireguardRingLogger(logFile, wireGuardConfig_.haveAmneziawgParam()));
 }

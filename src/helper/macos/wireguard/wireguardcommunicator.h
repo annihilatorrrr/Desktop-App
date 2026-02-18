@@ -3,17 +3,20 @@
 #include <map>
 #include <string>
 
+#include "../../common/helper_commands.h"
+
 class WireGuardCommunicator
 {
 public:
     WireGuardCommunicator() = default;
 
-    bool start(const std::string &deviceName);
+    bool start(const std::string &deviceName, bool verboseLogging);
     bool stop();
 
     bool configure(const std::string &clientPrivateKey, const std::string &peerPublicKey,
-        const std::string &peerPresharedKey, const std::string &peerEndpoint,
-        const std::vector<std::string> &allowedIps, uint16_t listenPort);
+                   const std::string &peerPresharedKey, const std::string &peerEndpoint,
+                   const std::vector<std::string> &allowedIps, uint16_t listenPort,
+                   const AmneziawgConfig &amneziawgConfig);
     unsigned long getStatus(unsigned int *errorCode, unsigned long long *bytesReceived,
                             unsigned long long *bytesTransmitted);
 
@@ -28,9 +31,10 @@ private:
 
         explicit Connection(const std::string &deviceName);
         ~Connection();
-        bool getOutput(ResultMap *results_map) const;
+        bool getOutput(ResultMap *results_map, bool verboseLogging) const;
         Status getStatus() const { return status_; }
         operator FILE*() const { return fileHandle_; }
+
     private:
         bool connect(struct sockaddr_un *address);
 
@@ -42,5 +46,5 @@ private:
     };
 
     std::string deviceName_;
-    std::string executable_;
+    bool verboseLogging_ = false;
 };

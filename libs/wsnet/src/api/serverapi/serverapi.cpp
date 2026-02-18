@@ -411,6 +411,14 @@ std::shared_ptr<WSNetCancelableCallback> ServerAPI::passwordRecovery(const std::
     return cancelableCallback;
 }
 
+std::shared_ptr<WSNetCancelableCallback> ServerAPI::amneziawgUnblockParams(const std::string &authHash, WSNetRequestFinishedCallback callback)
+{
+    auto cancelableCallback = std::make_shared<CancelableCallback<WSNetRequestFinishedCallback>>(callback);
+    BaseRequest *request = serverapi_requests_factory::amneziawgUnblockParams(authHash, Settings::instance().amneziaWGVersion(), advancedParameters_, cancelableCallback);
+    boost::asio::post(io_context_, [this, request] { impl_->executeRequest(std::unique_ptr<BaseRequest>(request)); });
+    return cancelableCallback;
+}
+
 void ServerAPI::onVPNConnectStateChanged(bool isConnected)
 {
     boost::asio::post(io_context_, [this, isConnected] {

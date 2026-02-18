@@ -1131,6 +1131,17 @@ If the problem persists after a restart, please send a debug log and open a supp
     </message>
 </context>
 <context>
+    <name>PreferencesWindow::AntiCensorshipGroup</name>
+    <message>
+        <source>Circumvent Censorship</source>
+        <translation>تجاوز الرقابة</translation>
+    </message>
+    <message>
+        <source>Configuration</source>
+        <translation>التكوين</translation>
+    </message>
+</context>
+<context>
     <name>PreferencesWindow::AppBackgroundGroup</name>
     <message>
         <source>App Background</source>
@@ -1247,10 +1258,6 @@ If the problem persists after a restart, please send a debug log and open a supp
         <translation>إنهاء المقابس</translation>
     </message>
     <message>
-        <source>Circumvent Censorship</source>
-        <translation>التحايل على الرقابة</translation>
-    </message>
-    <message>
         <source>Connection</source>
         <translation>اتصال</translation>
     </message>
@@ -1315,10 +1322,6 @@ If the problem persists after a restart, please send a debug log and open a supp
         <translation>قم بتكوين التلفزيون أو وحدة التحكم في الألعاب أو الأجهزة الأخرى التي تدعم الخوادم الوكيلة.</translation>
     </message>
     <message>
-        <source>Connect to the VPN even in hostile environment.</source>
-        <translation>اتصل بشبكة VPN حتى في بيئة معادية.</translation>
-    </message>
-    <message>
         <source>Settings Conflict</source>
         <translation>تعارض الإعدادات</translation>
     </message>
@@ -1369,6 +1372,10 @@ If the problem persists after a restart, please send a debug log and open a supp
     <message>
         <source>Remove Wi-Fi SSID and MAC information from your operating system to prevent location history tracking.</source>
         <translation>قم بإزالة معلومات SSID وMAC من نظام التشغيل الخاص بك لمنع تتبع تاريخ الموقع.</translation>
+    </message>
+    <message>
+        <source>Connect to the VPN with WireGuard even in a hostile environment.</source>
+        <translation>اتصل بالVPN عبر WireGuard حتى في بيئة معادية.</translation>
     </message>
 </context>
 <context>

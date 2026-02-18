@@ -28,8 +28,6 @@ public:
     void continueWithUsernameAndPassword(const QString & /*username*/, const QString & /*password*/) override {}
     void continueWithPassword(const QString & /*password*/) override {}
 
-    static QString getWireGuardAdapterName() { return QString("WireGuardTunnel"); }
-
 protected:
     void run() override;
 

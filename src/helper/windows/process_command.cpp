@@ -146,7 +146,9 @@ std::string executeTaskKill(const std::string &pars)
 
 std::string startWireGuard(const std::string &pars)
 {
-    bool success = WireGuardController::instance().installService();
+    bool useAmneziaWG;
+    deserializePars(pars, useAmneziaWG);
+    bool success = WireGuardController::instance().installService(useAmneziaWG);
     spdlog::debug("startWireGuard: success = {}", success);
     return serializeResult(success);
 }

@@ -1131,6 +1131,17 @@ If the problem persists after a restart, please send a debug log and open a supp
     </message>
 </context>
 <context>
+    <name>PreferencesWindow::AntiCensorshipGroup</name>
+    <message>
+        <source>Circumvent Censorship</source>
+        <translation>Circumvent Censorship</translation>
+    </message>
+    <message>
+        <source>Configuration</source>
+        <translation>Configuration</translation>
+    </message>
+</context>
+<context>
     <name>PreferencesWindow::AppBackgroundGroup</name>
     <message>
         <source>App Background</source>
@@ -1247,10 +1258,6 @@ If the problem persists after a restart, please send a debug log and open a supp
         <translation>Terminate Sockets</translation>
     </message>
     <message>
-        <source>Circumvent Censorship</source>
-        <translation>Circumvent Censorship</translation>
-    </message>
-    <message>
         <source>Connection</source>
         <translation>Connection</translation>
     </message>
@@ -1319,10 +1326,6 @@ If the problem persists after a restart, please send a debug log and open a supp
         <translation>Configure your TV, gaming console, or other devices that support proxy servers.</translation>
     </message>
     <message>
-        <source>Connect to the VPN even in hostile environment.</source>
-        <translation>Connect to the VPN even in hostile environment.</translation>
-    </message>
-    <message>
         <source>Settings Conflict</source>
         <translation>Settings Conflict</translation>
     </message>
@@ -1369,6 +1372,10 @@ If the problem persists after a restart, please send a debug log and open a supp
     <message>
         <source>Remove Wi-Fi SSID and MAC information from your operating system to prevent location history tracking.</source>
         <translation>Remove Wi-Fi SSID and MAC information from your operating system to prevent location history tracking.</translation>
+    </message>
+    <message>
+        <source>Connect to the VPN with WireGuard even in a hostile environment.</source>
+        <translation>Connect to the VPN with WireGuard even in a hostile environment.</translation>
     </message>
 </context>
 <context>

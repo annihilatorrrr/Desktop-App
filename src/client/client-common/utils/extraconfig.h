@@ -58,7 +58,6 @@ public:
     bool getStealthExtraTLSPadding();
 
     bool getWireGuardVerboseLogging();
-    bool getWireGuardUdpStuffing();
     bool getNoPings();
 
     std::optional<QString> serverlistCountryOverride();

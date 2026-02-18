@@ -52,6 +52,9 @@ public:
     const QString language() const;
     void setLanguage(const QString &lang);
 
+    QString amneziawgPreset() const;
+    void setAmneziawgPreset(const QString &preset);
+
     ORDER_LOCATION_TYPE locationOrder() const;
     void setLocationOrder(ORDER_LOCATION_TYPE o);
 
@@ -218,6 +221,8 @@ signals:
     void engineSettingsChanged();
 
     void reportErrorToUser(QString title, QString desc);
+
+    void amneziawgPresetChanged(const QString &preset);
 
 private:
     types::EngineSettings engineSettings_;

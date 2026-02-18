@@ -490,4 +490,19 @@ BaseRequest *serverapi_requests_factory::passwordRecovery(const std::string &ema
     return request;
 }
 
+BaseRequest *serverapi_requests_factory::amneziawgUnblockParams(const std::string &authHash, const std::string &amneziawgVersion, WSNetAdvancedParameters *advancedParameters, RequestFinishedCallback callback)
+{
+    std::map<std::string, std::string> extraParams;
+    extraParams["amneziawg_version"] = amneziawgVersion;
+    if (!advancedParameters->countryOverrideValue().empty()) {
+        // We always send this if it is available.  The AdvancedParameters::isIgnoreCountryOverride doesn't apply here, as we need to send the
+        // country override to the server to receive Amnezia unblock params specfic to that country.
+        extraParams["country_override"] = advancedParameters->countryOverrideValue();
+    }
+
+    auto request = new BaseRequest(HttpMethod::kGet, SubdomainType::kApi, RequestPriority::kNormal, "UnblockParams/amneziawg", extraParams, callback);
+    request->setBearerToken(authHash);
+    return request;
+}
+
 } // namespace wsnet

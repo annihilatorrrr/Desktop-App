@@ -7,6 +7,7 @@ TRIPLETS=("arm64-ios-simulator" "arm64-ios" "arm64-tvos" "arm64-tvos-simulator")
 
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 NumberOfCores=$(sysctl -n hw.ncpu)
+OVERLAY_PORTS_PATH="../../../tools/vcpkg/ports"
 
 updateInfoPlist() {
   plistFile=$1
@@ -34,6 +35,7 @@ for i in ${!ARCHITECTURES[@]}; do
   cmake -B "temp/build/$arch" -S .. \
     -G Xcode \
     -DCMAKE_TOOLCHAIN_FILE=$VCPKG_ROOT/scripts/buildsystems/vcpkg.cmake \
+    -DVCPKG_OVERLAY_PORTS="$OVERLAY_PORTS_PATH" \
     -DVCPKG_CHAINLOAD_TOOLCHAIN_FILE=$SCRIPT_DIR/../cmake/ios.toolchain.cmake \
     -DVCPKG_TARGET_TRIPLET=$triplet \
     -DPLATFORM=$arch \

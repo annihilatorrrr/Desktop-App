@@ -33,7 +33,7 @@ public:
     static bool initialize(const std::string &basePlatform,  const std::string &platformName, const std::string &appVersion,
                            const std::string &deviceId, const std::string &openVpnVersion, const std::string &sessionTypeId,
                            bool isUseStagingDomains, const std::string &language, const std::string &persistentSettings,
-                           WSNetLoggerFunction loggerFunction, bool debugLog);
+                           WSNetLoggerFunction loggerFunction, bool debugLog, const std::string &amneziawgVersion);
     static std::shared_ptr<WSNet> instance();
     static void cleanup();
     static bool isValid();

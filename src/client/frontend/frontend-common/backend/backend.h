@@ -263,6 +263,8 @@ signals:
 
     void clearWifiHistoryFinished(bool success);
 
+    void amneziawgUnblockParamsUpdated(const QString& activePreset, QStringList presets);
+
 private:
     bool isSavedApiSettingsExists_;
 

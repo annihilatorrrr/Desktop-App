@@ -47,6 +47,9 @@ public:
     void setNotifications(const std::string &notifications);
     std::string notifications() const;
 
+    void setAmneziawgUnblockParams(const std::string &amneziawgUnblockParams);
+    std::string amneziawgUnblockParams() const;
+
     void setSessionTokens(const std::map<std::string, std::pair<std::string, std::int64_t>> &sessionTokens);
     std::map<std::string, std::pair<std::string, std::int64_t>> sessionTokens() const;
 
@@ -68,6 +71,7 @@ private:
     std::string portMap_;
     std::string staticIps_;
     std::string notifications_;
+    std::string amneziawgUnblockParams_;
     std::map<std::string, std::pair<std::string, std::int64_t>> sessionTokens_;
 
     mutable std::mutex mutex_;

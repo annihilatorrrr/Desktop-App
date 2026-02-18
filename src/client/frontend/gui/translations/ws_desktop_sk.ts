@@ -1131,6 +1131,17 @@ Ak problém pretrváva aj po reštarte, pošlite nám denník ladenia, otvorte �
     </message>
 </context>
 <context>
+    <name>PreferencesWindow::AntiCensorshipGroup</name>
+    <message>
+        <source>Circumvent Censorship</source>
+        <translation>Obchádzanie cenzúry</translation>
+    </message>
+    <message>
+        <source>Configuration</source>
+        <translation>Konfigurácia</translation>
+    </message>
+</context>
+<context>
     <name>PreferencesWindow::AppBackgroundGroup</name>
     <message>
         <source>App Background</source>
@@ -1247,10 +1258,6 @@ Ak problém pretrváva aj po reštarte, pošlite nám denník ladenia, otvorte �
         <translation>Ukončiť sokety</translation>
     </message>
     <message>
-        <source>Circumvent Censorship</source>
-        <translation>Obchádzať cenzúru</translation>
-    </message>
-    <message>
         <source>Connection</source>
         <translation>Pripojenie</translation>
     </message>
@@ -1319,10 +1326,6 @@ Ak problém pretrváva aj po reštarte, pošlite nám denník ladenia, otvorte �
         <translation>Nakonfigurujte televízor, hernú konzolu alebo iné zariadenia, ktoré podporujú proxy servery.</translation>
     </message>
     <message>
-        <source>Connect to the VPN even in hostile environment.</source>
-        <translation>Pripojte sa k sieti VPN aj v nehostinnom prostredí.</translation>
-    </message>
-    <message>
         <source>Settings Conflict</source>
         <translation>Konflikt nastavení</translation>
     </message>
@@ -1369,6 +1372,10 @@ Ak problém pretrváva aj po reštarte, pošlite nám denník ladenia, otvorte �
     <message>
         <source>Remove Wi-Fi SSID and MAC information from your operating system to prevent location history tracking.</source>
         <translation>Odstráňte Wi-Fi SSID a MAC údaje z operačného systému, aby ste zabránili sledovaniu histórie polohy.</translation>
+    </message>
+    <message>
+        <source>Connect to the VPN with WireGuard even in a hostile environment.</source>
+        <translation>Pripojte sa na VPN cez WireGuard aj v nepriateľskom prostredí.</translation>
     </message>
 </context>
 <context>

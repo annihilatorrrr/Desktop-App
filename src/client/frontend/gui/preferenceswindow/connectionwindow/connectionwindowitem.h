@@ -14,6 +14,7 @@
 #include "proxygatewaygroup.h"
 #include "securehotspotgroup.h"
 #include "decoytrafficgroup.h"
+#include "anticensorshipgroup.h"
 #include "utils/network_utils/dnschecker.h"
 
 enum CONNECTION_SCREEN_TYPE { CONNECTION_SCREEN_HOME,
@@ -39,6 +40,7 @@ public:
     void setPacketSizeDetectionState(bool on);
     void showPacketSizeDetectionError(const QString &title, const QString &message);
     void setClearWifiHistoryResult(bool success);
+    void setAmneziawgUnblockParams(const QString &activePreset, QStringList presets);
 
 signals:
     void networkOptionsPageClick();
@@ -74,6 +76,7 @@ private slots:
     void onTerminateSocketsPreferencesChanged(bool b);
     void onAntiCensorshipPreferencesChanged(bool b);
     void onIsAutoConnectPreferencesChanged(bool b);
+    void onAmneziawgPresetChanged(const QString &preset);
 
     // slots for changes made by user
     void onFirewallPreferencesChangedByUser(const types::FirewallSettings &fm);
@@ -88,6 +91,7 @@ private slots:
     void onTerminateSocketsPreferencesChangedByUser(bool isChecked);
     void onAntiCensorshipPreferencesChangedByUser(bool isChecked);
     void onIsAutoConnectPreferencesChangedByUser(bool b);
+    void onAmneziawgPresetChangedByUser(QString preset);
 
     void onUpdateIsSecureHotspotSupported();
     void onClearWifiHistoryClick();
@@ -115,8 +119,7 @@ private:
     ConnectedDnsGroup *connectedDnsGroup_;
     PreferenceGroup *terminateSocketsGroup_;
     ToggleItem *terminateSocketsItem_;
-    PreferenceGroup *antiCensorshipGroup_;
-    ToggleItem *antiCensorshipItem_;
+    AntiCensorshipGroup *antiCensorshipGroup_;
     SecureHotspotGroup *secureHotspotGroup_;
     ProxyGatewayGroup *proxyGatewayGroup_;
     DecoyTrafficGroup *decoyTrafficGroup_;

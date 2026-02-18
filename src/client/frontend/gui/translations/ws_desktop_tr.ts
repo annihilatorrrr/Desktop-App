@@ -1131,6 +1131,17 @@ Yeniden başlatmanın ardından sorun devam ederse lütfen bir hata ayıklama g�
     </message>
 </context>
 <context>
+    <name>PreferencesWindow::AntiCensorshipGroup</name>
+    <message>
+        <source>Circumvent Censorship</source>
+        <translation>Sansürün Aşılması</translation>
+    </message>
+    <message>
+        <source>Configuration</source>
+        <translation>Yapılandırma</translation>
+    </message>
+</context>
+<context>
     <name>PreferencesWindow::AppBackgroundGroup</name>
     <message>
         <source>App Background</source>
@@ -1247,10 +1258,6 @@ Yeniden başlatmanın ardından sorun devam ederse lütfen bir hata ayıklama g�
         <translation>Soketleri Sonlandır</translation>
     </message>
     <message>
-        <source>Circumvent Censorship</source>
-        <translation>Sansürü Aşın</translation>
-    </message>
-    <message>
         <source>Connection</source>
         <translation>Bağlantı</translation>
     </message>
@@ -1319,10 +1326,6 @@ Yeniden başlatmanın ardından sorun devam ederse lütfen bir hata ayıklama g�
         <translation>TV&apos;nizi, oyun konsolunuzu veya proxy sunucularını destekleyen diğer cihazlarınızı yapılandırın.</translation>
     </message>
     <message>
-        <source>Connect to the VPN even in hostile environment.</source>
-        <translation>Düşmanca bir ortamda bile VPN&apos;e bağlanın.</translation>
-    </message>
-    <message>
         <source>Settings Conflict</source>
         <translation>Ayarlar Çakışması</translation>
     </message>
@@ -1369,6 +1372,10 @@ Yeniden başlatmanın ardından sorun devam ederse lütfen bir hata ayıklama g�
     <message>
         <source>Remove Wi-Fi SSID and MAC information from your operating system to prevent location history tracking.</source>
         <translation>Konum geçmişi takimini önlemek için işletim sisteminizden Wi-Fi SSID ve MAC bilgilerini kaldırın.</translation>
+    </message>
+    <message>
+        <source>Connect to the VPN with WireGuard even in a hostile environment.</source>
+        <translation>Düşmanca bir ortamda bile WireGuard ile VPN&apos;e bağlanın.</translation>
     </message>
 </context>
 <context>

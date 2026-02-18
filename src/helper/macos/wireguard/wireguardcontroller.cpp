@@ -13,11 +13,11 @@ WireGuardController::WireGuardController()
 {
 }
 
-bool WireGuardController::start()
+bool WireGuardController::start(bool verboseLogging)
 {
     adapter_.reset(new WireGuardAdapter(kAdapterName));
     comm_.reset(new WireGuardCommunicator());
-    if (comm_->start(kAdapterName))
+    if (comm_->start(kAdapterName, verboseLogging))
     {
         is_initialized_ = true;
         return true;
@@ -63,13 +63,13 @@ bool WireGuardController::configureDefaultRouteMonitor(const std::string &peerEn
 }
 
 bool WireGuardController::configure(const std::string &clientPrivateKey,
-    const std::string &peerPublicKey, const std::string &peerPresharedKey,
-    const std::string &peerEndpoint, const std::vector<std::string> &allowedIps,
-    uint16_t listenPort)
+                                    const std::string &peerPublicKey, const std::string &peerPresharedKey,
+                                    const std::string &peerEndpoint, const std::vector<std::string> &allowedIps,
+                                    uint16_t listenPort, const AmneziawgConfig &amneziawgConfig)
 {
     return is_initialized_
         && comm_->configure(clientPrivateKey, peerPublicKey, peerPresharedKey, peerEndpoint,
-            allowedIps, listenPort);
+            allowedIps, listenPort, amneziawgConfig);
 }
 
 unsigned long WireGuardController::getStatus(unsigned int *errorCode,

@@ -43,6 +43,7 @@ struct EngineSettingsData : public QSharedData
     DecoyTrafficSettings decoyTrafficSettings;
     QMap<QString, types::ConnectionSettings> networkPreferredProtocols;
     QString language;
+    QString amneziawgPreset;
 
     void fromJson(const QJsonObject &json);
     QJsonObject toJson(bool isForDebugLog) const;
@@ -50,6 +51,7 @@ struct EngineSettingsData : public QSharedData
     void toIni(QSettings &settings) const;
 
 private:
+    static const inline QString kIniAmneziawgPresetProp = "AmneziawgPreset";
     static const inline QString kIniDnsManagerProp = "DNSManager";
     static const inline QString kIniDnsPolicyProp = "DNSPolicy";
     static const inline QString kIniIsAllowLanTrafficProp = "AllowLANTraffic";
@@ -59,6 +61,7 @@ private:
     static const inline QString kIniLanguageProp = "Language";
     static const inline QString kIniUpdateChannelProp = "UpdateChannel";
 
+    static const inline QString kJsonAmneziawgPresetProp = "amneziawgPreset";
     static const inline QString kJsonConnectedDnsInfoProp = "connectedDnsInfo";
     static const inline QString kJsonConnectionSettingsProp = "connectionSettings";
     static const inline QString kJsonCustomOvpnConfigsPathProp = "customOvpnConfigsPath";
@@ -97,6 +100,8 @@ public:
 
     QString language() const;
     void setLanguage(const QString &lang);
+    QString amneziawgPreset() const;
+    void setAmneziawgPreset(const QString &preset);
 
     bool isIgnoreSslErrors() const;
     void setIsIgnoreSslErrors(bool ignore);
@@ -155,7 +160,7 @@ private:
 
     // for serialization
     static constexpr quint32 magic_ = 0x7745C2AE;
-    static constexpr int versionForSerialization_ = 7;  // should increment the version if the data format is changed
+    static constexpr int versionForSerialization_ = 8;  // should increment the version if the data format is changed
 };
 
 } // types namespace

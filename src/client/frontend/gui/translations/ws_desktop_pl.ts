@@ -1131,6 +1131,17 @@ Jeśli problem nadal występuje po ponownym uruchomieniu, wyślij dziennik debug
     </message>
 </context>
 <context>
+    <name>PreferencesWindow::AntiCensorshipGroup</name>
+    <message>
+        <source>Circumvent Censorship</source>
+        <translation>Omijanie cenzury</translation>
+    </message>
+    <message>
+        <source>Configuration</source>
+        <translation>Konfiguracja</translation>
+    </message>
+</context>
+<context>
     <name>PreferencesWindow::AppBackgroundGroup</name>
     <message>
         <source>App Background</source>
@@ -1247,10 +1258,6 @@ Jeśli problem nadal występuje po ponownym uruchomieniu, wyślij dziennik debug
         <translation>Zakończ gniazda</translation>
     </message>
     <message>
-        <source>Circumvent Censorship</source>
-        <translation>Obchodź cenzurę</translation>
-    </message>
-    <message>
         <source>Connection</source>
         <translation>Połączenie</translation>
     </message>
@@ -1319,10 +1326,6 @@ Jeśli problem nadal występuje po ponownym uruchomieniu, wyślij dziennik debug
         <translation>Skonfiguruj telewizor, konsolę do gier lub inne urządzenia obsługujące serwery proxy.</translation>
     </message>
     <message>
-        <source>Connect to the VPN even in hostile environment.</source>
-        <translation>Połącz się z VPN nawet w nieprzyjaznym środowisku.</translation>
-    </message>
-    <message>
         <source>Settings Conflict</source>
         <translation>Konflikt ustawień</translation>
     </message>
@@ -1369,6 +1372,10 @@ Jeśli problem nadal występuje po ponownym uruchomieniu, wyślij dziennik debug
     <message>
         <source>Remove Wi-Fi SSID and MAC information from your operating system to prevent location history tracking.</source>
         <translation>Usuń SSID i MAC Wi-Fi z systemu operacyjnego, aby zapobiec śledzeniu historii lokalizacji.</translation>
+    </message>
+    <message>
+        <source>Connect to the VPN with WireGuard even in a hostile environment.</source>
+        <translation>Połącz się z VPN przez WireGuard nawet w wrogim środowisku.</translation>
     </message>
 </context>
 <context>

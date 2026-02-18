@@ -8,7 +8,7 @@ DnsResolver::DnsResolver(std::function<void (std::map<std::string, HostInfo>)> r
     work_(boost::asio::make_work_guard(io_context_))
 {    
     // will not log the output from the library, too much unnecessary information
-    if (!WSNet::initialize("", "", "", "", "", "", false, "en", "", nullptr, false)) {
+    if (!WSNet::initialize("", "", "", "", "", "", false, "en", "", nullptr, false, "")) {
         spdlog::error("WSNet::initialize failed");
     }
 

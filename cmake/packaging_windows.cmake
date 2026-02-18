@@ -51,6 +51,9 @@ if(BUILD_APP)
         COMMAND ${CMAKE_COMMAND} -E copy_if_different
                 "${WINDSCRIBE_BUILD_LIBS_PATH}/wireguard/wireguard.dll"
                 "${BUILD_INSTALLER_FILES}/wireguard.dll"
+        COMMAND ${CMAKE_COMMAND} -E copy_if_different
+                "${WINDSCRIBE_BUILD_LIBS_PATH}/wireguard/amneziawgtunnel.dll"
+                "${BUILD_INSTALLER_FILES}/amneziawgtunnel.dll"
 
         # WSTunnel
         COMMAND ${CMAKE_COMMAND} -E copy_if_different

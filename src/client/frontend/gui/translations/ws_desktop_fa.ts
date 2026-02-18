@@ -1131,6 +1131,17 @@ If the problem persists after a restart, please send a debug log and open a supp
     </message>
 </context>
 <context>
+    <name>PreferencesWindow::AntiCensorshipGroup</name>
+    <message>
+        <source>Circumvent Censorship</source>
+        <translation>دور زدن سانسور</translation>
+    </message>
+    <message>
+        <source>Configuration</source>
+        <translation>پیکربندی</translation>
+    </message>
+</context>
+<context>
     <name>PreferencesWindow::AppBackgroundGroup</name>
     <message>
         <source>App Background</source>
@@ -1247,10 +1258,6 @@ If the problem persists after a restart, please send a debug log and open a supp
         <translation>خاتمه دادن به سوکت ها</translation>
     </message>
     <message>
-        <source>Circumvent Censorship</source>
-        <translation>دور زدن سانسور</translation>
-    </message>
-    <message>
         <source>Connection</source>
         <translation>اتصال</translation>
     </message>
@@ -1319,10 +1326,6 @@ If the problem persists after a restart, please send a debug log and open a supp
         <translation>تلویزیون، کنسول بازی یا سایر دستگاه هایی را که از سرورهای پروکسی پشتیبانی می کنند پیکربندی کنید.</translation>
     </message>
     <message>
-        <source>Connect to the VPN even in hostile environment.</source>
-        <translation>اتصال به VPN حتی در محیط خصمانه.</translation>
-    </message>
-    <message>
         <source>Settings Conflict</source>
         <translation>ناسازگاری تنظیمات</translation>
     </message>
@@ -1369,6 +1372,10 @@ If the problem persists after a restart, please send a debug log and open a supp
     <message>
         <source>Remove Wi-Fi SSID and MAC information from your operating system to prevent location history tracking.</source>
         <translation>اطلاعات SSID و MAC وای فای را از سیستم عامل خود حذف کنید تا از ردیابی تاریخچه موقعیت جلوگیری شود.</translation>
+    </message>
+    <message>
+        <source>Connect to the VPN with WireGuard even in a hostile environment.</source>
+        <translation>حتی در محیط خصمانه با WireGuard به VPN وصل شوید.</translation>
     </message>
 </context>
 <context>

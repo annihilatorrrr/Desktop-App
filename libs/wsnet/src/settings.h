@@ -73,7 +73,6 @@ public:
 
     std::string openVpnVersion() const { return openVpnVersion_; }
 
-
     std::string primaryServerDomain() const
     {
         return "windscribe.com";
@@ -120,6 +119,13 @@ public:
 
     std::string bridgeApiAddress() const { return "10.255.255.1:19800"; };
 
+    void setAmneziaWGVersion(const std::string &amneziawgVersion)
+    {
+        amneziawgVersion_ = amneziawgVersion;
+    }
+
+    std::string amneziaWGVersion() const { return amneziawgVersion_; }
+
 private:
     Settings() {};
     bool isUseStaging_ = false;
@@ -130,6 +136,7 @@ private:
     std::string appVersion_;
     std::string openVpnVersion_;
     std::string language_;
+    std::string amneziawgVersion_;
 };
 
 } // namespace wsnet
